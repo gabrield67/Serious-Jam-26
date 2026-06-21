@@ -1,0 +1,24 @@
+[gd_resource type="VisualShader" format=3 uid="uid://c7fvm1yn4y8wj"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_puwmg"]
+parameter_name = "Base_Wave_Texture"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_jy6uw"]
+expanded_output_ports = [0]
+source = 5
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2xbav"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[resource]
+modes/cull = 2
+flags/unshaded = true
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_puwmg")
+nodes/fragment/2/position = Vector2(-450, 190)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_jy6uw")
+nodes/fragment/3/position = Vector2(-410, -50)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_2xbav")
+nodes/fragment/4/position = Vector2(-20, 380)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 3, 1, 0, 1, 4, 0, 0, 0, 4, 4, 0, 19)

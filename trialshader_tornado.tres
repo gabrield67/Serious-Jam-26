@@ -1,0 +1,96 @@
+[gd_resource type="VisualShader" format=3 uid="uid://br2ves1s6ftgj"]
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_g3bqc"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeClamp" id="VisualShaderNodeClamp_b5a3u"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_jfniq"]
+parameter_name = "Color_1D_Gradient"
+texture_type = 1
+texture_repeat = 2
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_cdmy1"]
+output_port_for_preview = 0
+expanded_output_ports = [0]
+source = 5
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_ob83d"]
+parameter_name = "Opacity"
+hint = 1
+default_value_enabled = true
+default_value = 1.0
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_faqup"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_tkpg2"]
+parameter_name = "Base_Texture"
+texture_type = 1
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_pnndj"]
+output_port_for_preview = 0
+expanded_output_ports = [0]
+source = 5
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeUVFunc" id="VisualShaderNodeUVFunc_iguet"]
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_mnfw3"]
+parameter_name = "Speed_XY"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_t6ekj"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_8nx1c"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_nmihw"]
+parameter_name = "Substraction_Texture"
+texture_type = 1
+texture_repeat = 2
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_y1uy5"]
+output_port_for_preview = 0
+expanded_output_ports = [0]
+source = 5
+texture_type = 1
+
+[resource]
+modes/cull = 2
+flags/unshaded = true
+nodes/vertex/0/position = Vector2(-270, -50)
+nodes/fragment/0/position = Vector2(2010, -50)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_tkpg2")
+nodes/fragment/2/position = Vector2(-90, 280)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_pnndj")
+nodes/fragment/3/position = Vector2(-60, -200)
+nodes/fragment/4/node = SubResource("VisualShaderNodeUVFunc_iguet")
+nodes/fragment/4/position = Vector2(-420, 230)
+nodes/fragment/5/node = SubResource("VisualShaderNodeVec2Parameter_mnfw3")
+nodes/fragment/5/position = Vector2(-1110, 80)
+nodes/fragment/6/node = SubResource("VisualShaderNodeInput_t6ekj")
+nodes/fragment/6/position = Vector2(-1080, 310)
+nodes/fragment/7/node = SubResource("VisualShaderNodeVectorOp_8nx1c")
+nodes/fragment/7/position = Vector2(-680, 240)
+nodes/fragment/8/node = SubResource("VisualShaderNodeTexture2DParameter_nmihw")
+nodes/fragment/8/position = Vector2(340, 550)
+nodes/fragment/9/node = SubResource("VisualShaderNodeTexture_y1uy5")
+nodes/fragment/9/position = Vector2(350, 120)
+nodes/fragment/10/node = SubResource("VisualShaderNodeFloatOp_g3bqc")
+nodes/fragment/10/position = Vector2(720, -60)
+nodes/fragment/11/node = SubResource("VisualShaderNodeClamp_b5a3u")
+nodes/fragment/11/position = Vector2(1040, 0)
+nodes/fragment/12/node = SubResource("VisualShaderNodeTexture2DParameter_jfniq")
+nodes/fragment/12/position = Vector2(1350, 380)
+nodes/fragment/13/node = SubResource("VisualShaderNodeTexture_cdmy1")
+nodes/fragment/13/position = Vector2(1470, -40)
+nodes/fragment/14/node = SubResource("VisualShaderNodeFloatParameter_ob83d")
+nodes/fragment/14/position = Vector2(1450, 720)
+nodes/fragment/15/node = SubResource("VisualShaderNodeFloatOp_faqup")
+nodes/fragment/15/position = Vector2(1790, 390)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 4, 0, 3, 0, 5, 0, 7, 0, 6, 0, 7, 1, 7, 0, 4, 2, 8, 0, 9, 2, 3, 1, 10, 0, 9, 1, 10, 1, 10, 0, 11, 0, 12, 0, 13, 2, 11, 0, 13, 0, 13, 0, 0, 0, 13, 4, 15, 0, 14, 0, 15, 1, 15, 0, 0, 1)
