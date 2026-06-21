@@ -1,21 +1,21 @@
 [gd_scene format=3 uid="uid://dh880n4g4pp6i"]
 
-[ext_resource type="Shader" uid="uid://b58n0euya08rx" path="res://VFX/shaders/s_master_fire2_treshold_ds.tres" id="1_hwqts"]
-[ext_resource type="Texture2D" uid="uid://dsi0gdw8k65c1" path="res://VFX/textures/T_VFX_WindNoise1.png" id="2_18jvk"]
-[ext_resource type="ArrayMesh" uid="uid://cjct5xmjblv8x" path="res://VFX/objects/sm_tornado_external_j3.obj" id="3_nixsl"]
-[ext_resource type="ArrayMesh" uid="uid://dt2r3a6o00b4i" path="res://VFX/objects/sm_tornado_internalj4.obj" id="4_tmvjb"]
-[ext_resource type="Shader" uid="uid://drbefe8jw3n21" path="res://VFX/shaders/s_Disolver_Treshold_ds.tres" id="5_8c5kd"]
-[ext_resource type="Texture2D" uid="uid://bhbiiaa2knnbd" path="res://VFX/textures/T_FirePanningCyl45.png" id="6_g5lay"]
-[ext_resource type="ArrayMesh" uid="uid://bwull2fl43v1q" path="res://VFX/objects/sm_twisted_base_cylinder.obj" id="7_qag4v"]
-[ext_resource type="ArrayMesh" uid="uid://caknt68a5pqqi" path="res://VFX/objects/sm_baseRing.obj" id="8_gxb33"]
-[ext_resource type="Shader" uid="uid://ncbi6cug17fc" path="res://VFX/shaders/s_Disolver_Treshold_p_fc.tres" id="9_t4abu"]
-[ext_resource type="Texture2D" uid="uid://lkuaxmotust5" path="res://VFX/textures/T_VFX_FireBall_s1_alpha.jpg" id="10_so1sp"]
-[ext_resource type="Shader" uid="uid://ckoid3k2j68p3" path="res://VFX/shaders/s_PolarPanning_treshold.tres" id="11_uyipv"]
-[ext_resource type="Texture2D" uid="uid://dd1pmd840fclm" path="res://VFX/textures/T_Noise_5K9p.png" id="12_5d043"]
-[ext_resource type="Shader" uid="uid://dxqcaetrcg3jf" path="res://VFX/shaders/s_simple7_pY.tres" id="13_3hdrx"]
-[ext_resource type="ArrayMesh" uid="uid://dt24wn8ohrat3" path="res://VFX/objects/sm_tornado_b_glow.obj" id="14_k252n"]
-[ext_resource type="Shader" uid="uid://6vcv0dux3ivn" path="res://VFX/shaders/s_Disolver_Treshold3.tres" id="15_guflo"]
-[ext_resource type="Texture2D" uid="uid://behqroa847jr8" path="res://VFX/textures/T_Cracks333.png" id="16_dhfke"]
+[ext_resource type="Shader" uid="uid://b58n0euya08rx" path="res://Tornado VFX/shaders/s_master_fire2_treshold_ds.tres" id="1_hwqts"]
+[ext_resource type="Texture2D" uid="uid://dvoy51268r52n" path="res://Tornado VFX/textures/T_VFX_WindNoise1.png" id="2_18jvk"]
+[ext_resource type="ArrayMesh" uid="uid://cjct5xmjblv8x" path="res://Tornado VFX/objects/sm_tornado_external_j3.obj" id="3_nixsl"]
+[ext_resource type="ArrayMesh" uid="uid://dt2r3a6o00b4i" path="res://Tornado VFX/objects/sm_tornado_internalj4.obj" id="4_tmvjb"]
+[ext_resource type="Shader" uid="uid://drbefe8jw3n21" path="res://Tornado VFX/shaders/s_Disolver_Treshold_ds.tres" id="5_8c5kd"]
+[ext_resource type="Texture2D" uid="uid://djs8yi1ojgrcm" path="res://Tornado VFX/textures/T_FirePanningCyl45.png" id="6_g5lay"]
+[ext_resource type="ArrayMesh" uid="uid://bwull2fl43v1q" path="res://Tornado VFX/objects/sm_twisted_base_cylinder.obj" id="7_qag4v"]
+[ext_resource type="ArrayMesh" uid="uid://caknt68a5pqqi" path="res://Tornado VFX/objects/sm_baseRing.obj" id="8_gxb33"]
+[ext_resource type="Shader" uid="uid://ncbi6cug17fc" path="res://Tornado VFX/shaders/s_Disolver_Treshold_p_fc.tres" id="9_t4abu"]
+[ext_resource type="Texture2D" uid="uid://lkuaxmotust5" path="res://Tornado VFX/textures/T_VFX_FireBall_s1_alpha.jpg" id="10_so1sp"]
+[ext_resource type="Shader" uid="uid://ckoid3k2j68p3" path="res://Tornado VFX/shaders/s_PolarPanning_treshold.tres" id="11_uyipv"]
+[ext_resource type="Texture2D" uid="uid://dd1pmd840fclm" path="res://Tornado VFX/textures/T_Noise_5K9p.png" id="12_5d043"]
+[ext_resource type="Shader" uid="uid://dxqcaetrcg3jf" path="res://Tornado VFX/shaders/s_simple7_pY.tres" id="13_3hdrx"]
+[ext_resource type="ArrayMesh" uid="uid://dt24wn8ohrat3" path="res://Tornado VFX/objects/sm_tornado_b_glow.obj" id="14_k252n"]
+[ext_resource type="Shader" uid="uid://6vcv0dux3ivn" path="res://Tornado VFX/shaders/s_Disolver_Treshold3.tres" id="15_guflo"]
+[ext_resource type="Texture2D" uid="uid://behqroa847jr8" path="res://Tornado VFX/textures/T_Cracks333.png" id="16_dhfke"]
 
 [sub_resource type="Gradient" id="Gradient_u7xh7"]
 offsets = PackedFloat32Array(0.228228)
@@ -50,7 +50,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.5635522941350937
+shader_parameter/AlphaTreshold = 0.278
 
 [sub_resource type="Gradient" id="Gradient_8kx2p"]
 offsets = PackedFloat32Array(0.128631, 0.369295)
@@ -82,10 +82,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_4ibhc")
-shader_parameter/Color_Intensity2 = 4.153110146522522
+shader_parameter/Color_Intensity2 = 10.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_v47l1")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_l0h0n")
-shader_parameter/AlphaTreshold = 0.5383846745491028
+shader_parameter/AlphaTreshold = 0.268
 
 [sub_resource type="Gradient" id="Gradient_3wtuu"]
 offsets = PackedFloat32Array(0.186186, 0.396396)
@@ -120,7 +120,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_plwbi")
 shader_parameter/Color_Intensity2 = 3.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_6oy0i")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_phsms")
-shader_parameter/AlphaTreshold = 0.5790619292259216
+shader_parameter/AlphaTreshold = 0.283
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -347,8 +347,8 @@ shader_parameter/Power = 0.82
 shader_parameter/Texture_Substract = SubResource("GradientTexture2D_xkn2y")
 shader_parameter/Proximity_Fade = 0.3
 shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_hcxyb")
-shader_parameter/Transparency = 0.5363322
-shader_parameter/AlphaTreshold = 0.7363051303625107
+shader_parameter/Transparency = 1.0
+shader_parameter/AlphaTreshold = 0.134
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qhpw8"]
 size = Vector2(8, 8)
@@ -368,7 +368,7 @@ render_priority = 0
 shader = ExtResource("13_3hdrx")
 shader_parameter/ColorParameter = Color(0, 0.92, 0.490667, 1)
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_p0ufl")
-shader_parameter/Opacity = 0.4044985
+shader_parameter/Opacity = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xoqjk"]
 render_priority = -1

@@ -1,20 +1,20 @@
-[gd_scene load_steps=93 format=4 uid="uid://cgcbeeembdk2a"]
+[gd_scene format=4 uid="uid://cgcbeeembdk2a"]
 
-[ext_resource type="Shader" path="res://VFX/shaders/ss_master_mTornado_ds.gdshader" id="1_m7fi8"]
-[ext_resource type="Texture2D" uid="uid://vj1fkfmxlojo" path="res://VFX/textures/T_FogSheetCloud.PNG" id="2_06ocr"]
-[ext_resource type="ArrayMesh" uid="uid://b2bs82ed45342" path="res://VFX/objects/sm_tornado_k6x.obj" id="3_esxiv"]
-[ext_resource type="Shader" uid="uid://ckoid3k2j68p3" path="res://VFX/shaders/s_PolarPanning_treshold.tres" id="4_lv6ri"]
-[ext_resource type="Texture2D" uid="uid://cvlypvh58l32v" path="res://VFX/textures/T_Aurax44.jpg" id="5_aex48"]
-[ext_resource type="ArrayMesh" uid="uid://yswn6ifaxs7s" path="res://VFX/objects/sm_ringwave_planed1a.obj" id="6_j1owb"]
-[ext_resource type="Texture2D" uid="uid://brnp67jnwwro6" path="res://VFX/textures/T_smoke_K97.png" id="7_obt74"]
-[ext_resource type="Texture2D" uid="uid://uh8xp5ulkqx1" path="res://VFX/textures/T_smoke_bb1fa.png" id="8_wqx4a"]
-[ext_resource type="ArrayMesh" uid="uid://dgsgnl5mi1m06" path="res://VFX/objects/sm_debris561.obj" id="9_t4sqq"]
-[ext_resource type="Shader" uid="uid://cnbtophohklv4" path="res://VFX/shaders/s_PolarPanning_treshold_ds.tres" id="10_jslea"]
-[ext_resource type="Texture2D" uid="uid://8l1m4bj1kmvu" path="res://VFX/textures/T_Noise_993Ri.png" id="11_qngnn"]
-[ext_resource type="ArrayMesh" uid="uid://vmk5b0l4jr88" path="res://VFX/objects/sm_plane_spiked12.obj" id="12_bxwy6"]
-[ext_resource type="Shader" uid="uid://drbefe8jw3n21" path="res://VFX/shaders/s_Disolver_Treshold_ds.tres" id="13_wwyaw"]
-[ext_resource type="Texture2D" uid="uid://bhbiiaa2knnbd" path="res://VFX/textures/T_FirePanningCyl45.png" id="14_btldy"]
-[ext_resource type="ArrayMesh" uid="uid://caknt68a5pqqi" path="res://VFX/objects/sm_baseRing.obj" id="15_lm7dk"]
+[ext_resource type="Shader" uid="uid://cu4g03c1ll3sy" path="res://Tornado VFX/shaders/ss_master_mTornado_ds.gdshader" id="1_m7fi8"]
+[ext_resource type="Texture2D" uid="uid://vj1fkfmxlojo" path="res://Tornado VFX/textures/T_FogSheetCloud.PNG" id="2_06ocr"]
+[ext_resource type="ArrayMesh" uid="uid://b2bs82ed45342" path="res://Tornado VFX/objects/sm_tornado_k6x.obj" id="3_esxiv"]
+[ext_resource type="Shader" uid="uid://ckoid3k2j68p3" path="res://Tornado VFX/shaders/s_PolarPanning_treshold.tres" id="4_lv6ri"]
+[ext_resource type="Texture2D" uid="uid://cvlypvh58l32v" path="res://Tornado VFX/textures/T_Aurax44.jpg" id="5_aex48"]
+[ext_resource type="ArrayMesh" uid="uid://yswn6ifaxs7s" path="res://Tornado VFX/objects/sm_ringwave_planed1a.obj" id="6_j1owb"]
+[ext_resource type="Texture2D" uid="uid://brnp67jnwwro6" path="res://Tornado VFX/textures/T_smoke_K97.png" id="7_obt74"]
+[ext_resource type="Texture2D" uid="uid://uh8xp5ulkqx1" path="res://Tornado VFX/textures/T_smoke_bb1fa.png" id="8_wqx4a"]
+[ext_resource type="ArrayMesh" uid="uid://dgsgnl5mi1m06" path="res://Tornado VFX/objects/sm_debris561.obj" id="9_t4sqq"]
+[ext_resource type="Shader" uid="uid://cnbtophohklv4" path="res://Tornado VFX/shaders/s_PolarPanning_treshold_ds.tres" id="10_jslea"]
+[ext_resource type="Texture2D" uid="uid://8l1m4bj1kmvu" path="res://Tornado VFX/textures/T_Noise_993Ri.png" id="11_qngnn"]
+[ext_resource type="ArrayMesh" uid="uid://vmk5b0l4jr88" path="res://Tornado VFX/objects/sm_plane_spiked12.obj" id="12_bxwy6"]
+[ext_resource type="Shader" uid="uid://drbefe8jw3n21" path="res://Tornado VFX/shaders/s_Disolver_Treshold_ds.tres" id="13_wwyaw"]
+[ext_resource type="Texture2D" uid="uid://djs8yi1ojgrcm" path="res://Tornado VFX/textures/T_FirePanningCyl45.png" id="14_btldy"]
+[ext_resource type="ArrayMesh" uid="uid://caknt68a5pqqi" path="res://Tornado VFX/objects/sm_baseRing.obj" id="15_lm7dk"]
 
 [sub_resource type="Gradient" id="Gradient_351vi"]
 offsets = PackedFloat32Array(0.00389105, 0.762646, 1)
@@ -42,18 +42,18 @@ use_hdr = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5hy1q"]
 render_priority = 0
 shader = ExtResource("1_m7fi8")
+shader_parameter/Base_noise = ExtResource("2_06ocr")
 shader_parameter/Speed_XY = Vector2(0.5, 1)
 shader_parameter/Scale_XY = Vector2(1, 1)
+shader_parameter/Vertex_Color_1D_Intensity = SubResource("GradientTexture1D_r7qb7")
 shader_parameter/Vertex_Intensity = 1.0
+shader_parameter/Texture_multiply = SubResource("GradientTexture2D_uodgg")
+shader_parameter/Gradient_Color_1D = SubResource("GradientTexture1D_l0jlj")
 shader_parameter/Color_Intensity = 1.0
 shader_parameter/Wobble_Amount = 0.3
 shader_parameter/Wobble_Speed = 1.0
 shader_parameter/Rotation_Speed = 7.0
 shader_parameter/Alpha_Scissor = 0.0
-shader_parameter/Base_noise = ExtResource("2_06ocr")
-shader_parameter/Vertex_Color_1D_Intensity = SubResource("GradientTexture1D_r7qb7")
-shader_parameter/Texture_multiply = SubResource("GradientTexture2D_uodgg")
-shader_parameter/Gradient_Color_1D = SubResource("GradientTexture1D_l0jlj")
 
 [sub_resource type="Gradient" id="Gradient_o02fs"]
 interpolation_mode = 2
@@ -87,17 +87,17 @@ render_priority = -1
 shader = ExtResource("4_lv6ri")
 shader_parameter/Intensity = 1.5
 shader_parameter/Enable_Proximity_Fade = false
+shader_parameter/Texture_Add = SubResource("GradientTexture2D_k7jw7")
 shader_parameter/Zoom_Strenght = 2.0
 shader_parameter/repeat = 2.0
 shader_parameter/Speed_XY = Vector2(1, 0)
+shader_parameter/Texture_Main = ExtResource("5_aex48")
 shader_parameter/Power = 0.535
+shader_parameter/Texture_Substract = SubResource("GradientTexture2D_cclg2")
 shader_parameter/Proximity_Fade = 0.3
+shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_vrwp6")
 shader_parameter/Transparency = 1.0
 shader_parameter/AlphaTreshold = 0.242
-shader_parameter/Texture_Add = SubResource("GradientTexture2D_k7jw7")
-shader_parameter/Texture_Main = ExtResource("5_aex48")
-shader_parameter/Texture_Substract = SubResource("GradientTexture2D_cclg2")
-shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_vrwp6")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wr7m8"]
 transparency = 1
@@ -113,18 +113,17 @@ particles_anim_loop = false
 proximity_fade_enabled = true
 
 [sub_resource type="Curve" id="Curve_har62"]
-max_value = 2.0
+_limits = [0.0, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0]
 point_count = 1
 
 [sub_resource type="Curve" id="Curve_7mma2"]
-min_value = -2.0
-max_value = 2.0
+_limits = [-2.0, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_8ombg"]
-max_value = 2.0
+_limits = [0.0, 2.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0]
 point_count = 1
 
@@ -155,6 +154,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 13.0
 emission_ring_radius = 1.9
 emission_ring_inner_radius = 1.6
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 direction = Vector3(0, 1, 0)
@@ -219,6 +219,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 0.0
 emission_ring_radius = 2.0
 emission_ring_inner_radius = 2.0
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 direction = Vector3(0, 1, 0)
@@ -278,6 +279,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 8.0
 emission_ring_radius = 2.5
 emission_ring_inner_radius = 1.8
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 direction = Vector3(0, 1, 0)
@@ -356,6 +358,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 0.0
 emission_ring_radius = 20.0
 emission_ring_inner_radius = 10.0
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 direction = Vector3(0, 1, 0)
@@ -424,17 +427,17 @@ render_priority = -1
 shader = ExtResource("10_jslea")
 shader_parameter/Intensity = 3.0
 shader_parameter/Enable_Proximity_Fade = false
+shader_parameter/Texture_Add = SubResource("GradientTexture2D_wxyqi")
 shader_parameter/Zoom_Strenght = 1.0
 shader_parameter/repeat = 1.0
 shader_parameter/Speed_XY = Vector2(-2, 0)
+shader_parameter/Texture_Main = ExtResource("11_qngnn")
 shader_parameter/Power = 1.0
+shader_parameter/Texture_Substract = SubResource("GradientTexture2D_t7f4k")
 shader_parameter/Proximity_Fade = 0.3
+shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_q0p05")
 shader_parameter/Transparency = 1.0
 shader_parameter/AlphaTreshold = 0.613
-shader_parameter/Texture_Add = SubResource("GradientTexture2D_wxyqi")
-shader_parameter/Texture_Main = ExtResource("11_qngnn")
-shader_parameter/Texture_Substract = SubResource("GradientTexture2D_t7f4k")
-shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_q0p05")
 
 [sub_resource type="Animation" id="Animation_opqyj"]
 resource_name = "End"
@@ -785,9 +788,9 @@ tracks/13/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p3tey"]
 _data = {
-"End": SubResource("Animation_opqyj"),
-"Idle_Loop": SubResource("Animation_eb0xh"),
-"Start": SubResource("Animation_o5hk7")
+&"End": SubResource("Animation_opqyj"),
+&"Idle_Loop": SubResource("Animation_eb0xh"),
+&"Start": SubResource("Animation_o5hk7")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kvtdc"]
@@ -832,6 +835,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 0.0
 emission_ring_radius = 0.2
 emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 direction = Vector3(0, 1, 0)
@@ -847,23 +851,23 @@ scale_curve = SubResource("CurveTexture_o8j24")
 color_ramp = SubResource("GradientTexture1D_i8fcs")
 alpha_curve = SubResource("CurveTexture_fok3h")
 
-[node name="VFX_Tornado_GrayCataclysm" type="Node3D"]
+[node name="VFX_Tornado_GrayCataclysm" type="Node3D" unique_id=253054990]
 
-[node name="SmTornadoT001Ccw4" type="MeshInstance3D" parent="."]
+[node name="SmTornadoT001Ccw4" type="MeshInstance3D" parent="." unique_id=104860994]
 transform = Transform3D(0.8, 0, 0, 0, 2, 0, 0, 0, 0.8, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_5hy1q")
 cast_shadow = 0
 mesh = ExtResource("3_esxiv")
 skeleton = NodePath("../..")
 
-[node name="windsoilbase" type="MeshInstance3D" parent="."]
+[node name="windsoilbase" type="MeshInstance3D" parent="." unique_id=1443710584]
 transform = Transform3D(1.5, 0, 0, 0, 2, 0, 0, 0, 1.5, 0.0425644, -0.0607798, 0.414264)
 material_override = SubResource("ShaderMaterial_n5l56")
 cast_shadow = 0
 mesh = ExtResource("6_j1owb")
 skeleton = NodePath("../..")
 
-[node name="VFX_Smoke_A" type="GPUParticles3D" parent="."]
+[node name="VFX_Smoke_A" type="GPUParticles3D" parent="." unique_id=1264218236]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.199219, 6.3786, 0)
 material_override = SubResource("StandardMaterial3D_wr7m8")
 cast_shadow = 0
@@ -874,7 +878,7 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_w76as")
 draw_pass_1 = SubResource("QuadMesh_qibnb")
 
-[node name="smoke_dust" type="GPUParticles3D" parent="."]
+[node name="smoke_dust" type="GPUParticles3D" parent="." unique_id=1181360897]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.291218, 0.645, 0)
 material_override = SubResource("StandardMaterial3D_214ik")
 amount = 20
@@ -883,7 +887,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_n4ikv")
 draw_pass_1 = SubResource("QuadMesh_y7vay")
 
-[node name="small_debrees" type="GPUParticles3D" parent="."]
+[node name="small_debrees" type="GPUParticles3D" parent="." unique_id=1892687244]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.19718, 0)
 material_override = SubResource("StandardMaterial3D_w0qsb")
 amount = 30
@@ -892,7 +896,7 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_wt7ae")
 draw_pass_1 = SubResource("ArrayMesh_dq8ab")
 
-[node name="small_debrees2" type="GPUParticles3D" parent="."]
+[node name="small_debrees2" type="GPUParticles3D" parent="." unique_id=364391236]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.16455, 0)
 material_override = SubResource("StandardMaterial3D_muha5")
 amount = 20
@@ -901,7 +905,7 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_f4iu8")
 draw_pass_1 = SubResource("ArrayMesh_wl31a")
 
-[node name="small_debrees3" type="GPUParticles3D" parent="."]
+[node name="small_debrees3" type="GPUParticles3D" parent="." unique_id=1868159328]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.93692, 0)
 material_override = SubResource("StandardMaterial3D_muha5")
 fixed_fps = 60
@@ -909,19 +913,17 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_f4iu8")
 draw_pass_1 = ExtResource("9_t4sqq")
 
-[node name="floorflash2top2" type="MeshInstance3D" parent="."]
+[node name="floorflash2top2" type="MeshInstance3D" parent="." unique_id=879021148]
 transform = Transform3D(6, 0, 0, 0, 2, 0, 0, 0, 6, 0, 13.2626, 0)
 material_override = SubResource("ShaderMaterial_kq3a8")
 cast_shadow = 0
 mesh = ExtResource("12_bxwy6")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_p3tey")
-}
-autoplay = "Start"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1663630005]
+libraries/ = SubResource("AnimationLibrary_p3tey")
+autoplay = &"Start"
 
-[node name="ring4oniuon2top" type="GPUParticles3D" parent="."]
+[node name="ring4oniuon2top" type="GPUParticles3D" parent="." unique_id=642252550]
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 11.2932, 0)
 material_override = SubResource("ShaderMaterial_kvtdc")
 cast_shadow = 0

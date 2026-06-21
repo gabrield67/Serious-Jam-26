@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://i6mnh1gtammo"]
 
 [ext_resource type="Shader" uid="uid://br2ves1s6ftgj" path="res://trialshader_tornado.tres" id="1_7hrl7"]
-[ext_resource type="Texture2D" uid="uid://dvoy51268r52n" path="res://Textures/T_VFX_WindNoise1.png" id="2_42mmd"]
-[ext_resource type="ArrayMesh" uid="uid://c5fj60cv6ua0" path="res://Models/sm_tornado.obj" id="3_ma3ss"]
+[ext_resource type="Texture2D" uid="uid://dvoy51268r52n" path="res://Tornado VFX/textures/T_VFX_WindNoise1.png" id="2_42mmd"]
+[ext_resource type="ArrayMesh" uid="uid://c5fj60cv6ua0" path="res://Tornado VFX/objects/sm_tornado.obj" id="3_ma3ss"]
 [ext_resource type="Shader" uid="uid://c7fvm1yn4y8wj" path="res://s_basic_dissolver.tres" id="4_n26w8"]
-[ext_resource type="Texture2D" uid="uid://djs8yi1ojgrcm" path="res://Textures/T_FirePanningCyl45.png" id="5_kjx5e"]
-[ext_resource type="ArrayMesh" uid="uid://c0fclvp0w46p1" path="res://Models/sm_waves_tornado.obj" id="6_ss4vt"]
-[ext_resource type="PackedScene" uid="uid://0huts4q323cb" path="res://VFX/Scenes/vfx_tornado_fire.tscn" id="7_ss4vt"]
-[ext_resource type="PackedScene" uid="uid://dh880n4g4pp6i" path="res://VFX/Scenes/VFX_Tornado_green.tscn" id="8_wgr3a"]
-[ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="9_wgr3a"]
+[ext_resource type="Texture2D" uid="uid://djs8yi1ojgrcm" path="res://Tornado VFX/textures/T_FirePanningCyl45.png" id="5_kjx5e"]
+[ext_resource type="ArrayMesh" uid="uid://c0fclvp0w46p1" path="res://Tornado VFX/objects/sm_waves_tornado.obj" id="6_ss4vt"]
+[ext_resource type="PackedScene" uid="uid://0huts4q323cb" path="res://Tornado VFX/Scenes/vfx_tornado_fire.tscn" id="7_ss4vt"]
+[ext_resource type="PackedScene" uid="uid://dh880n4g4pp6i" path="res://Tornado VFX/Scenes/VFX_Tornado_green.tscn" id="8_wgr3a"]
+[ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="9_wgr3a"]
+[ext_resource type="PackedScene" uid="uid://cgcbeeembdk2a" path="res://Tornado VFX/Scenes/VFX_Tornado_gray_cataclysm.tscn" id="10_7wl38"]
+[ext_resource type="PackedScene" uid="uid://bvwvdoox5k1j6" path="res://Tornado VFX/Scenes/VFX_Tornado_blue_storm.tscn" id="11_o7y82"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gngh"]
 albedo_color = Color(0.1764706, 0.54509807, 0.37254903, 1)
@@ -166,3 +168,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.300505, 0, 0)
 
 [node name="VFX_Tornado_Fire_V2" parent="." unique_id=1185071900 instance=ExtResource("9_wgr3a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.086267, 0, 12.777447)
+
+[node name="VFX_Tornado_GrayCataclysm" parent="." unique_id=1108648792 instance=ExtResource("10_7wl38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.160381, -0.00071525574, 12.521221)
+
+[node name="VFX_Tornado_BlueStorm" parent="." unique_id=1420247605 instance=ExtResource("11_o7y82")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.941261, -9.536743e-07, 27.63502)
