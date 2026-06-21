@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cwf3s787lfb11"]
+
+[ext_resource type="Texture2D" uid="uid://dgptdu8p2bg27" path="res://VFX/Misc/textures/T_checker21.jpg" id="1_jkulx"]
+
+[resource]
+albedo_texture = ExtResource("1_jkulx")
+metallic_specular = 0.0
+uv1_scale = Vector3(0.3, 0.3, 0.3)
+uv1_triplanar = true
+uv1_world_triplanar = true
