@@ -104,9 +104,6 @@ follow_offset = Vector3(0, 20.166, 28)
 follow_damping = true
 follow_damping_value = Vector3(0.2, 0.2, 0.2)
 look_at_offset = Vector3(0, 6, 0)
-align_transform_with_view = Callable()
-align_position_with_view = Callable()
-align_rotation_with_view = Callable()
 
 [node name="Crates" type="Node3D" parent="." unique_id=514911472]
 

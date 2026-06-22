@@ -1,5 +1,5 @@
 extends CharacterBody3D
-## Point-and-click controller for the tornado.
+## Mouse-follow controller for the tornado
 
 @export var max_speed: float = 25.0  
 @export var acceleration: float = 70.0
@@ -13,15 +13,10 @@ var _has_target: bool = false
 func _ready() -> void:
 	_target = global_position
 
-func _unhandled_input(event: InputEvent) -> void:
-	# click or hold for destination
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_set_target_from_mouse(event.position)
-	elif event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT):
-		_set_target_from_mouse(event.position)
-
 func _physics_process(delta: float) -> void:
-	# Physics I guess
+	# Continuously steer toward whatever the cursor is hovering over.
+	_set_target_from_mouse(get_viewport().get_mouse_position())
+
 	var to_target := _target - global_position
 	to_target.y = 0.0
 	var distance := to_target.length()
