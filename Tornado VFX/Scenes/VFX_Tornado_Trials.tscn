@@ -132,7 +132,7 @@ transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, -0.09404373, -0.2598505, 
 mesh = SubResource("BoxMesh_g4v7s")
 
 [node name="VFX_Tornado" type="Node3D" parent="." unique_id=325399328]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8976803, 2.5994034, 14.019139)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8976803, 2.5994034, -0.244977)
 
 [node name="SmTornado" type="MeshInstance3D" parent="VFX_Tornado" unique_id=477255704]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.80225086, 0, 0)
@@ -163,12 +163,13 @@ process_material = SubResource("ParticleProcessMaterial_g4v7s")
 draw_pass_1 = ExtResource("6_ss4vt")
 
 [node name="VFX_Tornado_Fire" parent="." unique_id=1230675119 instance=ExtResource("7_ss4vt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26.55701)
 
 [node name="VFX_Tornado_CursedGreen" parent="." unique_id=1683199678 instance=ExtResource("8_wgr3a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.300505, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.87385, 0, -0.8807087)
 
 [node name="VFX_Tornado_Fire_V2" parent="." unique_id=1185071900 instance=ExtResource("9_wgr3a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.086267, 0, 12.777447)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.03902, 0, -30.851368)
 
 [node name="VFX_Tornado_GrayCataclysm" parent="." unique_id=1108648792 instance=ExtResource("10_7wl38")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.160381, -0.00071525574, 12.521221)
