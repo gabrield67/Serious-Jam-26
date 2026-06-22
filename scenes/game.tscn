@@ -1,0 +1,164 @@
+[gd_scene format=3 uid="uid://wtexamna831i"]
+
+[ext_resource type="PackedScene" uid="uid://bajwyvxob1tcf" path="res://Tornado VFX/Scenes/VFX_Tornado_black.tscn" id="1_tornado"]
+[ext_resource type="Script" uid="uid://bsjage7kfry0q" path="res://scripts/tornado.gd" id="2_player"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_host"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_pcam"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_iywne"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+ground_bottom_color = Color(0.25, 0.27, 0.27, 1)
+ground_horizon_color = Color(0.7, 0.71, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.6
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.7, 0.71, 0.72, 1)
+fog_density = 0.0015
+
+[sub_resource type="BoxMesh" id="GroundMesh"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="StandardMaterial3D" id="GroundMat"]
+albedo_color = Color(0.31, 0.42, 0.26, 1)
+
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="CylinderShape3D" id="TornadoShape"]
+height = 12.0
+radius = 3.0
+
+[sub_resource type="Resource" id="Resource_p57ef"]
+script = ExtResource("5_iywne")
+
+[sub_resource type="BoxMesh" id="CrateMesh"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="CrateMat"]
+albedo_color = Color(0.55, 0.36, 0.18, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="CrateShape"]
+size = Vector3(2, 2, 2)
+
+[node name="Game" type="Node3D" unique_id=553556477]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=808378729]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=310126205]
+transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=2070308716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("GroundMesh")
+surface_material_override/0 = SubResource("GroundMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=1669286392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("GroundShape")
+
+[node name="Tornado" type="CharacterBody3D" parent="." unique_id=271525483]
+script = ExtResource("2_player")
+
+[node name="VFX" parent="Tornado" unique_id=2084817965 instance=ExtResource("1_tornado")]
+
+[node name="Collision" type="CollisionShape3D" parent="Tornado" unique_id=1848947250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+shape = SubResource("TornadoShape")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2057751060]
+transform = Transform3D(1, 0, 0, 0, 0.51140076, 0.8593424, 0, -0.8593424, 0.51140076, 0, 20.16644, 28)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1069513929]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("3_host")
+
+[node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1417305512 node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(1, 0, 0, 0, 0.89230114, 0.45144066, 0, -0.45144066, 0.89230114, 0, 20.166, 28)
+top_level = true
+script = ExtResource("4_pcam")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("../Tornado")
+look_at_mode = 2
+look_at_target = NodePath("../Tornado")
+tween_resource = SubResource("Resource_p57ef")
+follow_offset = Vector3(0, 20.166, 28)
+follow_damping = true
+follow_damping_value = Vector3(0.2, 0.2, 0.2)
+look_at_offset = Vector3(0, 6, 0)
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
+
+[node name="Crates" type="Node3D" parent="." unique_id=514911472]
+
+[node name="Crate1" type="RigidBody3D" parent="Crates" unique_id=1978734291]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1, -12)
+mass = 2.0
+
+[node name="Mesh" type="MeshInstance3D" parent="Crates/Crate1" unique_id=1534643514]
+mesh = SubResource("CrateMesh")
+surface_material_override/0 = SubResource("CrateMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Crates/Crate1" unique_id=1907405670]
+shape = SubResource("CrateShape")
+
+[node name="Crate2" type="RigidBody3D" parent="Crates" unique_id=1798359775]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 1, 8)
+mass = 2.0
+
+[node name="Mesh" type="MeshInstance3D" parent="Crates/Crate2" unique_id=481416592]
+mesh = SubResource("CrateMesh")
+surface_material_override/0 = SubResource("CrateMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Crates/Crate2" unique_id=1628470929]
+shape = SubResource("CrateShape")
+
+[node name="Crate3" type="RigidBody3D" parent="Crates" unique_id=133873462]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, 24)
+mass = 2.0
+
+[node name="Mesh" type="MeshInstance3D" parent="Crates/Crate3" unique_id=470192084]
+mesh = SubResource("CrateMesh")
+surface_material_override/0 = SubResource("CrateMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Crates/Crate3" unique_id=1517097790]
+shape = SubResource("CrateShape")
+
+[node name="Crate4" type="RigidBody3D" parent="Crates" unique_id=506363640]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, -28)
+mass = 2.0
+
+[node name="Mesh" type="MeshInstance3D" parent="Crates/Crate4" unique_id=1687998672]
+mesh = SubResource("CrateMesh")
+surface_material_override/0 = SubResource("CrateMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Crates/Crate4" unique_id=1987632441]
+shape = SubResource("CrateShape")
+
+[node name="Crate5" type="RigidBody3D" parent="Crates" unique_id=461042609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1, 14)
+mass = 2.0
+
+[node name="Mesh" type="MeshInstance3D" parent="Crates/Crate5" unique_id=531017294]
+mesh = SubResource("CrateMesh")
+surface_material_override/0 = SubResource("CrateMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Crates/Crate5" unique_id=1997207208]
+shape = SubResource("CrateShape")
