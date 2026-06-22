@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="9_wgr3a"]
 [ext_resource type="PackedScene" uid="uid://cgcbeeembdk2a" path="res://Tornado VFX/Scenes/VFX_Tornado_gray_cataclysm.tscn" id="10_7wl38"]
 [ext_resource type="PackedScene" uid="uid://bvwvdoox5k1j6" path="res://Tornado VFX/Scenes/VFX_Tornado_blue_storm.tscn" id="11_o7y82"]
+[ext_resource type="PackedScene" uid="uid://cjhlu0c84w86v" path="res://Tornado VFX/Scenes/VFX_Tornado_sand_storm.tscn" id="12_3hch5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gngh"]
 albedo_color = Color(0.1764706, 0.54509807, 0.37254903, 1)
@@ -127,7 +128,7 @@ alpha_curve = SubResource("CurveTexture_puwmg")
 [node name="Map" type="Node3D" unique_id=1973855347]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1706594464]
-transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0.0034294128, -0.13902283, -0.028593063)
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, -0.09404373, -0.2598505, 0.26355553)
 mesh = SubResource("BoxMesh_g4v7s")
 
 [node name="VFX_Tornado" type="Node3D" parent="." unique_id=325399328]
@@ -174,3 +175,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.160381, -0.00071525574, 12
 
 [node name="VFX_Tornado_BlueStorm" parent="." unique_id=1420247605 instance=ExtResource("11_o7y82")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.941261, -9.536743e-07, 27.63502)
+
+[node name="VFX_Tornado_SandStorm" parent="." unique_id=1270647973 instance=ExtResource("12_3hch5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.349571, 0, 29.421953)

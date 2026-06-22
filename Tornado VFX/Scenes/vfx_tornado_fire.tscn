@@ -1,12 +1,12 @@
 [gd_scene format=4 uid="uid://0huts4q323cb"]
 
-[ext_resource type="Shader" uid="uid://cqtebprh4s7vl" path="res://VFX/shaders/ss_master_mTornado2_ds.gdshader" id="1_aiyup"]
-[ext_resource type="Texture2D" uid="uid://b013b0txvomqg" path="res://VFX/textures/T_VFX_Noise_5.PNG" id="2_73y8a"]
-[ext_resource type="ArrayMesh" uid="uid://dffngl6el7gqq" path="res://VFX/objects/sm_tornadoKJ12.obj" id="3_rnq7g"]
-[ext_resource type="Texture2D" uid="uid://brnp67jnwwro6" path="res://VFX/textures/T_smoke_K97.png" id="4_46dg3"]
-[ext_resource type="Shader" uid="uid://drbefe8jw3n21" path="res://VFX/shaders/s_Disolver_Treshold_ds.tres" id="5_6sdwo"]
-[ext_resource type="Texture2D" uid="uid://bhbiiaa2knnbd" path="res://VFX/textures/T_FirePanningCyl45.png" id="6_dan4v"]
-[ext_resource type="ArrayMesh" uid="uid://caknt68a5pqqi" path="res://VFX/objects/sm_baseRing.obj" id="7_27hlq"]
+[ext_resource type="Shader" uid="uid://cqtebprh4s7vl" path="res://Tornado VFX/shaders/ss_master_mTornado2_ds.gdshader" id="1_aiyup"]
+[ext_resource type="Texture2D" uid="uid://b013b0txvomqg" path="res://Tornado VFX/textures/T_VFX_Noise_5.PNG" id="2_73y8a"]
+[ext_resource type="ArrayMesh" uid="uid://dffngl6el7gqq" path="res://Tornado VFX/objects/sm_tornadoKJ12.obj" id="3_rnq7g"]
+[ext_resource type="Texture2D" uid="uid://brnp67jnwwro6" path="res://Tornado VFX/textures/T_smoke_K97.png" id="4_46dg3"]
+[ext_resource type="Shader" uid="uid://drbefe8jw3n21" path="res://Tornado VFX/shaders/s_Disolver_Treshold_ds.tres" id="5_6sdwo"]
+[ext_resource type="Texture2D" uid="uid://djs8yi1ojgrcm" path="res://Tornado VFX/textures/T_FirePanningCyl45.png" id="6_dan4v"]
+[ext_resource type="ArrayMesh" uid="uid://caknt68a5pqqi" path="res://Tornado VFX/objects/sm_baseRing.obj" id="7_27hlq"]
 
 [sub_resource type="Gradient" id="Gradient_3tba2"]
 offsets = PackedFloat32Array(0, 0.261411, 0.780083, 1)
