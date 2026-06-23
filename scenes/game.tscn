@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://wtexamna831i"]
 
+[ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="1_ir15t"]
 [ext_resource type="PackedScene" uid="uid://bajwyvxob1tcf" path="res://Tornado VFX/Scenes/VFX_Tornado_black.tscn" id="1_tornado"]
 [ext_resource type="Script" uid="uid://bsjage7kfry0q" path="res://scripts/tornado.gd" id="2_player"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_host"]
@@ -55,6 +56,9 @@ radius = 4.0
 script = ExtResource("5_iywne")
 
 [node name="Game" type="Node3D" unique_id=553556477]
+
+[node name="Truck" parent="." unique_id=1015583023 instance=ExtResource("1_ir15t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47113597, 38.81615)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=808378729]
 environment = SubResource("Env")
