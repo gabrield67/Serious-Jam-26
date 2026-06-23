@@ -65,6 +65,9 @@ var _powerup_time: float = 0.0
 var _base_max_speed: float = 0.0
 var _base_chew: float = 1.0
 
+var _slow_time: float = 0.0
+var _slow_factor: float = 1.0
+
 var _size: float = 1.0
 var _level: int = -1
 var _target_scale: Vector3 = Vector3.ONE
@@ -96,16 +99,28 @@ func _ready() -> void:
 ## Briefly powers up the tornado: fire VFX + faster movement & destruction.
 func power_up(duration: float) -> void:
 	_powerup_time = maxf(_powerup_time, duration)
-	max_speed = _base_max_speed * powerup_speed_mult
 	if _maw:
 		_maw.chew_rate = _base_chew * powerup_chew_mult
 	_set_fire(true)
 
 func _end_power_up() -> void:
-	max_speed = _base_max_speed
 	if _maw:
 		_maw.chew_rate = _base_chew
 	_set_fire(false)
+
+## Laser/etc. slow — multiplies movement speed by `factor` for `duration` seconds.
+func apply_slow(factor: float, duration: float) -> void:
+	_slow_factor = factor
+	_slow_time = maxf(_slow_time, duration)
+
+## Combined movement-speed multiplier from power-up (faster) and slow (slower).
+func _speed_mult() -> float:
+	var m := 1.0
+	if _powerup_time > 0.0:
+		m *= powerup_speed_mult
+	if _slow_time > 0.0:
+		m *= _slow_factor
+	return m
 
 func _set_fire(on: bool) -> void:
 	_set_vfx_active(_vfx_normal, not on)
@@ -132,6 +147,8 @@ func _physics_process(delta: float) -> void:
 		_powerup_time -= delta
 		if _powerup_time <= 0.0:
 			_end_power_up()
+	if _slow_time > 0.0:
+		_slow_time -= delta
 
 	# Ease the tornado's visual size toward its Fujita target.
 	_cur_scale = _cur_scale.lerp(_target_scale, clampf(grow_lerp * delta, 0.0, 1.0))
@@ -155,9 +172,10 @@ func _physics_process(delta: float) -> void:
 
 	var desired := Vector3.ZERO
 	if _seeking:
-		var speed := max_speed
+		var ms := max_speed * _speed_mult()
+		var speed := ms
 		if distance < arrive_radius * 4.0:
-			speed = max_speed * (distance / (arrive_radius * 4.0))
+			speed = ms * (distance / (arrive_radius * 4.0))
 		desired = to_target.normalized() * speed
 
 	var rate := acceleration if desired != Vector3.ZERO else friction

@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bn8hkd0l1pdku"
-path="res://.godot/imported/Cartoon truck.blend-0c16a0a4e9ed6cd999e5519c36750bc6.scn"
+path="res://.godot/imported/Cartoon truck.blend-416b33a98692badac9de4ac44843cd44.scn"
 
 [deps]
 
-source_file="res://assets/meshes/Cartoon truck.blend"
-dest_files=["res://.godot/imported/Cartoon truck.blend-0c16a0a4e9ed6cd999e5519c36750bc6.scn"]
+source_file="res://assets/meshes/Truck/Cartoon truck.blend"
+dest_files=["res://.godot/imported/Cartoon truck.blend-416b33a98692badac9de4ac44843cd44.scn"]
 
 [params]
 
@@ -47,7 +47,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_002.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_002.res",
 "save_to_file/path": "uid://ddsqevxianxqr"
 },
 "Cartoon truck_Cube_003": {
@@ -56,7 +56,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_003.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_003.res",
 "save_to_file/path": "uid://bjmc33hxp4cws"
 },
 "Cartoon truck_Cube_005": {
@@ -65,7 +65,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_005.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_005.res",
 "save_to_file/path": "uid://b3sw4authssbb"
 },
 "Cartoon truck_Cube_006": {
@@ -74,7 +74,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_006.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_006.res",
 "save_to_file/path": "uid://b0f1ds1y7aexo"
 },
 "Cartoon truck_Cube_010": {
@@ -83,7 +83,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_010.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_010.res",
 "save_to_file/path": "uid://c27njf06aytjk"
 },
 "Cartoon truck_Cube_011": {
@@ -92,7 +92,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_011.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_011.res",
 "save_to_file/path": "uid://0ibtddqu6v14"
 },
 "Cartoon truck_Cube_012": {
@@ -101,7 +101,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_012.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_012.res",
 "save_to_file/path": "uid://b02vx7tj4eghp"
 },
 "Cartoon truck_Cube_013": {
@@ -110,7 +110,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_013.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_013.res",
 "save_to_file/path": "uid://cgouw2onfpcsa"
 },
 "Cartoon truck_Cube_021": {
@@ -119,7 +119,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Cube_021.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Cube_021.res",
 "save_to_file/path": "uid://4lci5wignpsn"
 },
 "Cartoon truck_Plane_002": {
@@ -128,7 +128,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Plane_002.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Plane_002.res",
 "save_to_file/path": "uid://deom1f30ppo6i"
 },
 "Cartoon truck_Truck": {
@@ -137,7 +137,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://assets/meshes/Cartoon truck_Truck.res",
+"save_to_file/fallback_path": "res://assets/meshes/Truck/Cartoon truck_Truck.res",
 "save_to_file/path": "uid://d1iei7y7vwgh5"
 }
 }

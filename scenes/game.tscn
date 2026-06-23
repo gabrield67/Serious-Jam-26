@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="11_fire"]
 [ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/PowerUp.tscn" id="12_powerup"]
 [ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="13_hud"]
+[ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://assets/meshes/tank.tscn" id="14_ca42v"]
 [ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/Tree.tscn" id="14_tree"]
 [ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="14_trtic"]
 
@@ -56,9 +57,6 @@ radius = 4.0
 script = ExtResource("5_iywne")
 
 [node name="Game" type="Node3D" unique_id=553556477]
-
-[node name="Truck" parent="." unique_id=1015583023 instance=ExtResource("1_ir15t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47113597, 38.81615)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=808378729]
 environment = SubResource("Env")
@@ -172,5 +170,14 @@ theme_override_font_sizes/font_size = 48
 text = "F0"
 script = ExtResource("13_hud")
 
-[node name="helicoper" parent="." unique_id=1301453332 instance=ExtResource("14_trtic")]
+[node name="NPCs" type="Node3D" parent="." unique_id=1480836176]
+
+[node name="tank" parent="NPCs" unique_id=114830562 instance=ExtResource("14_ca42v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.285293, 0, 0)
+script = null
+
+[node name="helicoper" parent="NPCs" unique_id=1301453332 instance=ExtResource("14_trtic")]
 transform = Transform3D(15.705, 0, 0, 0, 15.705, 0, 0, 0, 15.705, 10, 6, 0)
+
+[node name="Truck" parent="NPCs" unique_id=1015583023 instance=ExtResource("1_ir15t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47113597, 38.81615)
