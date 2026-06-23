@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/PowerUp.tscn" id="12_powerup"]
 [ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="13_hud"]
 [ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/Tree.tscn" id="14_tree"]
+[ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="14_trtic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -166,3 +167,6 @@ offset_bottom = 96.0
 theme_override_font_sizes/font_size = 48
 text = "F0"
 script = ExtResource("13_hud")
+
+[node name="helicoper" parent="." unique_id=1301453332 instance=ExtResource("14_trtic")]
+transform = Transform3D(15.705, 0, 0, 0, 15.705, 0, 0, 0, 15.705, 10, 6, 0)
