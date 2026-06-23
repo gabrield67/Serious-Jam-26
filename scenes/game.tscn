@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://chousescene1" path="res://scenes/destructibles/House.tscn" id="10_house"]
 [ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="11_fire"]
 [ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/PowerUp.tscn" id="12_powerup"]
+[ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="13_hud"]
+[ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/Tree.tscn" id="14_tree"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -63,7 +65,7 @@ shadow_enabled = true
 [node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
 
 [node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=2070308716]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.013210297, -0.5827751, -0.0017719269)
 mesh = SubResource("GroundMesh")
 surface_material_override/0 = SubResource("GroundMat")
 
@@ -71,7 +73,7 @@ surface_material_override/0 = SubResource("GroundMat")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("GroundShape")
 
-[node name="PowerUp" parent="." instance=ExtResource("12_powerup")]
+[node name="PowerUp" parent="." unique_id=1048475869 instance=ExtResource("12_powerup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 8)
 
 [node name="Tornado" type="CharacterBody3D" parent="." unique_id=271525483]
@@ -79,7 +81,7 @@ script = ExtResource("2_player")
 
 [node name="VFX" parent="Tornado" unique_id=2084817965 instance=ExtResource("1_tornado")]
 
-[node name="VFXFire" parent="Tornado" instance=ExtResource("11_fire")]
+[node name="VFXFire" parent="Tornado" unique_id=453982796 instance=ExtResource("11_fire")]
 visible = false
 
 [node name="Collision" type="CollisionShape3D" parent="Tornado" unique_id=1848947250]
@@ -142,3 +144,25 @@ texture_filter = 5
 texture = ExtResource("7_crosshair")
 script = ExtResource("6_cursor")
 spin_speed = 20.0
+
+[node name="Trees" type="Node3D" parent="." unique_id=380900356]
+
+[node name="Tree1" parent="Trees" unique_id=367601616 instance=ExtResource("14_tree")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 16, 0, 6)
+
+[node name="Tree2" parent="Trees" unique_id=1706056838 instance=ExtResource("14_tree")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 22, 0, -3)
+
+[node name="Tree3" parent="Trees" unique_id=573874571 instance=ExtResource("14_tree")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 12, 0, -7)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=924066934]
+
+[node name="FujitaLabel" type="Label" parent="HUD" unique_id=676770397]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 260.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 48
+text = "F0"
+script = ExtResource("13_hud")
