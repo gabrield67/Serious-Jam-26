@@ -20,7 +20,7 @@ extends Node3D
 
 @export var muzzle_path: NodePath
 @export var muzzle_height: float = 2.0
-@export var laser_scene: PackedScene = preload("res://scenes/LaserBeam.tscn")
+@export var laser_scene: PackedScene = preload("res://scenes/items/LaserBeam.tscn")
 
 @onready var _turret: Node3D = get_node_or_null(turret_path)
 @onready var _muzzle: Node3D = get_node_or_null(muzzle_path)

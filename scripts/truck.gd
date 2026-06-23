@@ -17,7 +17,7 @@ extends Node3D
 @export var drop_range: float = 70.0
 ## Height the barrel spawns at (on the ground).
 @export var drop_height: float = 1.0
-@export var barrel_scene: PackedScene = preload("res://scenes/Barrel.tscn")
+@export var barrel_scene: PackedScene = preload("res://scenes/debris/Barrel.tscn")
 
 var _target: Node3D
 var _heading: float = 0.0       # travel direction (yaw), independent of facing_offset

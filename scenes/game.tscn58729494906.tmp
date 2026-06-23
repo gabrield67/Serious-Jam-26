@@ -68,7 +68,7 @@ shadow_enabled = true
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
 
-[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1123203704]
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=2070308716]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.013210297, -0.5827751, -0.0017719269)
 mesh = SubResource("GroundMesh")
 surface_material_override/0 = SubResource("GroundMat")
@@ -184,10 +184,3 @@ transform = Transform3D(15.705, 0, 0, 0, 15.705, 0, 0, 0, 15.705, 10, 6, 0)
 
 [node name="Truck" parent="NPCs" unique_id=1015583023 instance=ExtResource("1_ir15t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47113597, 38.81615)
-speed = null
-turn_speed = null
-facing_offset = null
-drop_spacing = null
-drop_range = null
-drop_height = null
-barrel_scene = null

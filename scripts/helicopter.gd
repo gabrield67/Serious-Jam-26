@@ -25,7 +25,7 @@ extends Node3D
 @export var muzzle_offset: float = 3.0
 ## Aims this far up the funnel (so shots hit the body, not the base).
 @export var aim_height: float = 5.0
-@export var projectile_scene: PackedScene = preload("res://scenes/heli_projectile.tscn")
+@export var projectile_scene: PackedScene = preload("res://scenes/items/heli_projectile.tscn")
 
 @onready var _main: Node3D = get_node_or_null(main_rotor_path)
 @onready var _tail: Node3D = get_node_or_null(tail_rotor_path)

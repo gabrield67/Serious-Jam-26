@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://bmaew7ercv710"]
 
+[ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="2_heli"]
+[ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="3_truck"]
+[ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="4_tank"]
+[ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="5_plane"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_mwds1"]
 size = Vector3(400, 1, 400)
 
@@ -8,6 +13,22 @@ albedo_color = Color(0.31, 0.42, 0.26, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8wpt2"]
 size = Vector3(400, 1, 400)
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+ground_bottom_color = Color(0.25, 0.27, 0.27, 1)
+ground_horizon_color = Color(0.7, 0.71, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.6
+tonemap_mode = 2
 
 [node name="Zoo" type="Node3D" unique_id=1096482156]
 
@@ -21,3 +42,24 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ho1td")
 [node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=563834049]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_8wpt2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1082024035]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=936009349]
+transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
+shadow_enabled = true
+
+[node name="NPCs" type="Node3D" parent="." unique_id=1507819707]
+
+[node name="Helicopter" parent="NPCs" unique_id=1470227586 instance=ExtResource("2_heli")]
+transform = Transform3D(15.705, 0, 0, 0, 15.705, 0, 0, 0, 15.705, -46, 0, 0)
+
+[node name="Truck" parent="NPCs" unique_id=1563317716 instance=ExtResource("3_truck")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.5491458, 0)
+
+[node name="Tank" parent="NPCs" unique_id=2027640374 instance=ExtResource("4_tank")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
+
+[node name="Plane" parent="NPCs" unique_id=2032584447 instance=ExtResource("5_plane")]
+transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, -24, 0, 0)
