@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cheliproj3d01"]
+
+[ext_resource type="Script" path="res://scripts/heli_projectile.gd" id="1_hp"]
+
+[sub_resource type="SphereMesh" id="ProjMesh"]
+radius = 0.35
+height = 0.7
+
+[sub_resource type="StandardMaterial3D" id="ProjMat"]
+albedo_color = Color(1, 0.5, 0.15, 1)
+emission_enabled = true
+emission = Color(1, 0.45, 0.1, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="SphereShape3D" id="ProjShape"]
+radius = 0.5
+
+[node name="HeliProjectile" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_hp")
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+mesh = SubResource("ProjMesh")
+material_override = SubResource("ProjMat")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("ProjShape")

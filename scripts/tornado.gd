@@ -20,6 +20,8 @@ extends CharacterBody3D
 ## Size gained per point of a consumed object's value.
 @export var size_per_value: float = 1.0
 @export var start_size: float = 1.0
+## Floor the storm can't shrink below (F0) when taking hits.
+@export var min_size: float = 1.0
 ## Width (x/z) growth added per Fujita level — makes the funnel fatter.
 @export var width_per_level: float = 0.45
 ## Height (y) growth added per Fujita level.
@@ -274,6 +276,11 @@ func _update_carry(delta: float) -> void:
 
 func _on_consumed(value: float) -> void:
 	_size += value * size_per_value
+	_refresh_fujita()
+
+## Damage from enemies (e.g. helicopter fire) — shrinks the Fujita size.
+func take_hit(amount: float) -> void:
+	_size = maxf(min_size, _size - amount)
 	_refresh_fujita()
 
 func _refresh_fujita() -> void:
