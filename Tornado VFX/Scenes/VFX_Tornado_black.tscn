@@ -46,14 +46,14 @@ fill_from = Vector2(1, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o2g7h"]
 render_priority = 0
 shader = ExtResource("1_smeld")
+shader_parameter/Base_noise2 = ExtResource("2_lj5du")
 shader_parameter/Speed_XY2 = Vector2(-1, 1.3)
 shader_parameter/Scale_XY2 = Vector2(1, 1.2)
-shader_parameter/Color_Intensity2 = 20.0
-shader_parameter/AlphaTreshold = 1.0
-shader_parameter/Base_noise2 = ExtResource("2_lj5du")
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_bf1og")
+shader_parameter/Color_Intensity2 = 20.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_7kboc")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5cchh")
+shader_parameter/AlphaTreshold = 1.0
 
 [sub_resource type="Gradient" id="Gradient_akysj"]
 colors = PackedColorArray(0.385493, 0.385492, 0.385492, 0, 0, 0, 0, 1)
@@ -85,17 +85,17 @@ render_priority = -1
 shader = ExtResource("4_okcds")
 shader_parameter/Intensity = 2.0
 shader_parameter/Enable_Proximity_Fade = false
+shader_parameter/Texture_Add = SubResource("GradientTexture2D_p40p6")
 shader_parameter/Zoom_Strenght = 1.0
 shader_parameter/repeat = 1.0
 shader_parameter/Speed_XY = Vector2(1.5, 0)
+shader_parameter/Texture_Main = ExtResource("5_6s8e7")
 shader_parameter/Power = 1.0
+shader_parameter/Texture_Substract = SubResource("GradientTexture2D_p203j")
 shader_parameter/Proximity_Fade = 0.3
+shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_qh7bo")
 shader_parameter/Transparency = 0.0
 shader_parameter/AlphaTreshold = 1.0
-shader_parameter/Texture_Add = SubResource("GradientTexture2D_p40p6")
-shader_parameter/Texture_Main = ExtResource("5_6s8e7")
-shader_parameter/Texture_Substract = SubResource("GradientTexture2D_p203j")
-shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_qh7bo")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_5sqob"]
 size = Vector2(10, 10)
@@ -129,17 +129,17 @@ point_count = 2
 curve = SubResource("Curve_tg6s7")
 
 [sub_resource type="Curve" id="Curve_qenk8"]
-max_value = 1.2
+_limits = [0.0, 1.2, 0.0, 1.0]
 _data = [Vector2(0, 0.606047), 0.0, 1.20331, 0, 0, Vector2(1, 1.2), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_ovur8"]
-max_value = 4.0
+_limits = [0.0, 4.0, 0.0, 1.0]
 _data = [Vector2(0, 0.663494), 0.0, 2.33898, 0, 0, Vector2(1, 3.59238), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_5pefw"]
-max_value = 1.2
+_limits = [0.0, 1.2, 0.0, 1.0]
 _data = [Vector2(0, 0.588578), 0.0, 1.20331, 0, 0, Vector2(1, 1.2), 0.0, 0.0, 0, 0]
 point_count = 2
 
@@ -168,11 +168,11 @@ alpha_curve = SubResource("CurveTexture_qmbdf")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ssgi6"]
 render_priority = 0
 shader = ExtResource("9_pgaft")
+shader_parameter/texture_atlas = ExtResource("11_rfbbv")
 shader_parameter/atlas_dimensions = Vector2(2, 2)
 shader_parameter/Texture_Scale = Vector2(1, 1)
-shader_parameter/Color_parameter = Color(0, 0, 0, 1)
-shader_parameter/texture_atlas = ExtResource("11_rfbbv")
 shader_parameter/Disolver_Texture = ExtResource("10_cg6xo")
+shader_parameter/Color_parameter = Color(0, 0, 0, 1)
 
 [sub_resource type="Curve" id="Curve_rvac1"]
 _data = [Vector2(0, 0.043956), 0.0, 1.91648, 0, 0, Vector2(0.996825, 1), 0.0, 0.0, 0, 0]
@@ -189,6 +189,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 0.0
 emission_ring_radius = 1.5
 emission_ring_inner_radius = 1.2
+emission_ring_cone_angle = 90.0
 direction = Vector3(0, 1, 0)
 initial_velocity_min = 5.0
 initial_velocity_max = 10.0
@@ -247,6 +248,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 0.0
 emission_ring_radius = 0.2
 emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
 angle_min = -180.0
 angle_max = 180.0
 direction = Vector3(0, 1, 0)
@@ -315,8 +317,8 @@ alpha_curve = SubResource("CurveTexture_tfmd5")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0wcx2"]
 render_priority = 2
 shader = ExtResource("14_heif6")
-shader_parameter/Texture_Scale = Vector2(1, 1)
 shader_parameter/texture_mask = ExtResource("16_2626r")
+shader_parameter/Texture_Scale = Vector2(1, 1)
 shader_parameter/Disolver_Texture = ExtResource("15_frihy")
 
 [sub_resource type="Curve" id="Curve_m1etu"]
@@ -370,8 +372,8 @@ fill_to = Vector2(1, 0.495726)
 render_priority = 0
 shader = ExtResource("18_a35fy")
 shader_parameter/ColorParameter = Color(1, 1, 1, 1)
-shader_parameter/Opacity = 0.0
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_jiklc")
+shader_parameter/Opacity = 0.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_umr5q"]
 size = Vector2(2, 4)
@@ -849,29 +851,29 @@ tracks/17/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mc0wd"]
 _data = {
-"End": SubResource("Animation_ycw8j"),
-"Idle_Loop": SubResource("Animation_s8l6r"),
-"RESET": SubResource("Animation_uhj3u"),
-"Start": SubResource("Animation_lmgq8")
+&"End": SubResource("Animation_ycw8j"),
+&"Idle_Loop": SubResource("Animation_s8l6r"),
+&"RESET": SubResource("Animation_uhj3u"),
+&"Start": SubResource("Animation_lmgq8")
 }
 
-[node name="VFX_Tornado_BlackChaos" type="Node3D"]
+[node name="VFX_Tornado_BlackChaos" type="Node3D" unique_id=569942228]
 
-[node name="SmTornadoT001Ccw4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.8, 0, -8.03948e-06, 0, 1.8, 0, 8.03948e-06, 0, 1.8, 0, 0, 0)
+[node name="SmTornadoT001Ccw4" type="MeshInstance3D" parent="." unique_id=65184120]
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_o2g7h")
 cast_shadow = 0
 mesh = ExtResource("3_vrary")
 skeleton = NodePath("../..")
 
-[node name="floorflash" type="MeshInstance3D" parent="."]
+[node name="floorflash" type="MeshInstance3D" parent="." unique_id=1383744662]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.126, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_g6ua3")
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_5sqob")
 
-[node name="ring4oniuon" type="GPUParticles3D" parent="."]
+[node name="ring4oniuon" type="GPUParticles3D" parent="." unique_id=137824614]
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, -0.835642, 0)
 material_override = SubResource("ShaderMaterial_rvhvk")
 cast_shadow = 0
@@ -882,7 +884,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_41hyi")
 draw_pass_1 = ExtResource("8_mctdm")
 
-[node name="streaks2vdark" type="GPUParticles3D" parent="."]
+[node name="streaks2vdark" type="GPUParticles3D" parent="." unique_id=1875645039]
 material_override = SubResource("ShaderMaterial_ssgi6")
 cast_shadow = 0
 emitting = false
@@ -893,7 +895,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_lakgw")
 draw_pass_1 = SubResource("QuadMesh_o6lma")
 
-[node name="ring4oniuon2top" type="GPUParticles3D" parent="."]
+[node name="ring4oniuon2top" type="GPUParticles3D" parent="." unique_id=162373100]
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 5.33866, 0)
 material_override = SubResource("ShaderMaterial_xf1vf")
 cast_shadow = 0
@@ -905,7 +907,7 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_fkpeo")
 draw_pass_1 = ExtResource("13_5b0bs")
 
-[node name="ring4end" type="GPUParticles3D" parent="."]
+[node name="ring4end" type="GPUParticles3D" parent="." unique_id=1581116742]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.568, 0)
 material_override = SubResource("ShaderMaterial_e65mc")
 cast_shadow = 0
@@ -918,7 +920,7 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_sjne5")
 draw_pass_1 = ExtResource("14_rvyee")
 
-[node name="flareDisol" type="GPUParticles3D" parent="."]
+[node name="flareDisol" type="GPUParticles3D" parent="." unique_id=210146203]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.73963, 0)
 material_override = SubResource("ShaderMaterial_0wcx2")
 cast_shadow = 0
@@ -932,14 +934,12 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_ttl8f")
 draw_pass_1 = SubResource("QuadMesh_igihs")
 
-[node name="muzzleflash" type="MeshInstance3D" parent="."]
+[node name="muzzleflash" type="MeshInstance3D" parent="." unique_id=1851539491]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 4.96119, 0)
 material_override = SubResource("ShaderMaterial_monmq")
 cast_shadow = 0
 mesh = SubResource("QuadMesh_umr5q")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_mc0wd")
-}
-autoplay = "Start"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1801780115]
+libraries/ = SubResource("AnimationLibrary_mc0wd")
+autoplay = &"Start"

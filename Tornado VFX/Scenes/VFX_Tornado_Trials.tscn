@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cgcbeeembdk2a" path="res://Tornado VFX/Scenes/VFX_Tornado_gray_cataclysm.tscn" id="10_7wl38"]
 [ext_resource type="PackedScene" uid="uid://bvwvdoox5k1j6" path="res://Tornado VFX/Scenes/VFX_Tornado_blue_storm.tscn" id="11_o7y82"]
 [ext_resource type="PackedScene" uid="uid://cjhlu0c84w86v" path="res://Tornado VFX/Scenes/VFX_Tornado_sand_storm.tscn" id="12_3hch5"]
+[ext_resource type="PackedScene" uid="uid://bajwyvxob1tcf" path="res://Tornado VFX/Scenes/VFX_Tornado_black.tscn" id="13_l11cn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gngh"]
 albedo_color = Color(0.1764706, 0.54509807, 0.37254903, 1)
@@ -128,11 +129,11 @@ alpha_curve = SubResource("CurveTexture_puwmg")
 [node name="Map" type="Node3D" unique_id=1973855347]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1706594464]
-transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, -0.09404373, -0.2598505, 0.26355553)
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, -1.2878113, -0.2598505, 0.26355553)
 mesh = SubResource("BoxMesh_g4v7s")
 
 [node name="VFX_Tornado" type="Node3D" parent="." unique_id=325399328]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8976803, 2.5994034, -0.244977)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.367174, 2.5994034, -0.244977)
 
 [node name="SmTornado" type="MeshInstance3D" parent="VFX_Tornado" unique_id=477255704]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.80225086, 0, 0)
@@ -166,7 +167,7 @@ draw_pass_1 = ExtResource("6_ss4vt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26.55701)
 
 [node name="VFX_Tornado_CursedGreen" parent="." unique_id=1683199678 instance=ExtResource("8_wgr3a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.87385, 0, -0.8807087)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3695669, 0, -0.52633876)
 
 [node name="VFX_Tornado_Fire_V2" parent="." unique_id=1185071900 instance=ExtResource("9_wgr3a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.03902, 0, -30.851368)
@@ -179,3 +180,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.941261, -9.536743e-07, 27.
 
 [node name="VFX_Tornado_SandStorm" parent="." unique_id=1270647973 instance=ExtResource("12_3hch5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.349571, 0, 29.421953)
+
+[node name="VFX_Tornado_BlackChaos" parent="." unique_id=509705677 instance=ExtResource("13_l11cn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.111477, 0, 30.838236)

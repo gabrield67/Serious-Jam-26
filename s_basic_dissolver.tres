@@ -4,6 +4,7 @@
 parameter_name = "Base_Wave_Texture"
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_jy6uw"]
+output_port_for_preview = 0
 expanded_output_ports = [0]
 source = 5
 texture_type = 1
