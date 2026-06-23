@@ -1,6 +1,5 @@
 extends Node3D
-## Helicopter NPC. Circles the tornado at altitude, faces it, and fires at it
-## (each hit shrinks the tornado's Fujita size). Also spins its own rotors.
+## Helicopter NPC
 
 @export_group("Rotors")
 @export var main_rotor_path: NodePath = "Rotor_002"
