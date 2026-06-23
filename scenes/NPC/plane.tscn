@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bhur7wlssq07x"]
 
 [ext_resource type="Script" uid="uid://dojyjhn6gyo1d" path="res://scripts/plane.gd" id="1_plane"]
-[ext_resource type="PackedScene" uid="uid://cdusttrail01" path="res://scenes/DustTrail.tscn" id="2_dust"]
+[ext_resource type="PackedScene" uid="uid://cdusttrail01" path="res://scenes/particles/DustTrail.tscn" id="2_dust"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8d8a"]
 resource_name = "Material"

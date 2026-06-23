@@ -11,11 +11,11 @@
 [ext_resource type="Script" uid="uid://d0kjagnf4gw8q" path="res://scripts/vortex_maw_3d.gd" id="8_maw3d"]
 [ext_resource type="PackedScene" uid="uid://chousescene1" path="res://scenes/destructibles/House.tscn" id="10_house"]
 [ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="11_fire"]
-[ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/PowerUp.tscn" id="12_powerup"]
+[ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/items/PowerUp.tscn" id="12_powerup"]
 [ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="13_hud"]
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="14_ca42v"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="14_rysoc"]
-[ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/Tree.tscn" id="14_tree"]
+[ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/debris/Tree.tscn" id="14_tree"]
 [ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="14_trtic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
