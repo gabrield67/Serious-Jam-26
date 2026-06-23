@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cr0p5tv8126ou"]
 
-[ext_resource type="Script" uid="uid://vcjcdy2qpu5v" path="res://scripts/tornado_2d.gd" id="1_tornado"]
-[ext_resource type="Script" uid="uid://bfn1h6ehvak62" path="res://scripts/vortex_maw.gd" id="2_maw"]
-[ext_resource type="Script" uid="uid://dupr1eiwd36bg" path="res://scripts/consumable.gd" id="3_consumable"]
-[ext_resource type="Script" uid="uid://qe5rr3dbjlpf" path="res://scripts/fujita_label.gd" id="4_fujita"]
-[ext_resource type="Script" uid="uid://b5i1gnjbsfsyr" path="res://scripts/enemy_spawner.gd" id="5_spawner"]
+[ext_resource type="Script" uid="uid://vcjcdy2qpu5v" path="res://scripts/prototype/tornado_2d.gd" id="1_tornado"]
+[ext_resource type="Script" uid="uid://bfn1h6ehvak62" path="res://scripts/prototype/vortex_maw.gd" id="2_maw"]
+[ext_resource type="Script" uid="uid://dupr1eiwd36bg" path="res://scripts/prototype/consumable.gd" id="3_consumable"]
+[ext_resource type="Script" uid="uid://qe5rr3dbjlpf" path="res://scripts/prototype/fujita_label.gd" id="4_fujita"]
+[ext_resource type="Script" uid="uid://b5i1gnjbsfsyr" path="res://scripts/prototype/enemy_spawner.gd" id="5_spawner"]
 
 [sub_resource type="CircleShape2D" id="TornadoShape"]
 radius = 20.0

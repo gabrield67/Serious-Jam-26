@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bdbrsproj0a1"]
 
-[ext_resource type="Script" path="res://scripts/debris_projectile.gd" id="1_proj"]
+[ext_resource type="Script" uid="uid://cn263xyrkfuax" path="res://scripts/prototype/debris_projectile.gd" id="1_proj"]
 
 [sub_resource type="CircleShape2D" id="ProjShape"]
 radius = 8.0
