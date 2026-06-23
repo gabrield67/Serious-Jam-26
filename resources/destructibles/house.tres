@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DestructibleData" format=3 uid="uid://chousedata1"]
+
+[ext_resource type="Script" uid="uid://do1my2s3tt872" path="res://scripts/destructibles/destructible_data.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://b34gugsijkkk1" path="res://resources/debris/concrete.tres" id="2_debris"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "House"
+debris = ExtResource("2_debris")
+value = 5.0
+palette = PackedColorArray(0.95, 0.93, 0.88, 1, 0.85, 0.72, 0.5, 1, 0.9, 0.6, 0.55, 1, 0.6, 0.72, 0.55, 1, 0.6, 0.7, 0.8, 1)

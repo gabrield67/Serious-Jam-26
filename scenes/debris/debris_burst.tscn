@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdebrisburst3d1"]
+
+[ext_resource type="Script" path="res://scripts/destructibles/debris_burst.gd" id="1_burst"]
+
+[sub_resource type="BoxMesh" id="ChunkMesh"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="DebrisBurst" type="CPUParticles3D"]
+emitting = false
+amount = 16
+lifetime = 1.2
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("ChunkMesh")
+direction = Vector3(0, 1, 0)
+spread = 60.0
+gravity = Vector3(0, -14, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 9.0
+angular_velocity_min = -400.0
+angular_velocity_max = 400.0
+scale_amount_min = 0.5
+scale_amount_max = 1.6
+color = Color(0.62, 0.62, 0.64, 1)
+script = ExtResource("1_burst")

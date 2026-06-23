@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DebrisType" format=3 uid="uid://b34gugsijkkk1"]
+
+[ext_resource type="Script" uid="uid://db0rxcg6pgpwk" path="res://scripts/destructibles/debris_type.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://cpsk31ectg2q3" path="res://scenes/debris/debris_burst.tscn" id="2_vfx"]
+
+[resource]
+script = ExtResource("1_script")
+vfx = ExtResource("2_vfx")
+amount = 12
