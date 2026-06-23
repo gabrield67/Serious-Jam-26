@@ -10,12 +10,50 @@ extends CharacterBody3D
 @export var arrive_radius: float = 2.0
 @export var push_force: float = 14.0
 
+@export_group("Power-up")
+## Movement speed multiplier while powered up.
+@export var powerup_speed_mult: float = 1.6
+## Maw destroy-speed multiplier while powered up.
+@export var powerup_chew_mult: float = 3.0
+
+@onready var _vfx_normal: Node3D = get_node_or_null("VFX")
+@onready var _vfx_fire: Node3D = get_node_or_null("VFXFire")
+@onready var _maw: Node = get_node_or_null("Maw")
+
 var _target: Vector3
 var _seeking: bool = false  # actively traveling to a committed destination
+
+var _powerup_time: float = 0.0
+var _base_max_speed: float = 0.0
+var _base_chew: float = 1.0
 
 func _ready() -> void:
 	add_to_group("tornado")
 	_target = global_position
+	_base_max_speed = max_speed
+	if _maw:
+		_base_chew = _maw.chew_rate
+	_set_fire(false)
+
+## Briefly powers up the tornado: fire VFX + faster movement & destruction.
+func power_up(duration: float) -> void:
+	_powerup_time = maxf(_powerup_time, duration)
+	max_speed = _base_max_speed * powerup_speed_mult
+	if _maw:
+		_maw.chew_rate = _base_chew * powerup_chew_mult
+	_set_fire(true)
+
+func _end_power_up() -> void:
+	max_speed = _base_max_speed
+	if _maw:
+		_maw.chew_rate = _base_chew
+	_set_fire(false)
+
+func _set_fire(on: bool) -> void:
+	if _vfx_normal:
+		_vfx_normal.visible = not on
+	if _vfx_fire:
+		_vfx_fire.visible = on
 
 func _unhandled_input(event: InputEvent) -> void:
 	# A click commits a destination (even a quick press-and-release).
@@ -24,6 +62,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			_seeking = true
 
 func _physics_process(delta: float) -> void:
+	if _powerup_time > 0.0:
+		_powerup_time -= delta
+		if _powerup_time <= 0.0:
+			_end_power_up()
+
 	# While the button is held, keep following the cursor.
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		if _set_target_from_mouse(get_viewport().get_mouse_position()):

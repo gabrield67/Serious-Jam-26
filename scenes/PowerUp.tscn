@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://cpowerup3d01"]
+
+[ext_resource type="Script" path="res://scripts/power_up_pickup.gd" id="1_pu"]
+
+[sub_resource type="SphereMesh" id="PuMesh"]
+radius = 0.7
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="PuMat"]
+albedo_color = Color(1, 0.78, 0.25, 1)
+emission_enabled = true
+emission = Color(1, 0.6, 0.15, 1)
+emission_energy_multiplier = 6.0
+
+[sub_resource type="SphereShape3D" id="PuShape"]
+radius = 1.2
+
+[node name="PowerUp" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_pu")
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+mesh = SubResource("PuMesh")
+material_override = SubResource("PuMat")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("PuShape")
+
+[node name="Glow" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.7, 0.3, 1)
+light_energy = 4.0
+omni_range = 8.0
