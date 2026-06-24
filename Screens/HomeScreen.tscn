@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bj0450beg3gka" path="res://Screens/HomeMenu.gd" id="3_iyohx"]
 [ext_resource type="Script" uid="uid://gp8341a78twm" path="res://Screens/play.gd" id="4_d8vv4"]
 
-[node name="Node3D" type="Node3D" unique_id=498429856]
+[node name="HomeScreen" type="Node3D" unique_id=498429856]
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=925039629]
 anchors_preset = 8
