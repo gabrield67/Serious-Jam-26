@@ -17,17 +17,14 @@ extends CharacterBody3D
 @export var powerup_chew_mult: float = 3.0
 
 @export_group("Fujita / size")
-## Size gained per point of a consumed object's value.
-@export var size_per_value: float = 1.0
-@export var start_size: float = 1.0
-## Floor the storm can't shrink below (F0) when taking hits.
-@export var min_size: float = 1.0
 ## Width (x/z) growth added per Fujita level — makes the funnel fatter.
 @export var width_per_level: float = 0.45
 ## Height (y) growth added per Fujita level.
 @export var height_per_level: float = 0.25
 ## How quickly the visual eases toward its target size.
 @export var grow_lerp: float = 4.0
+## Destruction-speed multiplier added per Fujita level (damage to destructibles).
+@export var chew_per_level: float = 0.5
 
 @export_group("Carry")
 ## Orbit radius for carried pickups (scales with the tornado's width).
@@ -38,6 +35,19 @@ extends CharacterBody3D
 @export var carry_orbit_speed: float = 120.0
 ## How fast each carried pickup spins on its own axis (deg/sec).
 @export var carry_item_spin: float = 180.0
+## Debris you can hold at F0.
+@export var carry_base_capacity: int = 2
+## Extra debris capacity per Fujita level.
+@export var carry_per_level: int = 2
+## Vertical spread of carried debris (column height around carry_height).
+@export var carry_height_spread: float = 5.0
+## Per-item radius variation (fraction of carry_radius).
+@export var carry_radius_var: float = 0.45
+## Per-item orbit-speed variation (fraction).
+@export var carry_speed_var: float = 0.5
+## Vertical bob amplitude / speed of carried debris.
+@export var carry_bob_amp: float = 0.7
+@export var carry_bob_speed: float = 2.5
 
 @export_group("Throw")
 ## Right-click flings a carried pickup toward the cursor at this speed.
@@ -48,9 +58,6 @@ extends CharacterBody3D
 ## Seconds before an airborne throw despawns (also despawns on landing).
 @export var throw_lifetime: float = 5.0
 @export var throw_spin: float = 360.0
-
-## Minimum SIZE for each Fujita level F0..F5.
-const FUJITA_MIN := [0, 3, 6, 10, 15, 21]
 
 signal fujita_changed(level: int)
 
@@ -68,14 +75,15 @@ var _base_chew: float = 1.0
 var _slow_time: float = 0.0
 var _slow_factor: float = 1.0
 
-var _size: float = 1.0
-var _level: int = -1
 var _target_scale: Vector3 = Vector3.ONE
 var _cur_scale: Vector3 = Vector3.ONE
+var _fujita: FujitaManager
+var _health: HealthManager
 
 var _carry_root: Node3D
 var _carried: Array[Node3D] = []
 var _carry_angle: float = 0.0
+var _carry_time: float = 0.0
 var _thrown: Array = []  # [{node, vel, life}]
 
 func _ready() -> void:
@@ -85,27 +93,36 @@ func _ready() -> void:
 	_carry_root = Node3D.new()
 	_carry_root.name = "CarryRoot"
 	add_child(_carry_root)
+
+	_fujita = FujitaManager.new()
+	_fujita.name = "FujitaManager"
+	add_child(_fujita)
+	_health = HealthManager.new()
+	_health.name = "HealthManager"
+	add_child(_health)
+	_fujita.changed.connect(_on_fujita_changed)
+	_health.died.connect(_on_died)
+	_health.set_max(_fujita.max_health())
+
 	if _maw:
 		_base_chew = _maw.chew_rate
 		if _maw.has_signal("consumed"):
 			_maw.consumed.connect(_on_consumed)
 		if _maw.has_signal("grabbed"):
 			_maw.grabbed.connect(_on_grabbed)
-	_size = start_size
+
 	_set_fire(false)
-	_refresh_fujita()
+	_on_fujita_changed(_fujita.level(), _fujita.value)
 	_cur_scale = _target_scale
 
 ## Briefly powers up the tornado: fire VFX + faster movement & destruction.
 func power_up(duration: float) -> void:
 	_powerup_time = maxf(_powerup_time, duration)
-	if _maw:
-		_maw.chew_rate = _base_chew * powerup_chew_mult
+	_update_chew()
 	_set_fire(true)
 
 func _end_power_up() -> void:
-	if _maw:
-		_maw.chew_rate = _base_chew
+	_update_chew()
 	_set_fire(false)
 
 ## Laser/etc. slow — multiplies movement speed by `factor` for `duration` seconds.
@@ -219,11 +236,14 @@ func _on_grabbed(body: Node) -> void:
 func _grab_deferred(body: Node) -> void:
 	if not is_instance_valid(body) or _carried.has(body):
 		return
+	if _carried.size() >= carry_capacity():
+		return  # full for this F-scale — leave it on the ground
 	if body.has_method("grab"):
 		body.grab()
 	if body is Node3D:
 		body.reparent(_carry_root)  # keep world transform, then we drive its position
 		_carried.append(body)
+		_assign_orbit(body)
 
 func _throw_debris() -> void:
 	if _carried.is_empty():
@@ -276,48 +296,76 @@ func _ground_point_from_mouse() -> Vector3:
 		return global_position
 	return o + d * t
 
+## Give a freshly-grabbed item its own orbit params so the debris swirls in a column
+## (varied height, radius, speed and phase) rather than sitting in a flat even ring.
+func _assign_orbit(item: Node3D) -> void:
+	item.set_meta("c_phase", randf() * TAU)
+	item.set_meta("c_height", carry_height + randf_range(-0.5, 0.5) * carry_height_spread)
+	item.set_meta("c_radius", 1.0 + randf_range(-1.0, 1.0) * carry_radius_var)
+	item.set_meta("c_speed", 1.0 + randf_range(-1.0, 1.0) * carry_speed_var)
+	item.set_meta("c_bobphase", randf() * TAU)
+
 func _update_carry(delta: float) -> void:
 	if _carried.is_empty():
 		return
 	_carry_angle += deg_to_rad(carry_orbit_speed) * delta
-	var radius := carry_radius * _cur_scale.x  # widens as the funnel grows
-	var n := _carried.size()
-	for i in n:
-		var item := _carried[i]
+	_carry_time += delta
+	for item in _carried:
 		if not is_instance_valid(item):
 			continue
-		var a := _carry_angle + TAU * float(i) / float(n)
-		item.position = Vector3(cos(a) * radius, carry_height, sin(a) * radius)
+		var a: float = _carry_angle * float(item.get_meta("c_speed", 1.0)) + float(item.get_meta("c_phase", 0.0))
+		var r: float = carry_radius * float(item.get_meta("c_radius", 1.0)) * _cur_scale.x
+		var bob: float = sin(_carry_time * carry_bob_speed + float(item.get_meta("c_bobphase", 0.0))) * carry_bob_amp
+		var h: float = float(item.get_meta("c_height", carry_height)) + bob
+		item.position = Vector3(cos(a) * r, h, sin(a) * r)
 		item.rotation.y += deg_to_rad(carry_item_spin) * delta
+		item.rotation.x += deg_to_rad(carry_item_spin * 0.5) * delta
 
 # --- Fujita / size ---
 
 func _on_consumed(value: float) -> void:
-	_size += value * size_per_value
-	_refresh_fujita()
+	_fujita.add(value)
 
-## Damage from enemies (e.g. helicopter fire) — shrinks the Fujita size.
+## Damage from enemies — chips health; heavy hits also dent the Fujita scale.
 func take_hit(amount: float) -> void:
-	_size = maxf(min_size, _size - amount)
-	_refresh_fujita()
+	_health.take_damage(amount)
+	_fujita.on_hit(amount)
 
-func _refresh_fujita() -> void:
-	var lvl := _compute_level(_size)
-	var w := 1.0 + lvl * width_per_level
-	var h := 1.0 + lvl * height_per_level
+func _on_fujita_changed(level: int, _value: float) -> void:
+	var w := 1.0 + level * width_per_level
+	var h := 1.0 + level * height_per_level
 	_target_scale = Vector3(w, h, w)
-	if lvl != _level:
-		_level = lvl
-		fujita_changed.emit(lvl)
-		if _maw and _maw.has_method("set_intensity"):
-			_maw.set_intensity(lvl)  # bigger storm -> wider destruction reach
+	if _maw and _maw.has_method("set_intensity"):
+		_maw.set_intensity(level)  # bigger storm -> wider destruction reach
+	_update_chew()
+	if _health:
+		_health.set_max(_fujita.max_health())  # F-scale raises the health cap
+	_enforce_carry_capacity()                  # ...and limits how much debris you hold
+	fujita_changed.emit(level)
 
-func _compute_level(size: float) -> int:
-	var lvl := 0
-	for i in FUJITA_MIN.size():
-		if size >= FUJITA_MIN[i]:
-			lvl = i
-	return lvl
+## Debris-hold limit: grows with the Fujita level.
+func carry_capacity() -> int:
+	return carry_base_capacity + (_fujita.level() if _fujita else 0) * carry_per_level
+
+## Shrinking lowers the cap — any carried debris over it is released.
+func _enforce_carry_capacity() -> void:
+	var cap := carry_capacity()
+	while _carried.size() > cap:
+		var item: Node3D = _carried.pop_back()
+		if is_instance_valid(item):
+			item.queue_free()
+
+## Destruction speed = base * (1 + level*chew_per_level), boosted while powered up.
+func _update_chew() -> void:
+	if _maw == null:
+		return
+	var mult := 1.0 + _fujita.level() * chew_per_level
+	if _powerup_time > 0.0:
+		mult *= powerup_chew_mult
+	_maw.chew_rate = _base_chew * mult
+
+func _on_died() -> void:
+	pass  # no fail state yet
 
 func _apply_vfx_scale(s: Vector3) -> void:
 	if _vfx_normal:
@@ -326,7 +374,16 @@ func _apply_vfx_scale(s: Vector3) -> void:
 		_vfx_fire.scale = s
 
 func get_level() -> int:
-	return _level
+	return _fujita.level() if _fujita else 0
+
+func get_health() -> Vector2:
+	return Vector2(_health.current, _health.max_health) if _health else Vector2.ZERO
+
+func get_fujita_progress() -> Dictionary:
+	return _fujita.progress() if _fujita else {}
+
+func get_debris() -> Vector2:
+	return Vector2(_carried.size(), carry_capacity())
 
 ## The committed destination, for the ground marker to display.
 func get_destination() -> Vector3:

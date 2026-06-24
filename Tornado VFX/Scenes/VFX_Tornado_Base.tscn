@@ -51,7 +51,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 1.0
+shader_parameter/AlphaTreshold = 0.278
 
 [sub_resource type="Gradient" id="Gradient_txrm7"]
 offsets = PackedFloat32Array(0, 0.489489, 1)
@@ -76,10 +76,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
-shader_parameter/Color_Intensity2 = 1.0
+shader_parameter/Color_Intensity2 = 10.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
-shader_parameter/AlphaTreshold = 1.0
+shader_parameter/AlphaTreshold = 0.268
 
 [sub_resource type="Gradient" id="Gradient_0whxr"]
 offsets = PackedFloat32Array(0)
@@ -107,7 +107,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
 shader_parameter/Color_Intensity2 = 3.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_1k1cj")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6opjf")
-shader_parameter/AlphaTreshold = 1.0
+shader_parameter/AlphaTreshold = 0.283
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -355,7 +355,7 @@ render_priority = 0
 shader = ExtResource("13_3hdrx")
 shader_parameter/ColorParameter = Color(0.6, 0.6, 0.62, 1)
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_hu56e")
-shader_parameter/Opacity = 0.0
+shader_parameter/Opacity = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xoqjk"]
 render_priority = -1
@@ -789,14 +789,12 @@ _data = {
 [node name="VFX_Tornado_Base" type="Node3D" unique_id=1683199678]
 
 [node name="SmTornadoExternalJ1" type="MeshInstance3D" parent="." unique_id=959239835]
-visible = false
 material_override = SubResource("ShaderMaterial_dlwqa")
 cast_shadow = 0
 mesh = ExtResource("3_nixsl")
 skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ1" type="MeshInstance3D" parent="." unique_id=1217916868]
-visible = false
 material_override = SubResource("ShaderMaterial_ngsjd")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
@@ -804,7 +802,6 @@ skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ2" type="MeshInstance3D" parent="." unique_id=1646457126]
 transform = Transform3D(1.25, 0, 0, 0, 1, 0, 0, 0, 1.25, 0, 0, 0)
-visible = false
 material_override = SubResource("ShaderMaterial_rdpqi")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
@@ -878,7 +875,7 @@ draw_pass_1 = SubResource("PlaneMesh_h1xv1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85065, 0)
 visible = false
 light_color = Color(0.82, 0.84, 0.9, 1)
-light_energy = 0.0
+light_energy = 5.0
 omni_range = 6.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2119063184]
