@@ -1,26 +1,23 @@
 extends StaticBody3D
 class_name Destructible
-## A destructible object driven by a DestructibleData archetype.
-##   - destroy time + visual scale come from the archetype's size category
-##   - color is auto-picked from the archetype palette (per instance)
+## A destructible object driven by a DestructibleData (size archetype).
+##   - destroy time / value / debris come from `data` (its size tier)
+##   - color is an independent axis: an optional DestructiblePalette
 ##   - the tornado's maw calls chew() until destroyed -> emits consumed(value) + debris
 ##
-## Variation model:
-##   cosmetic color  -> automatic, from data.palette (no extra resources)
-##   size            -> data.size, or a per-instance override
-##   genuinely different stats -> point `data` at a different .tres
+## Size and color are orthogonal: pick a size `data` (Small/Medium/Large/Giant)
 
 @export var data: DestructibleData
+## Optional cosmetic colors. Null / empty = keep the model's own material.
+@export var palette: DestructiblePalette
 
 @export_group("Per-instance overrides")
-## Use size_override instead of data.size (affects destroy time + scale).
-@export var use_size_override: bool = false
-@export var size_override: DestructibleData.Size = DestructibleData.Size.MEDIUM
-## Pin a specific color instead of a random palette pick.
+## Keep the model's authored scale instead of multiplying by data.scale_mult.
+## Use for hand-placed structures that are already the size you want.
+@export var keep_authored_scale: bool = false
+## Pin a specific color instead of picking from the palette.
 @export var force_color: bool = false
 @export var color: Color = Color.WHITE
-## Stable color per placement (seeded by position) vs re-rolled each run.
-@export var stable_color: bool = true
 
 signal consumed(value: float)
 
@@ -36,9 +33,9 @@ func _ready() -> void:
 	add_to_group("consumable")
 	_mesh = _find_mesh()
 
-	var s := int(size_override) if use_size_override else (int(data.size) if data else 0)
-	_destroy_time = data.time_for(s) if data else 1.0
-	_base_scale = scale * (data.scale_for(s) if data else 1.0)
+	_destroy_time = data.destroy_time if data else 1.0
+	var vis := 1.0 if keep_authored_scale else (data.scale_mult if data else 1.0)
+	_base_scale = scale * vis
 	scale = _base_scale
 
 	_apply_color()
@@ -69,29 +66,21 @@ func _spawn_debris() -> void:
 	if burst.has_method("play"):
 		burst.play()  # emit only after it's positioned
 
-# --- Color ---
+# --- Color (independent of size) ---
 
 func _apply_color() -> void:
-	if _mesh == null or data == null:
+	if _mesh == null:
 		return
 	var chosen: Color
 	if force_color:
 		chosen = color
-	elif not data.palette.is_empty():
-		chosen = _pick_palette_color()
+	elif palette != null:
+		chosen = palette.pick(global_position)
+		if chosen.a == 0.0:
+			return  # empty palette -> keep the model's own material
 	else:
-		return  # keep the model's own texture untouched
+		return  # no palette -> keep the model's own material
 	_mesh.material_override = _tinted_material(chosen)
-
-func _pick_palette_color() -> Color:
-	var idx: int
-	if stable_color:
-		var rng := RandomNumberGenerator.new()
-		rng.seed = hash(global_position)
-		idx = rng.randi() % data.palette.size()
-	else:
-		idx = randi() % data.palette.size()
-	return data.palette[idx]
 
 func _tinted_material(c: Color) -> Material:
 	if not _mat_cache.has(c):

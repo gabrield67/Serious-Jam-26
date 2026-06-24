@@ -1,9 +1,12 @@
-[gd_resource type="Resource" script_class="DestructibleData" format=3 uid="uid://chousedata1"]
+[gd_resource type="Resource" script_class="DestructibleData" format=3 uid="uid://dlargedestr01"]
 
 [ext_resource type="Script" uid="uid://do1my2s3tt872" path="res://scripts/destructibles/destructible_data.gd" id="1_script"]
 [ext_resource type="Resource" uid="uid://b34gugsijkkk1" path="res://resources/debris/concrete.tres" id="2_debris"]
 
 [resource]
 script = ExtResource("1_script")
-value = 5.0
+display_name = "Large"
+destroy_time = 6.0
+value = 10.0
 debris = ExtResource("2_debris")
+scale_mult = 1.4
