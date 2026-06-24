@@ -1,0 +1,50 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dlrdyioc6q6xp"]
+
+[ext_resource type="Shader" uid="uid://codcx1oq7ggxy" path="res://Explosion VFX/Shaders/s_master_explosion.tres" id="1_6qv2u"]
+[ext_resource type="Texture2D" uid="uid://vj1fkfmxlojo" path="res://Explosion VFX/Textures/T_FogSheetCloud.PNG" id="2_odubl"]
+[ext_resource type="Texture2D" uid="uid://gdgklxi1glip" path="res://Explosion VFX/Textures/T_PerlinNoise_Tiled.png" id="3_82hrm"]
+[ext_resource type="Texture2D" uid="uid://dd1pmd840fclm" path="res://Explosion VFX/Textures/T_Noise_075.png" id="4_ag7r1"]
+
+[sub_resource type="Gradient" id="Gradient_m5ubl"]
+offsets = PackedFloat32Array(0, 0.799331)
+colors = PackedColorArray(0.460156, 0.446202, 0.36296, 1, 0.186993, 0.168868, 0.159452, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ncpxs"]
+gradient = SubResource("Gradient_m5ubl")
+
+[sub_resource type="Gradient" id="Gradient_xygjh"]
+offsets = PackedFloat32Array(0.191304, 0.713043)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_t50e6"]
+gradient = SubResource("Gradient_xygjh")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t21yj"]
+noise_type = 2
+frequency = 0.0029
+fractal_type = 2
+fractal_octaves = 2
+fractal_gain = 2.185
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l3llm"]
+noise = SubResource("FastNoiseLite_t21yj")
+seamless = true
+seamless_blend_skirt = 0.229
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_6qv2u")
+shader_parameter/normal_Scale = 0.3
+shader_parameter/Displacement_Speed = Vector2(0, 0.6)
+shader_parameter/Dissplacement_texture = ExtResource("4_ag7r1")
+shader_parameter/Cloud_Color_Scale = Vector2(1, 1)
+shader_parameter/Dark_variation = ExtResource("2_odubl")
+shader_parameter/Dark_Color_Gradient_1D = SubResource("GradientTexture1D_ncpxs")
+shader_parameter/Dissapear_scale = Vector2(1, 1)
+shader_parameter/Disapear_Noise = ExtResource("3_82hrm")
+shader_parameter/Gradient_1D = SubResource("GradientTexture1D_t50e6")
+shader_parameter/ProximityFade = 1.0
+shader_parameter/Bright_Color = Color(1, 0.3, 0.1, 1)
+shader_parameter/Color_Intensity = 1.0
+shader_parameter/Color_max = 20.0
+shader_parameter/Noise_color_scale = Vector2(1, 1)
+shader_parameter/Noise_Color = SubResource("NoiseTexture2D_l3llm")
