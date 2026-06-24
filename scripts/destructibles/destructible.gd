@@ -1,15 +1,14 @@
 extends StaticBody3D
 class_name Destructible
-## A destructible object driven by a DestructibleData (size archetype).
-##   - destroy time / value / debris come from `data` (its size tier)
-##   - color is an independent axis: an optional DestructiblePalette
-##   - the tornado's maw calls chew() until destroyed -> emits consumed(value) + debris
-##
-## Size and color are orthogonal: pick a size `data` (Small/Medium/Large/Giant)
+## A destructible object with two orthogonal archetypes:
+##   - data (DestructibleData): SIZE tier -> destroy time / value / debris
+##   - kind (DestructibleKind):  TYPE     -> display name + per-surface color palettes
+## The maw calls chew() until destroyed -> emits consumed(value) + debris.
 
 @export var data: DestructibleData
-## Optional cosmetic colors. Null / empty = keep the model's own material.
-@export var palette: DestructiblePalette
+## Optional type: display name + per-surface palettes. Null = keep model materials,
+## display name falls back to the node name.
+@export var kind: DestructibleKind
 
 @export_group("Per-instance overrides")
 ## Keep the model's authored scale instead of multiplying by data.scale_mult.
@@ -66,33 +65,46 @@ func _spawn_debris() -> void:
 	if burst.has_method("play"):
 		burst.play()  # emit only after it's positioned
 
-# --- Color (independent of size) ---
+## Name shown in HUD/score; falls back to the node name when there's no kind.
+func get_display_name() -> String:
+	if kind and kind.display_name != "":
+		return kind.display_name
+	return name
+
+# --- Color: per mesh surface ("face"), independent of size ---
 
 func _apply_color() -> void:
-	if _mesh == null:
+	if _mesh == null or _mesh.mesh == null:
 		return
-	var chosen: Color
-	if force_color:
-		chosen = color
-	elif palette != null:
-		chosen = palette.pick(global_position)
-		if chosen.a == 0.0:
-			return  # empty palette -> keep the model's own material
-	else:
-		return  # no palette -> keep the model's own material
-	_mesh.material_override = _tinted_material(chosen)
+	var count := _mesh.mesh.get_surface_count()
+	for i in count:
+		var c := _surface_color(i)
+		if c.a == 0.0:
+			continue  # no tint for this surface -> keep its own material
+		_mesh.set_surface_override_material(i, _tinted_material(i, c))
 
-func _tinted_material(c: Color) -> Material:
-	if not _mat_cache.has(c):
-		var base := _mesh.get_active_material(0)
+func _surface_color(surface: int) -> Color:
+	if force_color:
+		return color
+	if kind == null:
+		return Color(0, 0, 0, 0)
+	var pal := kind.palette_for_surface(surface)
+	if pal == null:
+		return Color(0, 0, 0, 0)
+	return pal.pick(global_position, surface)
+
+func _tinted_material(surface: int, c: Color) -> Material:
+	var base := _mesh.get_active_material(surface)
+	var key := "%d_%d" % [base.get_instance_id() if base else 0, hash(c)]
+	if not _mat_cache.has(key):
 		var m: StandardMaterial3D
 		if base is StandardMaterial3D:
 			m = base.duplicate()  # keep the colormap texture, just tint it
 		else:
 			m = StandardMaterial3D.new()
 		m.albedo_color = c
-		_mat_cache[c] = m
-	return _mat_cache[c]
+		_mat_cache[key] = m
+	return _mat_cache[key]
 
 # --- Auto collision from the mesh AABB (so any model just works) ---
 

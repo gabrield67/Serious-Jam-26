@@ -28,8 +28,11 @@ const TIER_PATHS := [
 const GROUP_TIERS := {"small": 0, "medium": 1, "large": 2, "giant": 3}
 const DEFAULT_TIER := 1  # medium
 
-## Optional cosmetic palette; set to "" to keep model materials.
-const PALETTE := ""
+## Type archetypes (display name + per-surface palettes). A mesh gets the first kind
+## whose keyword matches its name. Add your kind .tres paths here.
+const KIND_PATHS := [
+	"res://resources/destructibles/kinds/house.tres",
+]
 
 func _run() -> void:
 	var root := get_scene()
@@ -46,7 +49,7 @@ func _run() -> void:
 
 	var script: Script = load(DESTRUCTIBLE)
 	var tiers := TIER_PATHS.map(func(p): return load(p))
-	var palette: Resource = load(PALETTE) if PALETTE != "" else null
+	var kinds := KIND_PATHS.map(func(p): return load(p))
 
 	var jobs: Array = []
 	_collect(src, DEFAULT_TIER, jobs)
@@ -62,7 +65,7 @@ func _run() -> void:
 		body.collision_layer = 2
 		body.collision_mask = 0
 		body.set("data", tiers[tier])
-		body.set("palette", palette)
+		body.set("kind", _kind_for(child.name, kinds))
 		body.set("keep_authored_scale", true)
 		# Keep the model's intrinsic scale/rotation, drop placement offset.
 		var t := child.transform
@@ -94,3 +97,13 @@ func _collect(node: Node, tier: int, jobs: Array) -> void:
 		else:
 			var key := String(c.name).to_lower()
 			_collect(c, GROUP_TIERS.get(key, tier), jobs)
+
+func _kind_for(node_name: String, kinds: Array) -> Resource:
+	var lower := node_name.to_lower()
+	for k in kinds:
+		if k == null:
+			continue
+		for kw in k.match_keywords:
+			if String(kw) != "" and lower.contains(String(kw).to_lower()):
+				return k
+	return null

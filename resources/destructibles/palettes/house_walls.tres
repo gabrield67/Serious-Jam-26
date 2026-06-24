@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DestructiblePalette" format=3 uid="uid://chousepalette1"]
+[gd_resource type="Resource" script_class="DestructiblePalette" format=3 uid="uid://chousewalls1"]
 
 [ext_resource type="Script" path="res://scripts/destructibles/destructible_palette.gd" id="1_script"]
 

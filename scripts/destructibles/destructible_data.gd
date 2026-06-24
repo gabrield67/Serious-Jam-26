@@ -2,8 +2,8 @@ extends Resource
 class_name DestructibleData
 ## One archetype per SIZE tier (Small / Medium / Large / Giant).
 ## Holds how a thing of that size behaves when the tornado eats it.
+## (Display name + color live on DestructibleKind, the TYPE axis.)
 
-@export var display_name: String = ""
 ## Seconds for the tornado to fully destroy this.
 @export var destroy_time: float = 2.0
 ## Reward when destroyed (Fujita/size growth, score, etc.).
