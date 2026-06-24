@@ -18,8 +18,9 @@
 [ext_resource type="Texture2D" uid="uid://behqroa847jr8" path="res://Tornado VFX/textures/T_Cracks333.png" id="16_dhfke"]
 
 [sub_resource type="Gradient" id="Gradient_baseGray"]
-offsets = PackedFloat32Array(0, 0.033195, 0.0497925, 0.186722, 0.477178, 0.917012)
-colors = PackedColorArray(0.0605303, 0.0605303, 0.0605303, 1, 1, 1, 1, 1, 0.489622, 0.489622, 0.489622, 1, 0.269961, 0.275894, 0.270258, 1, 0.093994, 0.0973435, 0.0941633, 1, 0.706094, 0.720504, 0.706814, 1)
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.26971, 0.435685, 0.630705, 0.946058)
+colors = PackedColorArray(0.419813, 0.419813, 0.419813, 0, 0.6, 0.6, 0.6, 1, 0.359591, 0.359591, 0.35959, 1.05093, 0.299908, 0.299908, 0.299907, 1.03747, 0.162066, 0.162066, 0.162065, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_baseGray"]
 gradient = SubResource("Gradient_baseGray")
@@ -75,7 +76,7 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
-shader_parameter/Color_Intensity2 = 10.0
+shader_parameter/Color_Intensity2 = 2.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
 shader_parameter/AlphaTreshold = 0.268
@@ -851,6 +852,7 @@ mesh = SubResource("PlaneMesh_qhpw8")
 
 [node name="muzzleflash" type="MeshInstance3D" parent="." unique_id=1015397895]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.235138, 0, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_lpa1m")
 cast_shadow = 0
 mesh = ExtResource("14_k252n")
@@ -868,6 +870,7 @@ draw_pass_1 = SubResource("PlaneMesh_h1xv1")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1464074892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85065, 0)
+visible = false
 light_color = Color(0.82, 0.84, 0.9, 1)
 light_energy = 5.0
 omni_range = 6.0
