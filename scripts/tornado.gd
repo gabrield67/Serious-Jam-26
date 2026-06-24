@@ -61,9 +61,16 @@ extends CharacterBody3D
 
 signal fujita_changed(level: int)
 
-@onready var _vfx_normal: Node3D = get_node_or_null("VFX")
-@onready var _vfx_fire: Node3D = get_node_or_null("VFXFire")
+@export_group("Style")
+## Name of the child VFX under "Styles" shown by default.
+@export var default_style: String = "Base"
+## Style swapped to while powered up.
+@export var powerup_style: String = "Fire"
+
+@onready var _styles: Node3D = get_node_or_null("Styles")
 @onready var _maw: Node = get_node_or_null("Maw")
+
+var _current_style: String = ""
 
 var _target: Vector3
 var _seeking: bool = false  # actively traveling to a committed destination
@@ -111,7 +118,7 @@ func _ready() -> void:
 		if _maw.has_signal("grabbed"):
 			_maw.grabbed.connect(_on_grabbed)
 
-	_set_fire(false)
+	set_style(default_style)
 	_on_fujita_changed(_fujita.level(), _fujita.value)
 	_cur_scale = _target_scale
 
@@ -119,11 +126,11 @@ func _ready() -> void:
 func power_up(duration: float) -> void:
 	_powerup_time = maxf(_powerup_time, duration)
 	_update_chew()
-	_set_fire(true)
+	set_style(powerup_style)
 
 func _end_power_up() -> void:
 	_update_chew()
-	_set_fire(false)
+	set_style(default_style)
 
 ## Laser/etc. slow — multiplies movement speed by `factor` for `duration` seconds.
 func apply_slow(factor: float, duration: float) -> void:
@@ -139,9 +146,27 @@ func _speed_mult() -> float:
 		m *= _slow_factor
 	return m
 
-func _set_fire(on: bool) -> void:
-	_set_vfx_active(_vfx_normal, not on)
-	_set_vfx_active(_vfx_fire, on)
+## Switch the active style (a child of "Styles" by name); others hide + disable.
+func set_style(style_name: String) -> void:
+	_current_style = style_name
+	if _styles == null:
+		return
+	for child in _styles.get_children():
+		_set_vfx_active(child, child.name == style_name)
+
+## Debug: cycle to the next style under "Styles".
+func _cycle_style() -> void:
+	if _styles == null:
+		return
+	var children := _styles.get_children()
+	if children.is_empty():
+		return
+	var idx := 0
+	for i in children.size():
+		if children[i].name == _current_style:
+			idx = i
+			break
+	set_style(children[(idx + 1) % children.size()].name)
 
 ## Show + process the active VFX; hide + fully disable the inactive one (no wasted
 ## particle/animation simulation while it's not the current tornado).
@@ -158,6 +183,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_seeking = true
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		_throw_debris()
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
+		_cycle_style()  # debug: cycle through the VFX styles
 
 func _physics_process(delta: float) -> void:
 	if _powerup_time > 0.0:
@@ -368,10 +395,11 @@ func _on_died() -> void:
 	pass  # no fail state yet
 
 func _apply_vfx_scale(s: Vector3) -> void:
-	if _vfx_normal:
-		_vfx_normal.scale = s
-	if _vfx_fire:
-		_vfx_fire.scale = s
+	if _styles == null:
+		return
+	for child in _styles.get_children():
+		if child is Node3D:
+			child.scale = s
 
 func get_level() -> int:
 	return _fujita.level() if _fujita else 0
