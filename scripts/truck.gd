@@ -1,7 +1,5 @@
 extends Node3D
-## Truck NPC — never stops. It steers toward the tornado but can only turn so fast, so it
-## overshoots and sweeps past in drive-by arcs, leaving a trail of bomb barrels on the
-## ground. The tornado's indiscriminate suck then grabs them (see barrel.gd).
+## Truck NPC 
 
 @export_group("Drive")
 @export var speed: float = 12.0

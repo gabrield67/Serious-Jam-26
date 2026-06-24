@@ -1,7 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=13 format=3 uid="uid://dahaw4xexqe4q"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dahaw4xexqe4q"]
 
-[ext_resource type="Shader" uid="uid://c4x140sxcpxi1" path="res://VFX/shaders/s_master_fire_treshold_fresnel_ds.tres" id="1_tq0wn"]
-[ext_resource type="Texture2D" uid="uid://5mdduid72xhr" path="res://VFX/textures/T_VFX_Noise_12.PNG" id="2_rep1u"]
+[ext_resource type="Shader" uid="uid://c4x140sxcpxi1" path="res://Tornado VFX/shaders/s_master_fire_treshold_fresnel_ds.tres" id="1_tq0wn"]
+[ext_resource type="Texture2D" uid="uid://5mdduid72xhr" path="res://Tornado VFX/textures/T_VFX_Noise_12.PNG" id="2_rep1u"]
 
 [sub_resource type="Gradient" id="Gradient_t5bb4"]
 offsets = PackedFloat32Array(0, 0.715953, 1)
@@ -44,15 +44,15 @@ fill_from = Vector2(1, 1)
 [resource]
 render_priority = -1
 shader = ExtResource("1_tq0wn")
+shader_parameter/Base_noise2 = ExtResource("2_rep1u")
 shader_parameter/Speed_XY2 = Vector2(-1.5, 1.5)
 shader_parameter/Scale_XY2 = Vector2(1.5, 1)
 shader_parameter/Fresnel_Invert = false
 shader_parameter/Fresnel_power = 1.0
-shader_parameter/Color_Intensity2 = 4.0
-shader_parameter/AlphaTreshold = 0.057
-shader_parameter/Base_noise2 = ExtResource("2_rep1u")
 shader_parameter/Fresnel_Gradient_Color_1D = SubResource("GradientTexture1D_mriyc")
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_l6wfq")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_tyukn")
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_gwp3b")
+shader_parameter/Color_Intensity2 = 4.0
 shader_parameter/Texture_substract_end = SubResource("GradientTexture2D_btq7e")
+shader_parameter/AlphaTreshold = 0.057

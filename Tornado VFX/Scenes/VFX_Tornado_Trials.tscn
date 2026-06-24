@@ -176,7 +176,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.03902, 0, -30.851368)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.160381, -0.00071525574, 12.521221)
 
 [node name="VFX_Tornado_BlueStorm" parent="." unique_id=1420247605 instance=ExtResource("11_o7y82")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.941261, -9.536743e-07, 27.63502)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.941261, -9.536743e-07, 27.633818)
 
 [node name="VFX_Tornado_SandStorm" parent="." unique_id=1270647973 instance=ExtResource("12_3hch5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.349571, 0, 29.421953)

@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://bmaew7ercv710"]
 
+[ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="1_uoyx5"]
+[ext_resource type="PackedScene" uid="uid://caon602k6vnff" path="res://Tornado VFX/Scenes/VFX_Tornado_blue.tscn" id="2_1pju0"]
 [ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="2_heli"]
 [ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="3_truck"]
+[ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="3_wtpp6"]
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="4_tank"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="5_plane"]
 
@@ -31,6 +34,17 @@ ambient_light_energy = 0.6
 tonemap_mode = 2
 
 [node name="Zoo" type="Node3D" unique_id=1096482156]
+
+[node name="Tornadoes" type="Node3D" parent="." unique_id=1864639729]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.600716, 0, -13.864681)
+
+[node name="VFX_Tornado_Fire_V2" parent="Tornadoes" unique_id=1683199678 instance=ExtResource("1_uoyx5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.582243, 0, 0)
+
+[node name="VFX_Tornado_CursedBlue" parent="Tornadoes" unique_id=769887517 instance=ExtResource("2_1pju0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3256607, 0, 0)
+
+[node name="VFX_Tornado_Base" parent="Tornadoes" unique_id=815117568 instance=ExtResource("3_wtpp6")]
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1154768859]
 

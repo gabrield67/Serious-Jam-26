@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://wtexamna831i"]
 
 [ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="1_ir15t"]
-[ext_resource type="PackedScene" uid="uid://bajwyvxob1tcf" path="res://Tornado VFX/Scenes/VFX_Tornado_black.tscn" id="1_tornado"]
 [ext_resource type="Script" uid="uid://bsjage7kfry0q" path="res://scripts/tornado.gd" id="2_player"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_host"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_pcam"]
@@ -17,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="14_rysoc"]
 [ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/debris/Tree.tscn" id="14_tree"]
 [ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="14_trtic"]
+[ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="16_base"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -83,8 +83,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 8)
 [node name="Tornado" type="CharacterBody3D" parent="." unique_id=271525483]
 script = ExtResource("2_player")
 
-[node name="VFX" parent="Tornado" unique_id=2084817965 instance=ExtResource("1_tornado")]
-
 [node name="VFXFire" parent="Tornado" unique_id=453982796 instance=ExtResource("11_fire")]
 visible = false
 
@@ -100,9 +98,11 @@ script = ExtResource("8_maw3d")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 shape = SubResource("MawShape")
 
+[node name="VFX" parent="Tornado" unique_id=674354070 instance=ExtResource("16_base")]
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=2057751060]
 physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 0.89230114, 0.45144066, 0, -0.45144066, 0.89230114, 0, 20.166, 28)
+transform = Transform3D(1, 0, 0, 0, 0.96374047, 0.2668413, 0, -0.2668413, 0.96374047, 0, 8.521, 9.105)
 top_level = true
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1069513929]
@@ -111,7 +111,7 @@ process_physics_priority = 300
 script = ExtResource("3_host")
 
 [node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1417305512 node_paths=PackedStringArray("follow_target", "look_at_target")]
-transform = Transform3D(1, 0, 0, 0, 0.89230114, 0.45144066, 0, -0.45144066, 0.89230114, 0, 20.166, 28)
+transform = Transform3D(1, 0, 0, 0, 0.96373147, 0.2668388, 0, -0.2668388, 0.96373147, 0, 8.521, 9.105)
 top_level = true
 script = ExtResource("4_pcam")
 priority = 10
@@ -120,7 +120,7 @@ follow_target = NodePath("../Tornado")
 look_at_mode = 2
 look_at_target = NodePath("../Tornado")
 tween_resource = SubResource("Resource_p57ef")
-follow_offset = Vector3(0, 20.166, 28)
+follow_offset = Vector3(0, 8.521, 9.105)
 follow_damping = true
 follow_damping_value = Vector3(0.2, 0.2, 0.2)
 look_at_offset = Vector3(0, 6, 0)
@@ -184,10 +184,3 @@ transform = Transform3D(15.705, 0, 0, 0, 15.705, 0, 0, 0, 15.705, 10, 6, 0)
 
 [node name="Truck" parent="NPCs" unique_id=1015583023 instance=ExtResource("1_ir15t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47113597, 38.81615)
-speed = null
-turn_speed = null
-facing_offset = null
-drop_spacing = null
-drop_range = null
-drop_height = null
-barrel_scene = null
