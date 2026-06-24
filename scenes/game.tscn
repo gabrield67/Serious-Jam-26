@@ -102,7 +102,7 @@ shape = SubResource("MawShape")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=2057751060]
 physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 0.96374047, 0.2668413, 0, -0.2668413, 0.96374047, 0, 8.521, 9.105)
+transform = Transform3D(5.1140785e-05, 0.51261747, -0.8586171, 0, 0.8586171, 0.51261747, 1, -2.6226044e-05, 4.3928623e-05, -7.1983385, 7.477601, 0.050368275)
 top_level = true
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1069513929]
@@ -111,7 +111,7 @@ process_physics_priority = 300
 script = ExtResource("3_host")
 
 [node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1417305512 node_paths=PackedStringArray("follow_target", "look_at_target")]
-transform = Transform3D(1, 0, 0, 0, 0.96373147, 0.2668388, 0, -0.2668388, 0.96373147, 0, 8.521, 9.105)
+transform = Transform3D(5.1140785e-05, 0.51261747, -0.8586171, 0, 0.8586171, 0.51261747, 1, -2.6226044e-05, 4.3928623e-05, -7.1983385, 7.477601, 0.050368275)
 top_level = true
 script = ExtResource("4_pcam")
 priority = 10
@@ -120,10 +120,10 @@ follow_target = NodePath("../Tornado")
 look_at_mode = 2
 look_at_target = NodePath("../Tornado")
 tween_resource = SubResource("Resource_p57ef")
-follow_offset = Vector3(0, 8.521, 9.105)
+follow_offset = Vector3(-7.1983385, 7.477601, 0.050368275)
 follow_damping = true
 follow_damping_value = Vector3(0.2, 0.2, 0.2)
-look_at_offset = Vector3(0, 6, 0)
+look_at_offset = Vector3(0, 3.18, 0.05)
 align_transform_with_view = Callable()
 align_position_with_view = Callable()
 align_rotation_with_view = Callable()
@@ -174,7 +174,7 @@ script = ExtResource("13_hud")
 [node name="NPCs" type="Node3D" parent="." unique_id=1480836176]
 
 [node name="plane" parent="NPCs" unique_id=391191332 instance=ExtResource("14_rysoc")]
-transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, 0, 7.0614357, 0)
+transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, -22.974073, 7.0614357, -24.1755)
 
 [node name="tank" parent="NPCs" unique_id=114830562 instance=ExtResource("14_ca42v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.285293, 0, 0)

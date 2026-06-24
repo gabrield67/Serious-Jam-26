@@ -51,7 +51,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.278
+shader_parameter/AlphaTreshold = 1.0
 
 [sub_resource type="Gradient" id="Gradient_txrm7"]
 offsets = PackedFloat32Array(0, 0.489489, 1)
@@ -76,10 +76,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
-shader_parameter/Color_Intensity2 = 2.0
+shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
-shader_parameter/AlphaTreshold = 0.268
+shader_parameter/AlphaTreshold = 1.0
 
 [sub_resource type="Gradient" id="Gradient_0whxr"]
 offsets = PackedFloat32Array(0)
@@ -107,7 +107,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
 shader_parameter/Color_Intensity2 = 3.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_1k1cj")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6opjf")
-shader_parameter/AlphaTreshold = 0.283
+shader_parameter/AlphaTreshold = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -334,8 +334,8 @@ shader_parameter/Power = 0.82
 shader_parameter/Texture_Substract = SubResource("GradientTexture2D_dfiph")
 shader_parameter/Proximity_Fade = 0.3
 shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_mnqlx")
-shader_parameter/Transparency = 1.0
-shader_parameter/AlphaTreshold = 0.134
+shader_parameter/Transparency = 0.0
+shader_parameter/AlphaTreshold = 1.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qhpw8"]
 size = Vector2(8, 8)
@@ -355,7 +355,7 @@ render_priority = 0
 shader = ExtResource("13_3hdrx")
 shader_parameter/ColorParameter = Color(0.6, 0.6, 0.62, 1)
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_hu56e")
-shader_parameter/Opacity = 1.0
+shader_parameter/Opacity = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xoqjk"]
 render_priority = -1
@@ -510,7 +510,7 @@ tracks/9/keys = {
 }
 tracks/10/type = "value"
 tracks/10/imported = false
-tracks/10/enabled = true
+tracks/10/enabled = false
 tracks/10/path = NodePath("floorflash:material_override:shader_parameter/AlphaTreshold")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
@@ -522,7 +522,7 @@ tracks/10/keys = {
 }
 tracks/11/type = "value"
 tracks/11/imported = false
-tracks/11/enabled = true
+tracks/11/enabled = false
 tracks/11/path = NodePath("floorflash:material_override:shader_parameter/Transparency")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
@@ -534,7 +534,7 @@ tracks/11/keys = {
 }
 tracks/12/type = "value"
 tracks/12/imported = false
-tracks/12/enabled = true
+tracks/12/enabled = false
 tracks/12/path = NodePath("floorflash:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
@@ -708,7 +708,7 @@ tracks/9/keys = {
 }
 tracks/10/type = "value"
 tracks/10/imported = false
-tracks/10/enabled = true
+tracks/10/enabled = false
 tracks/10/path = NodePath("floorflash:material_override:shader_parameter/AlphaTreshold")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
@@ -720,7 +720,7 @@ tracks/10/keys = {
 }
 tracks/11/type = "value"
 tracks/11/imported = false
-tracks/11/enabled = true
+tracks/11/enabled = false
 tracks/11/path = NodePath("floorflash:material_override:shader_parameter/Transparency")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
@@ -732,7 +732,7 @@ tracks/11/keys = {
 }
 tracks/12/type = "value"
 tracks/12/imported = false
-tracks/12/enabled = true
+tracks/12/enabled = false
 tracks/12/path = NodePath("floorflash:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
@@ -789,12 +789,14 @@ _data = {
 [node name="VFX_Tornado_Base" type="Node3D" unique_id=1683199678]
 
 [node name="SmTornadoExternalJ1" type="MeshInstance3D" parent="." unique_id=959239835]
+visible = false
 material_override = SubResource("ShaderMaterial_dlwqa")
 cast_shadow = 0
 mesh = ExtResource("3_nixsl")
 skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ1" type="MeshInstance3D" parent="." unique_id=1217916868]
+visible = false
 material_override = SubResource("ShaderMaterial_ngsjd")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
@@ -802,6 +804,7 @@ skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ2" type="MeshInstance3D" parent="." unique_id=1646457126]
 transform = Transform3D(1.25, 0, 0, 0, 1, 0, 0, 0, 1.25, 0, 0, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_rdpqi")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
@@ -812,6 +815,7 @@ transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 0, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_ca8sl")
 cast_shadow = 0
+emitting = false
 amount = 4
 lifetime = 0.35
 fixed_fps = 60
@@ -822,6 +826,7 @@ draw_pass_1 = ExtResource("7_qag4v")
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 4.77347, 0)
 material_override = SubResource("ShaderMaterial_ca8sl")
 cast_shadow = 0
+emitting = false
 amount = 5
 lifetime = 0.5
 fixed_fps = 60
@@ -834,6 +839,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_7d40g")
 cast_shadow = 0
+emitting = false
 amount = 20
 lifetime = 0.25
 explosiveness = 0.2
@@ -845,7 +851,6 @@ draw_pass_1 = SubResource("QuadMesh_2d1wl")
 
 [node name="floorflash" type="MeshInstance3D" parent="." unique_id=2099497316]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.289845, 0)
-visible = false
 material_override = SubResource("ShaderMaterial_jpjpq")
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_qhpw8")
@@ -862,6 +867,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_xoqjk")
 cast_shadow = 0
+emitting = false
 amount = 10
 randomness = 0.5
 fixed_fps = 60
@@ -872,7 +878,7 @@ draw_pass_1 = SubResource("PlaneMesh_h1xv1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85065, 0)
 visible = false
 light_color = Color(0.82, 0.84, 0.9, 1)
-light_energy = 5.0
+light_energy = 0.0
 omni_range = 6.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2119063184]
