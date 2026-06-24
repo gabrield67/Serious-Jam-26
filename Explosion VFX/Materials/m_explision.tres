@@ -1,9 +1,9 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://dlrdyioc6q6xp"]
 
 [ext_resource type="Shader" uid="uid://codcx1oq7ggxy" path="res://Explosion VFX/Shaders/s_master_explosion.tres" id="1_6qv2u"]
-[ext_resource type="Texture2D" uid="uid://vj1fkfmxlojo" path="res://Explosion VFX/Textures/T_FogSheetCloud.PNG" id="2_odubl"]
+[ext_resource type="Texture2D" uid="uid://vj1fkfmxlojo" path="res://Tornado VFX/textures/T_FogSheetCloud.PNG" id="2_odubl"]
 [ext_resource type="Texture2D" uid="uid://gdgklxi1glip" path="res://Explosion VFX/Textures/T_PerlinNoise_Tiled.png" id="3_82hrm"]
-[ext_resource type="Texture2D" uid="uid://dd1pmd840fclm" path="res://Explosion VFX/Textures/T_Noise_075.png" id="4_ag7r1"]
+[ext_resource type="Texture2D" uid="uid://dd1pmd840fclm" path="res://Tornado VFX/textures/T_Noise_5K9p.png" id="4_ag7r1"]
 
 [sub_resource type="Gradient" id="Gradient_m5ubl"]
 offsets = PackedFloat32Array(0, 0.799331)
