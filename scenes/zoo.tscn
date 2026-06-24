@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="3_wtpp6"]
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="4_tank"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="5_plane"]
-[ext_resource type="PackedScene" uid="uid://jqov3xet5aqe" path="res://assets/meshes/NADO Destructible Structures.blend" id="8_1pju0"]
+[ext_resource type="PackedScene" uid="uid://clrqbekfjajtr" path="res://assets/meshes/NADO Destructible Structures.blend" id="8_1pju0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vbwsg"]
 
@@ -1035,4 +1035,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
 transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, -24, 0, 0)
 
 [node name="NADO Destructible Structures" parent="." unique_id=1371000196 instance=ExtResource("8_1pju0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.414013, 1, 23.212833)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.240116, -0.42082214, 32.890594)
