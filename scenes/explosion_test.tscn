@@ -107,7 +107,6 @@ emission_curve = SubResource("CurveTexture_7numd")
 script = ExtResource("1_x3ncj")
 
 [node name="Debris" type="GPUParticles3D" parent="." unique_id=114456740]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0621643, 0)
 emitting = false
 amount = 24
 lifetime = 0.5
@@ -118,7 +117,7 @@ process_material = SubResource("ParticleProcessMaterial_57qmd")
 draw_pass_1 = SubResource("CylinderMesh_g4v7s")
 
 [node name="Smoke" type="GPUParticles3D" parent="." unique_id=771159810]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3305664, 0)
+emitting = false
 amount = 12
 lifetime = 2.0
 explosiveness = 1.0
@@ -127,7 +126,6 @@ process_material = SubResource("ParticleProcessMaterial_y2i3p")
 draw_pass_1 = SubResource("SphereMesh_yf5fn")
 
 [node name="Fire" type="GPUParticles3D" parent="." unique_id=1913481746]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3305664, 0)
 emitting = false
 amount = 12
 one_shot = true
