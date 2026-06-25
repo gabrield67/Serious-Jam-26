@@ -38,14 +38,13 @@ point_count = 3
 curve = SubResource("Curve_31wfu")
 
 [sub_resource type="Curve" id="Curve_1sma0"]
-_data = [Vector2(0, 0.177966), 0.0, 2.03257, 0, 0, Vector2(1, 1), 0.254136, 0.0, 0, 0]
+_data = [Vector2(0, 0.5), 0.0, 1.2, 0, 0, Vector2(1, 1), 0.254136, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_vb1li"]
 curve = SubResource("Curve_1sma0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q47x8"]
-particle_flag_rotate_y = true
 emission_shape = 6
 emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 1.0
@@ -79,6 +78,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2646832, 1.5428753, 0)
 material_override = SubResource("StandardMaterial3D_013nr")
 amount = 30
 lifetime = 0.6
+speed_scale = 0.52
 fixed_fps = 60
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_q47x8")

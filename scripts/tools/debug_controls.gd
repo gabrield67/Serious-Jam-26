@@ -6,12 +6,15 @@ extends Node
 ## Master switch — turn all the debug controls on or off.
 @export var enabled: bool = true
 
+## Left Click switch — turn instakill on or off.
+@export var left_click: bool = true
+
 ## Controls reference (read-only — shown in the inspector for quick reference).
 @export_multiline var controls: String = """[  or  ]             Fujita size  -  down / up
 F1 .. F6        jump to F0 .. F5
 Tab               cycle the tornado's visual style
 Hold Shift   fly the tornado around fast
-L-click enemy   instakill it"""
+L-click enemy   instakill enemy"""
 
 ## Speed multiplier applied to the tornado while Shift is held.
 @export var fast_mult: float = 5.0
@@ -32,7 +35,7 @@ func _ready() -> void:
 
 ## Left-click the hovered enemy to instakill it (and don't let the tornado also move there).
 func _input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or not enabled:
+	if Engine.is_editor_hint() or not left_click:
 		return
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
 		return

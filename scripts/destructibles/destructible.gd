@@ -21,6 +21,27 @@ class_name Destructible
 @export var force_color: bool = false
 @export var color: Color = Color.WHITE
 
+@export_group("Dust")
+## A single dust burst kicked up when the tornado first bites into this object — shaped to
+## its bounding box, with particle lifetime scaled by the object's size. Not on the whole time.
+@export var dust_vfx: PackedScene = preload("res://Explosion VFX/Scenes/VFX_Smokey_Dust.tscn")
+## Particle count per unit of the object's volume (more = denser fill of its shape).
+@export var dust_density: float = 0.3
+## Inflate the cloud past the object's bounds (1 = exact, 1.25 = 25% bigger).
+@export var dust_oversize: float = 1
+## Multiplier on each puff's size — bigger merges them into a thicker cloud.
+@export var dust_particle_scale: float = 1.5
+## Per-puff opacity (0..1). Lower = more translucent puffs that blend into one continuous
+## cloud instead of reading as separate opaque clumps. Pair with higher density to keep it full.
+@export var dust_softness: float = 0.35
+## How much of the burst spawns up front (0 = puffs trickle in, thin → full → fade; 1 = the
+## whole cloud pops in at once). Mid values start with body, swell to full, then dissipate.
+@export var dust_burst: float = 0.6
+## Particle lifetime per world-unit of object size — bigger objects make longer-lived dust.
+@export var dust_lifetime_per_size: float = 0.1
+## Extra time the dust node lingers after the burst before despawning (seconds).
+@export var dust_fade: float = 1.2
+
 signal consumed(value: float)
 
 ## Shared across instances: one material per chosen color (keeps batching sane).
@@ -31,8 +52,8 @@ var _progress: float = 0.0
 var _destroy_time: float = 1.0
 var _base_scale: Vector3
 var _fragments: CollapsingFragments  # spawned on first chew, drives the progressive crumble
-var _started: bool = false           # has the tornado made first contact
 var _highlighted: bool = false       # currently hovered
+var _dust_spawned: bool = false      # the one-shot dust burst already fired
 
 func _ready() -> void:
 	add_to_group("consumable")
@@ -52,12 +73,10 @@ func _ready() -> void:
 ## this when the tornado moves away, so the crumble naturally pauses (and resumes on
 ## return). Once fully chewed, the remaining shards release and the building is gone.
 func chew(amount: float) -> bool:
-	if not _started:
-		_started = true
-		# Initial hit — shake the camera, harder for bigger items.
-		var amt: float = data.hit_shake if data else 0.3
-		get_tree().call_group("camera_shake", "add_shake", amt)
 	_progress += amount
+	if not _dust_spawned:
+		_dust_spawned = true
+		_spawn_dust()  # one burst on first contact
 	if _fragments == null:
 		_begin_crumble()
 	if _fragments:
@@ -99,6 +118,60 @@ func _surface_materials() -> Array:
 			mats.append(_mesh.get_surface_override_material(i))
 	return mats
 
+## Spawn the dust, shaped to the object so it fills the object's volume.
+func _spawn_dust() -> void:
+	if dust_vfx == null:
+		return
+	var d := dust_vfx.instantiate()
+	get_tree().current_scene.add_child(d)
+	if d is Node3D:
+		_shape_dust(d as Node3D)
+
+## Fire a single dust burst over the object's (oriented) bounding box so the cloud takes the
+## object's shape instead of puffing from a single point. Particle count scales with volume;
+## particle lifetime scales with the object's size; the emitter is one-shot so it isn't on the
+## whole time the tornado chews, and the node despawns itself once the burst plays out.
+func _shape_dust(d3: Node3D) -> void:
+	var half := Vector3(2.0, 2.0, 2.0)
+	var center := global_position
+	var basis := global_transform.basis.orthonormalized()
+	if _mesh and _mesh.mesh:
+		var gt := _mesh.global_transform
+		var aabb := _mesh.mesh.get_aabb()
+		half = (aabb.size * 0.5) * gt.basis.get_scale()
+		center = gt * aabb.get_center()
+		basis = gt.basis.orthonormalized()
+	var obj_size := maxf(half.x, maxf(half.y, half.z)) * 2.0   # largest full extent
+	var life := clampf(obj_size * dust_lifetime_per_size, 0.3, 4.0)
+	half *= dust_oversize  # let the cloud spill a bit past the object
+	d3.global_transform = Transform3D(basis, center)
+	var volume := maxf(half.x * half.y * half.z * 8.0, 0.001)
+	for p in _all_particles(d3, []):
+		p.position = Vector3.ZERO
+		# Many overlapping translucent puffs read as one cloud, so fill the volume densely.
+		p.amount = clampi(int(volume * dust_density), 80, 2000)
+		p.lifetime = life      # particle length scales with the object's size
+		p.one_shot = true       # a single burst, not on for the whole chew
+		p.explosiveness = dust_burst  # front-load the puffs: start with body, then dissipate
+		p.emitting = true
+		if p.process_material is ParticleProcessMaterial:
+			var ppm: ParticleProcessMaterial = p.process_material.duplicate()
+			ppm.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+			ppm.emission_box_extents = half
+			ppm.scale_min *= dust_particle_scale  # bigger puffs -> thicker, more merged cloud
+			ppm.scale_max *= dust_particle_scale
+			ppm.color.a *= dust_softness  # translucent puffs blend instead of clumping
+			p.process_material = ppm
+	# Self-despawn once the burst has fully played out (emission window + last puff's life).
+	get_tree().create_timer(life * 2.0 + dust_fade).timeout.connect(d3.queue_free)
+
+func _all_particles(node: Node, acc: Array) -> Array:
+	if node is GPUParticles3D:
+		acc.append(node)
+	for c in node.get_children():
+		_all_particles(c, acc)
+	return acc
+
 func _finish() -> void:
 	if data:
 		consumed.emit(data.value)
@@ -135,6 +208,17 @@ func get_display_name() -> String:
 ## Health = how much destruction is left: Vector2(remaining, total). Drains as it's chewed.
 func get_health() -> Vector2:
 	return Vector2(maxf(_destroy_time - _progress, 0.0), _destroy_time)
+
+## Camera-shake level (0..1) while being chewed: size strength on an exponential falloff with
+## remaining life — strong on the first bite, dropping off fast so a half-eaten building
+## barely rumbles. Raise SHAKE_FALLOFF for an even sharper drop.
+const SHAKE_FALLOFF := 3.0
+func get_shake_level() -> float:
+	if _destroy_time <= 0.0:
+		return 0.0
+	var remaining := clampf((_destroy_time - _progress) / _destroy_time, 0.0, 1.0)
+	var base: float = data.hit_shake if data else 0.3
+	return base * pow(remaining, SHAKE_FALLOFF)
 
 func set_highlighted(on: bool) -> void:
 	_highlighted = on

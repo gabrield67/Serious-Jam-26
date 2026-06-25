@@ -35,9 +35,11 @@ extends Node
 @export var look_smooth: float = 4.0
 
 @export_group("Shake")
-## Max aim jitter (world units) at full trauma.
+## Max aim jitter (world units) at full shake.
 @export var shake_strength: float = 14.0
-## How fast the shake eases off — lower = it lingers longer with a gentler fade.
+## How quickly the shake ramps up when the tornado bites into something.
+@export var shake_attack: float = 12.0
+## How slowly the shake tapers once it stops (lower = longer, gentler fade).
 @export var shake_decay: float = 1.2
 
 @export_group("Lead with movement")
@@ -62,7 +64,8 @@ var _look_pan: Vector2 = Vector2.ZERO   # current eased ground-plane mouse look-
 var _look_lead: Vector2 = Vector2.ZERO  # current eased movement look-ahead
 var _dir: Vector2 = Vector2(1.0, 0.0)         # current camera horizontal direction (orbits)
 var _desired_dir: Vector2 = Vector2(1.0, 0.0)  # side it's swinging toward
-var _shake: float = 0.0                        # current shake trauma (0..1)
+var _shake: float = 0.0                        # current applied shake (0..1)
+var _chew_target: float = 0.0                  # desired shake while chewing (set by the maw)
 
 func _ready() -> void:
 	add_to_group("camera_shake")  # destructibles call add_shake on us via this group
@@ -168,15 +171,21 @@ func _process(delta: float) -> void:
 				target_pan = (right * s.x + fwd * s.y) * amt
 	_look_pan = _look_pan.lerp(target_pan, clampf(look_smooth * delta, 0.0, 1.0))
 
-	# Camera shake: a random jitter on the aim that scales with trauma (so per-size differences
-	# stay clear) and tapers off exponentially — fading gradually with a long, gentle tail.
-	_shake = lerp(_shake, 0.0, clampf(shake_decay * delta, 0.0, 1.0))
-	if _shake < 0.004:
+	# Camera shake: a random jitter on the aim. Held while the tornado is chewing (target set
+	# by the maw, scaled by item size × how much is left), ramps up fast and tapers slowly.
+	var rate := shake_attack if _chew_target > _shake else shake_decay
+	_shake = lerp(_shake, _chew_target, clampf(rate * delta, 0.0, 1.0))
+	if _shake < 0.004 and _chew_target <= 0.0:
 		_shake = 0.0
 	var sh := _shake * shake_strength
 	var shake_off := Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0) * 0.5, randf_range(-1.0, 1.0)) * sh
 	_pcam.look_at_offset = _base_look_at + Vector3(_look_pan.x + _look_lead.x, 0.0, _look_pan.y + _look_lead.y) + shake_off
 
-## Add camera-shake trauma (0..1). Destructibles call this via the "camera_shake" group.
+## Continuous shake level (0..1) while the tornado is chewing. The maw sets this every frame
+## via the "camera_shake" group; 0 when nothing's being eaten.
+func set_chew_shake(level: float) -> void:
+	_chew_target = maxf(level, 0.0)
+
+## One-shot shake bump (0..1) — e.g. a big impact. Decays back toward the chew level.
 func add_shake(amount: float) -> void:
 	_shake = clampf(_shake + amount, 0.0, 1.0)

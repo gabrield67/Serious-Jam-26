@@ -44,6 +44,7 @@ func get_chew_target() -> Node:
 	return null
 
 func _physics_process(delta: float) -> void:
+	var shake := 0.0
 	for body in _inside.duplicate():
 		if not is_instance_valid(body):
 			_inside.erase(body)
@@ -51,6 +52,11 @@ func _physics_process(delta: float) -> void:
 		if body.has_method("chew"):
 			if body.chew(chew_rate * delta):
 				_inside.erase(body)
+				continue
+		if body.has_method("get_shake_level"):
+			shake = maxf(shake, body.get_shake_level())
+	# Drive the camera shake from whatever's currently being chewed (0 when nothing is).
+	get_tree().call_group("camera_shake", "set_chew_shake", shake)
 
 func _on_body_entered(body: Node) -> void:
 	# Pickups are carried by the tornado, not chewed.

@@ -143,6 +143,7 @@ look_ahead = 30.0
 look_dead_zone = 1.0
 look_smooth = 2.0
 shake_strength = 5.0
+shake_attack = 5.0
 pan_speed = 5.0
 look_lead = 60.0
 ref_speed = 10.0
@@ -201,10 +202,7 @@ panel_path = NodePath("../HUD/TargetPanel")
 
 [node name="DebugControls" type="Node" parent="." unique_id=1849618863]
 script = ExtResource("10_fujdbg")
-controls = "[  or  ]             Fujita size  -  down / up
-F1 .. F6        jump to F0 .. F5
-Tab               cycle the tornado's visual style
-Hold Shift    fly the tornado around fast"
+fast_mult = 20.0
 
 [node name="House_5" parent="." unique_id=52566959 instance=ExtResource("14_c70he")]
 transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -42.309982, 11.037464, 44.516243)
