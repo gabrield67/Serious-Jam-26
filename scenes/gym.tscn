@@ -99,8 +99,10 @@ shape = SubResource("MawShape")
 [node name="Styles" type="Node3D" parent="Tornado" unique_id=875550703]
 
 [node name="Base" parent="Tornado/Styles" unique_id=897267156 instance=ExtResource("4_h7ru6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="Fire" parent="Tornado/Styles" unique_id=688481346 instance=ExtResource("5_p6j5f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 visible = false
 
 [node name="Blue" parent="Tornado/Styles" unique_id=488281116 instance=ExtResource("6_apyjd")]
