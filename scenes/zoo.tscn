@@ -9,6 +9,13 @@
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="4_tank"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="5_plane"]
 [ext_resource type="ArrayMesh" uid="uid://q4cxjxco72f8" path="res://assets/meshes/NADO Destructible Structures.obj" id="8_1pju0"]
+[ext_resource type="PackedScene" uid="uid://bjwyta414kd3e" path="res://Explosion VFX/Scenes/VFX_Smokey_Dust.tscn" id="9_of0it"]
+[ext_resource type="PackedScene" uid="uid://bh35xsk4f8kg0" path="res://Explosion VFX/Scenes/VFX_mini_explosion_soil_1.tscn" id="10_lbxln"]
+[ext_resource type="PackedScene" uid="uid://ch6kqo2qu7mhf" path="res://Explosion VFX/Scenes/VFX_mini_explosion_1.tscn" id="11_byxht"]
+[ext_resource type="PackedScene" uid="uid://yrbt0hx220ou" path="res://Explosion VFX/Scenes/VFX_mini_explosion_2.tscn" id="12_xv6k7"]
+[ext_resource type="PackedScene" uid="uid://d2wccndn1if2p" path="res://Explosion VFX/Scenes/VFX_Explosion_A.tscn" id="13_luqbt"]
+[ext_resource type="PackedScene" uid="uid://bwlhnbmg4j1i3" path="res://Explosion VFX/Scenes/VFX_Explosion_B.tscn" id="14_v58ed"]
+[ext_resource type="PackedScene" uid="uid://dh4j5ox5dh47g" path="res://Explosion VFX/Scenes/VFX_Explosion_C.tscn" id="15_tye7v"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_mwds1"]
 size = Vector3(400, 1, 400)
@@ -86,3 +93,27 @@ transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, -24, 0, 0)
 [node name="NadoDestructibleStructures" type="MeshInstance3D" parent="." unique_id=2104212841]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.562157, 5.704956, 30.26012)
 mesh = ExtResource("8_1pju0")
+
+[node name="Explosions_Dust" type="Node3D" parent="." unique_id=1771836718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -160.85)
+
+[node name="Smokey_Dust" parent="Explosions_Dust" unique_id=212750651 instance=ExtResource("9_of0it")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.261368, 0, 65)
+
+[node name="mini_explosion_soil_1" parent="Explosions_Dust" unique_id=1001943181 instance=ExtResource("10_lbxln")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.681797, 0, 65)
+
+[node name="mini_explosion_1" parent="Explosions_Dust" unique_id=1531482007 instance=ExtResource("11_byxht")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.728661, 0, 30)
+
+[node name="mini_explosion_2" parent="Explosions_Dust" unique_id=1422681268 instance=ExtResource("12_xv6k7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.792183, 0, 30)
+
+[node name="explosion_A" parent="Explosions_Dust" unique_id=1128172911 instance=ExtResource("13_luqbt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.416, 0, 95)
+
+[node name="explosion_B" parent="Explosions_Dust" unique_id=2049715390 instance=ExtResource("14_v58ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.00751, 0, 95)
+
+[node name="explosion_C" parent="Explosions_Dust" unique_id=458874722 instance=ExtResource("15_tye7v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.245, 0, 95)
