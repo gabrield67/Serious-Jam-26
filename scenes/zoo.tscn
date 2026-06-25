@@ -1144,13 +1144,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_kbeli")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v3auh"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbxln"]
 resource_name = "Material.003"
 cull_mode = 2
 albedo_color = Color(0.09117844, 0.049473327, 0.90633965, 1)
 roughness = 0.5
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_x3r37"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_byxht"]
 _surfaces = [{
 "aabb": AABB(-10.1164055, -14.293999, -11.690186, 21.67381, 27.958961, 6.6425343),
 "format": 34896613377,
@@ -1185,7 +1185,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_8come"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_xv6k7"]
 resource_name = "Map Objects_Apartments"
 _surfaces = [{
 "aabb": AABB(-10.1164055, -14.293999, -11.690186, 21.67381, 27.958961, 6.6425343),
@@ -1218,7 +1218,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 42,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAEAAcABQAHAAgACQAKAAsACgAJAAwADAAJAA0ACgAMAA4ACgAOAA8AEAARABIAEwARABAAEQATABQAEQAUABUA"),
-"material": SubResource("StandardMaterial3D_v3auh"),
+"material": SubResource("StandardMaterial3D_lbxln"),
 "name": "Material.003",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -1226,7 +1226,7 @@ _surfaces = [{
 "vertex_data": PackedByteArray("/v8AAP///7//////CEn/v/7/AAAISf+//////////7/+/wAA///JJgAAAAAISeArAAAAAP//uyL+/wAACEl0LkCAAAAAAF02AAAAAP////8AAP//g6T//wAA////////AAD/PwhJ//8AAAAACEn//wAA/38ISf//AAD//whJ//8AAP////9U1f////8ISVTV////////VNUAAP//g6RU1QAA//8ISVTVQID//wAA/7//fwAA/38AAP9/AAD/fwAAzFkZU9dTE1YXXvNQd1DDVzlDYl7/P/9//z//f/8//3//P/9//z//f/8//3//P/9/VNWqKlTVqipU1aoqVNWqKlTVqir///9/")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_x3r37")
+shadow_mesh = SubResource("ArrayMesh_byxht")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_obwgq"]
 _surfaces = [{
@@ -1298,7 +1298,7 @@ _surfaces = [{
 "index_count": 198,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOAA7ADkAPAA9AD4APAA/AD0AQABBAEIAQABDAEEARABFAEYARABHAEUASABJAEoASABLAEkATABNAE4ATABPAE0AUABRAFIAUABTAFEAVABVAFYAVABXAFUAWABZAFoAWABbAFkAXABdAF4AXABfAF0AYABhAGIAYABjAGEAYQBjAGQAYwBgAGUAZQBgAGYAYwBlAGcAaABpAGoAaABrAGkAbABtAG4AbABvAG0AbQBvAHAAbwBsAHEAcQBsAHIAbwBxAHMAdAB1AHYAdAB3AHUAeAB5AHoAeAB7AHkA"),
 "lods": [4.583694, PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkA")],
-"material": SubResource("StandardMaterial3D_v3auh"),
+"material": SubResource("StandardMaterial3D_lbxln"),
 "name": "Material.003",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -1374,7 +1374,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 30,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEA"),
-"material": SubResource("StandardMaterial3D_v3auh"),
+"material": SubResource("StandardMaterial3D_lbxln"),
 "name": "Material.003",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -1450,7 +1450,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 48,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAEAAcABQAHAAgABgAJAAQABgAKAAkACwAMAA0ACwAOAAwADwAQABEAEAAPABIAEAASABMAEQAUAA8AEQAVABQAFgAXABgAFgAZABcA"),
-"material": SubResource("StandardMaterial3D_v3auh"),
+"material": SubResource("StandardMaterial3D_lbxln"),
 "name": "Material.003",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -1851,7 +1851,7 @@ mesh = SubResource("ArrayMesh_4p2pd")
 
 [node name="Apartments" type="MeshInstance3D" parent="Map Objects/large" unique_id=562252096]
 transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -43.652695, 11.521743, 118.693954)
-mesh = SubResource("ArrayMesh_8come")
+mesh = SubResource("ArrayMesh_xv6k7")
 
 [node name="Bank" type="MeshInstance3D" parent="Map Objects/large" unique_id=2099077967]
 transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -84.73978, 8.548533, -10.346218)

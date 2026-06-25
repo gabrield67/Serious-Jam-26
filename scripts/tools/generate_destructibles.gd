@@ -57,6 +57,7 @@ const KIND_PATHS := [
 	"res://resources/destructibles/kinds/motel.tres",
 	"res://resources/destructibles/kinds/sign.tres",
 	"res://resources/destructibles/kinds/silo.tres",
+	"res://resources/destructibles/kinds/skyscraper.tres",
 ]
 
 func _run() -> void:
@@ -167,8 +168,8 @@ func _save_pickup(child: MeshInstance3D, kinds: Array) -> bool:
 	return true
 
 ## Fracture one mesh into a frozen RigidBody3D shard scene (CollapsingFragments drives it
-## at runtime). Returns null when the mesh isn't a clean closed solid (open/non-manifold)
-## — fix those in Blender (watertight + manifold) rather than shipping bad rubble.
+## at runtime). Tries the real mesh, then a position-welded copy if CSG cracks on import
+## seams. Returns null (with a warning) when the geometry still defeats CSG — fix in Blender.
 func _bake_fragments(vgen, source: MeshInstance3D) -> PackedScene:
 	if source.mesh == null:
 		return null
@@ -177,29 +178,45 @@ func _bake_fragments(vgen, source: MeshInstance3D) -> PackedScene:
 	config.random_seed = FRAG_SEED
 	config.texture = null
 
-	# Multi-material meshes import with their verts split at the material seam, which leaves
-	# CSG an unweldable crack. Fracture a single welded surface instead (same geometry) so
-	# multi-color models (houses) still shatter; shards come out single-surface.
-	# Multi-material meshes import with their verts split (and nudged apart) at the material
-	# seam — a hairline crack CSG rejects. Weld into one watertight surface before fracturing.
-	var clip_source := source
-	var temp: MeshInstance3D = null
-	if source.mesh.get_surface_count() > 1:
-		temp = MeshInstance3D.new()
-		temp.mesh = _weld_single_surface(source.mesh)
-		clip_source = temp
-
-	var results: Array = vgen.create_from_mesh(clip_source, config)
+	# Try the real mesh first — a clean solid fractures with its surface materials intact.
+	var results: Array = vgen.create_from_mesh(source, config)
 	if results == null or results.is_empty():
-		# Diagnose future failures: 0 tetrahedra = degenerate/flat; >0 = non-watertight to CSG.
-		var pts: Array = vgen.sample_points(clip_source.mesh, config)
-		var tet: Array = vgen.create_delauney_tetrahedra(pts)
-		push_warning("Fragments: %s failed — %d sample points, %d tetrahedra" % [source.name, pts.size(), tet.size()])
-		if temp:
-			temp.free()
-		return null
-	if temp:
+		# Failed: import splits verts (material seams / hard edges / UV seams), leaving CSG
+		# hairline cracks. Weld by position and retry (shards come out single-surface).
+		var temp := MeshInstance3D.new()
+		temp.mesh = _weld_single_surface(source.mesh)
+		results = vgen.create_from_mesh(temp, config)
 		temp.free()
+	if results == null or results.is_empty():
+		# Still failing -> the model is multiple disconnected parts (CSG needs one solid).
+		# Fracture each connected component separately and combine the shards.
+		results = []
+		var comps := _split_components(source.mesh)
+		for ci in comps.size():
+			var comp_mesh: ArrayMesh = comps[ci]
+			var cproxy := MeshInstance3D.new()
+			cproxy.mesh = comp_mesh
+			var cr: Array = vgen.create_from_mesh(cproxy, config)
+			cproxy.free()
+			if cr == null or cr.is_empty():
+				# This part is wound inside-out (CSG saw its "solid" as the exterior, so it
+				# clipped to nothing). Flip the winding and retry.
+				var fproxy := MeshInstance3D.new()
+				fproxy.mesh = _flip_mesh(comp_mesh)
+				cr = vgen.create_from_mesh(fproxy, config)
+				fproxy.free()
+			if cr != null and not cr.is_empty():
+				results.append_array(cr)
+			else:
+				var sz := comp_mesh.get_aabb().size
+				push_warning("Fragments: %s part %d still failed (size %.1fx%.1fx%.1f)" % [source.name, ci, sz.x, sz.y, sz.z])
+		if not results.is_empty():
+			print("    (split %s into %d parts to fracture)" % [source.name, comps.size()])
+	if results == null or results.is_empty():
+		var pts: Array = vgen.sample_points(source.mesh, config)
+		var tet: Array = vgen.create_delauney_tetrahedra(pts)
+		push_warning("Fragments: %s failed — %d sample points, %d tetrahedra (open/flat geometry?)" % [source.name, pts.size(), tet.size()])
+		return null
 
 	# Bake at the model's render scale so runtime placement needs position+rotation only.
 	var s: Vector3 = source.transform.basis.get_scale()
@@ -284,6 +301,122 @@ func _weld_single_surface(mesh: Mesh) -> ArrayMesh:
 	var out := ArrayMesh.new()
 	out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	return out
+
+## Split a mesh into one welded ArrayMesh per connected component (positions kept, so the
+## parts stay where they belong). Each part is its own watertight solid, which CSG can
+## fracture even when the whole model is several disconnected pieces.
+func _split_components(mesh: Mesh) -> Array:
+	# Weld by position and collect triangles as welded-index triples.
+	var pos_to_i := {}
+	var verts := PackedVector3Array()
+	var tris: Array = []
+	for si in mesh.get_surface_count():
+		var arr := mesh.surface_get_arrays(si)
+		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+		var ix: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+		var src: Array = []
+		if ix != null and ix.size() > 0:
+			src = Array(ix)
+		else:
+			for k in v.size():
+				src.append(k)
+		var widx: Array = []
+		for k in src:
+			var p: Vector3 = v[k]
+			var key := "%d_%d_%d" % [roundi(p.x * 100.0), roundi(p.y * 100.0), roundi(p.z * 100.0)]
+			if not pos_to_i.has(key):
+				pos_to_i[key] = verts.size()
+				verts.append(p)
+			widx.append(pos_to_i[key])
+		for t in range(0, widx.size(), 3):
+			tris.append([widx[t], widx[t + 1], widx[t + 2]])
+
+	# Union-find: triangles sharing a welded vertex are the same component.
+	# Plain Array (by-reference) so the helpers' mutations propagate reliably.
+	var parent: Array = []
+	parent.resize(verts.size())
+	for i in verts.size():
+		parent[i] = i
+	for t in tris:
+		_uf_union(parent, t[0], t[1])
+		_uf_union(parent, t[0], t[2])
+
+	# Group triangles by component root.
+	var comp_tris := {}
+	for t in tris:
+		var root := _uf_find(parent, t[0])
+		if not comp_tris.has(root):
+			comp_tris[root] = []
+		comp_tris[root].append(t)
+
+	# Build a welded ArrayMesh per component (re-indexed, normals recomputed).
+	var meshes: Array = []
+	for root in comp_tris:
+		var local := {}
+		var lv := PackedVector3Array()
+		var li := PackedInt32Array()
+		for t in comp_tris[root]:
+			for vi in t:
+				if not local.has(vi):
+					local[vi] = lv.size()
+					lv.append(verts[vi])
+				li.append(local[vi])
+		var normals := PackedVector3Array()
+		normals.resize(lv.size())
+		for k in range(0, li.size(), 3):
+			var a := li[k]
+			var b := li[k + 1]
+			var c := li[k + 2]
+			var fn := (lv[b] - lv[a]).cross(lv[c] - lv[a])
+			normals[a] += fn
+			normals[b] += fn
+			normals[c] += fn
+		for n in normals.size():
+			normals[n] = normals[n].normalized() if normals[n].length() > 0.0 else Vector3.UP
+		var arrays := []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = lv
+		arrays[Mesh.ARRAY_NORMAL] = normals
+		arrays[Mesh.ARRAY_INDEX] = li
+		var am := ArrayMesh.new()
+		am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		meshes.append(am)
+	return meshes
+
+## Reverse a single-surface mesh's winding (and normals) — flips an inside-out component so
+## CSG treats its interior as the solid.
+func _flip_mesh(mesh: ArrayMesh) -> ArrayMesh:
+	var arr := mesh.surface_get_arrays(0)
+	var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+	var ix: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+	var out_i := PackedInt32Array()
+	for k in range(0, ix.size(), 3):
+		out_i.append(ix[k])
+		out_i.append(ix[k + 2])
+		out_i.append(ix[k + 1])
+	var normals: PackedVector3Array = arr[Mesh.ARRAY_NORMAL]
+	for n in normals.size():
+		normals[n] = -normals[n]
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = v
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_INDEX] = out_i
+	var out := ArrayMesh.new()
+	out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return out
+
+func _uf_find(parent: Array, x: int) -> int:
+	while parent[x] != x:
+		parent[x] = parent[parent[x]]  # path halving
+		x = parent[x]
+	return x
+
+func _uf_union(parent: Array, a: int, b: int) -> void:
+	var ra := _uf_find(parent, a)
+	var rb := _uf_find(parent, b)
+	if ra != rb:
+		parent[rb] = ra
 
 func _own_all(node: Node, owner_node: Node) -> void:
 	for c in node.get_children():

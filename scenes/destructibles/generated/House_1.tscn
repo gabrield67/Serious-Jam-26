@@ -1,23 +1,23 @@
-[gd_scene format=4 uid="uid://wli18lhlabm1"]
+[gd_scene format=4 uid="uid://bcjk3gbhn13s3"]
 
 [ext_resource type="Script" uid="uid://c2dswl0bbbmp" path="res://scripts/destructibles/destructible.gd" id="1_ctm35"]
-[ext_resource type="Resource" uid="uid://dsmalldestr01" path="res://resources/destructibles/size/small.tres" id="2_t1cei"]
+[ext_resource type="Resource" uid="uid://dmeddestr01" path="res://resources/destructibles/size/medium.tres" id="2_t1cei"]
 [ext_resource type="Resource" uid="uid://chousekind1" path="res://resources/destructibles/kinds/house.tres" id="3_fb6n6"]
-[ext_resource type="PackedScene" uid="uid://b5waxc2ohfyet" path="res://scenes/destructibles/fragments/Fragments_House_1.tscn" id="4_t1cei"]
+[ext_resource type="PackedScene" uid="uid://bexgrt4bywlpn" path="res://scenes/destructibles/fragments/Fragments_House_1.tscn" id="4_t1cei"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebei4"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ci2yg"]
 resource_name = "Material.001"
 cull_mode = 2
 albedo_color = Color(0.010205083, 0.9063355, 0.5214047, 1)
 roughness = 0.5
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kbeli"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jluvu"]
 resource_name = "Material.002"
 cull_mode = 2
 albedo_color = Color(0.9063355, 0, 0.20581867, 1)
 roughness = 0.5
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_4p2pd"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_wfe3w"]
 _surfaces = [{
 "aabb": AABB(-3.7723093, -3.7723088, -3.8407896, 7.5446167, 7.544617, 2.924381),
 "format": 34896613377,
@@ -41,7 +41,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_pmrwc"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_vom3w"]
 resource_name = "Map Objects_House_1"
 _surfaces = [{
 "aabb": AABB(-3.7723093, -3.7723088, -3.8407896, 7.5446167, 7.544617, 2.924381),
@@ -49,7 +49,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 12,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
-"material": SubResource("StandardMaterial3D_ebei4"),
+"material": SubResource("StandardMaterial3D_ci2yg"),
 "name": "Material.001",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -61,7 +61,7 @@ _surfaces = [{
 "format": 34359742487,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAEAAcABQAHAAgACQAKAAsACQAMAAoADQAOAA8ADQAQAA4AEQASABMAEgARABQAEgAUABUA"),
-"material": SubResource("StandardMaterial3D_kbeli"),
+"material": SubResource("StandardMaterial3D_jluvu"),
 "name": "Material.002",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -69,10 +69,10 @@ _surfaces = [{
 "vertex_data": PackedByteArray("hG1xwIJtccAwjjVAfG1xQIJtccDAmWq/hG1xwIJtccDAmWq/fG1xQIJtccAwjjVAfG1xQIBtcUAwjjVAfG1xQIJtccDAmWq/fG1xQIJtccAwjjVAfG1xQIBtcUDAmWq/fG1xQAAAAAB/z3XAfG1xQIBtcUAwjjVAhG1xwIBtcUDAmWq/fG1xQIBtcUDAmWq/hG1xwIBtcUAwjjVAfG1xQIJtccAwjjVAhG1xwIBtcUAwjjVAfG1xQIBtcUAwjjVAhG1xwIJtccAwjjVAhG1xwIJtccAwjjVAhG1xwIBtcUDAmWq/hG1xwIBtcUAwjjVAhG1xwIJtccDAmWq/hG1xwAAAAAB/z3XA/38AAP//////fwAA//////9/AAD//////38AAP////////9//////////3//////////f/////////9//////////3////+//3//////////f/////////9//////////3//////////f/9/////P/9//3////8//3//f////z//f/9/////PwAA/38y7QAAAAD/f9nwAAAAAP9/pMwAAAAA/3+Q7f5/AAD/f8/N/n8=")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_4p2pd")
+shadow_mesh = SubResource("ArrayMesh_wfe3w")
 
-[node name="House_1" type="StaticBody3D" unique_id=190403167]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+[node name="House_1" type="StaticBody3D" unique_id=1019379932]
+transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, 0, 0, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_ctm35")
@@ -81,5 +81,5 @@ kind = ExtResource("3_fb6n6")
 fragments_scene = ExtResource("4_t1cei")
 keep_authored_scale = true
 
-[node name="House_1" type="MeshInstance3D" parent="." unique_id=793295272]
-mesh = SubResource("ArrayMesh_pmrwc")
+[node name="House_1" type="MeshInstance3D" parent="." unique_id=707216034]
+mesh = SubResource("ArrayMesh_vom3w")

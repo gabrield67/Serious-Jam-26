@@ -1,0 +1,85 @@
+[gd_scene format=4 uid="uid://vb5rwscx0jfv"]
+
+[ext_resource type="Script" uid="uid://c2dswl0bbbmp" path="res://scripts/destructibles/destructible.gd" id="1_hhxol"]
+[ext_resource type="Resource" uid="uid://dmeddestr01" path="res://resources/destructibles/size/medium.tres" id="2_eq0nw"]
+[ext_resource type="Resource" uid="uid://chousekind1" path="res://resources/destructibles/kinds/house.tres" id="3_itely"]
+[ext_resource type="PackedScene" uid="uid://bgj0ktq25mid7" path="res://scenes/destructibles/fragments/Fragments_House_4.tscn" id="4_4w0mt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ci2yg"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_color = Color(0.010205083, 0.9063355, 0.5214047, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jluvu"]
+resource_name = "Material.002"
+cull_mode = 2
+albedo_color = Color(0.9063355, 0, 0.20581867, 1)
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_f4dm1"]
+_surfaces = [{
+"aabb": AABB(-4.176673, -4.1750107, -6.00894, 8.353345, 8.353348, 3.3345022),
+"format": 34896613377,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAAAAIABAACAAUA"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("//++fwAAAAAAAP////8AAAAAvn8AAAAA////////AAD//wAA//8AAAAAAAD//wAA")
+}, {
+"aabb": AABB(-4.176673, -4.1750107, -6.00894, 8.353345, 8.353348, 11.687847),
+"format": 34359742465,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAAAAIABAACAAUAAwAAAAYAAAAEAAYAAwAGAAcABwAGAAQABwABAAMABwAEAAgAAQAHAAgAAQAIAAkA"),
+"name": "Material.002",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 10,
+"vertex_data": PackedByteArray("TqeFwLCZhcCbubVATKeFQLCZhcD+KSvATqeFwLCZhcD+KSvATKeFQLCZhcCbubVATqeFwPC0hUD+KSvATqeFwACA2rs9ScDATqeFwPC0hUCbubVATKeFQPC0hUCbubVATKeFQPC0hUD+KSvATKeFQACA2rs9ScDA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_1pob6"]
+resource_name = "Map Objects_House_4"
+_surfaces = [{
+"aabb": AABB(-4.176673, -4.1750107, -6.00894, 8.353345, 8.353348, 3.3345022),
+"attribute_data": PackedByteArray("/58PYP/f/z//3w9g/5//P/+f/3//3w9g/9//f/+fD2A="),
+"format": 34896613399,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
+"material": SubResource("StandardMaterial3D_ci2yg"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//++fwAA//8AAP///////wAAvn8AAP///////////////wAA/////wAAvn8AAP//AAAAAP///////75/AAD///9/1d7/f9Xe/3/V3v9/1d48of//PKH//zyh//88of//")
+}, {
+"aabb": AABB(-4.176673, -4.1750107, -6.00894, 8.353345, 8.353348, 11.687847),
+"attribute_data": PackedByteArray("AADAPgAAQD8AACA/AAAAPwAAID8AAEA/AADAPgAAAD8AAMA+AABAPwAAYD8AAIA+AADAPgAAAAAAACA/AABAPwAAYD+kIMA+AADAPgAAgD4AACA/AAAAAAAAID8AAIA+AADAPgAAAAAAAMA+AAAAPwAAwD4AAAAAAADAPgAAgD4AAMA+AABAPwAAwD4AAIA+AAAgPwAAAD8AAMA+AAAAPwAAID8AAIA+AAAgP6QgwD4="),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAEAAcABQAHAAgACQAKAAsACQAMAAoADQAOAA8ADQAQAA4AEQASABMAEgARABQAEgAUABUA"),
+"material": SubResource("StandardMaterial3D_jluvu"),
+"name": "Material.002",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 22,
+"vertex_data": PackedByteArray("TqeFwLCZhcCbubVATKeFQLCZhcD+KSvATqeFwLCZhcD+KSvATKeFQLCZhcCbubVATqeFwLCZhcCbubVATqeFwPC0hUD+KSvATqeFwPC0hUCbubVATqeFwLCZhcD+KSvATqeFwACA2rs9ScDATKeFQPC0hUCbubVATqeFwPC0hUD+KSvATKeFQPC0hUD+KSvATqeFwPC0hUCbubVATKeFQLCZhcCbubVATqeFwPC0hUCbubVATKeFQPC0hUCbubVATqeFwLCZhcCbubVATKeFQPC0hUCbubVATKeFQLCZhcD+KSvATKeFQLCZhcCbubVATKeFQPC0hUD+KSvATKeFQACA2rs9ScDA/38AAP//////fwAA//////9/AAD//////38AAP////8AAP9/H+4AAAAA/3+r+f5/AAD/f//fAAAAAP9/pO3+fwAA/3+kzv5//3//////////f/////////9//////////3//////////f/9/////P/9//3////8//3//f////z//f/9/////P////3//////////f/////////9//////////3//////////f////78=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_f4dm1")
+
+[node name="House_4" type="StaticBody3D" unique_id=1690067498]
+transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_hhxol")
+data = ExtResource("2_eq0nw")
+kind = ExtResource("3_itely")
+fragments_scene = ExtResource("4_4w0mt")
+keep_authored_scale = true
+
+[node name="House_4" type="MeshInstance3D" parent="." unique_id=419113643]
+mesh = SubResource("ArrayMesh_1pob6")

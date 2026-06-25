@@ -1,7 +1,9 @@
-[gd_scene format=4 uid="uid://bp7hlnb7jfn3y"]
+[gd_scene format=4 uid="uid://sdl48myg58va"]
 
-[ext_resource type="Script" uid="uid://mgc2le5ujr5d" path="res://scripts/pickup_item.gd" id="1_djk4x"]
-[ext_resource type="Resource" uid="uid://b20272o4h72h0" path="res://resources/destructibles/kinds/foliage.tres" id="2_fn4ye"]
+[ext_resource type="Script" uid="uid://c2dswl0bbbmp" path="res://scripts/destructibles/destructible.gd" id="1_aws66"]
+[ext_resource type="Resource" uid="uid://dmeddestr01" path="res://resources/destructibles/size/medium.tres" id="2_lxetr"]
+[ext_resource type="Resource" uid="uid://b20272o4h72h0" path="res://resources/destructibles/kinds/foliage.tres" id="3_rk5mk"]
+[ext_resource type="PackedScene" uid="uid://c7quon02hf8q0" path="res://scenes/destructibles/fragments/Fragments_Tree_4.tscn" id="4_do7go"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ci2yg"]
 resource_name = "Material.001"
@@ -73,10 +75,15 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_62dik")
 
-[node name="Tree_1" type="StaticBody3D" unique_id=1525176856]
-transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -4, 0, 2, -1.7484555e-07, 0, 0, 0)
-script = ExtResource("1_djk4x")
-kind = ExtResource("2_fn4ye")
+[node name="Tree_4" type="StaticBody3D" unique_id=58527693]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -8, 0, 4, -3.496911e-07, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_aws66")
+data = ExtResource("2_lxetr")
+kind = ExtResource("3_rk5mk")
+fragments_scene = ExtResource("4_do7go")
+keep_authored_scale = true
 
-[node name="Tree_1" type="MeshInstance3D" parent="." unique_id=2044348786]
+[node name="Tree_4" type="MeshInstance3D" parent="." unique_id=163318960]
 mesh = SubResource("ArrayMesh_l8ok6")
