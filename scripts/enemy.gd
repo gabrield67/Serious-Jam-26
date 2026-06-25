@@ -9,6 +9,15 @@ class_name Enemy
 ## Only attacks when the tornado is within this many world units (0 = always).
 @export var attack_range: float = 80.0
 
+@export_group("Death")
+## Effect spawned where the enemy dies (auto-plays, then frees itself). Override per-scene
+## for a different blast — e.g. the tank uses Explosion B.
+@export var death_vfx: PackedScene = preload("res://Explosion VFX/Scenes/VFX_Explosion_A.tscn")
+## Uniform scale applied to the spawned effect.
+@export var death_vfx_scale: float = 10
+## How long the effect lives before despawning (seconds).
+@export var death_vfx_lifetime: float = 4.0
+
 var health: float
 
 ## True when the tornado is close enough to attack. Enemies gate their attacks on this.
@@ -25,18 +34,57 @@ func _enter_tree() -> void:
 	add_to_group("targetable")
 	health = max_health
 
-## Called by auto-aimed thrown debris — chips health, dies at 0.
+## Chips health, dies at 0.
 func take_damage(amount: float) -> void:
 	if health <= 0.0:
 		return
 	health -= amount
 	if health <= 0.0:
-		_on_death()
-		queue_free()
+		kill()
 
-## Override for death VFX / score.
+## Instantly destroy this enemy — a thrown debris is a one-hit kill.
+func kill() -> void:
+	if health > 0.0:
+		health = 0.0
+	_on_death()
+	queue_free()
+
+## Spawns the death explosion at the enemy's position. Override for extra death behavior
+## (call super() to keep the explosion).
 func _on_death() -> void:
-	pass
+	if death_vfx == null:
+		return
+	var fx := death_vfx.instantiate()
+	# GPUParticles only scale cleanly in local-coords mode; in global coords a big node scale
+	# makes them spray out fast and just flash. Flip them to local before scaling.
+	_make_particles_local(fx)
+	# The effects' "Init" animation loops, so over the lifetime it replays (the minis blast
+	# 3x). Make it play once.
+	_stop_vfx_loop(fx)
+	get_tree().current_scene.add_child(fx)
+	if fx is Node3D:
+		var n3 := fx as Node3D
+		n3.global_position = global_position
+		n3.scale = Vector3.ONE * death_vfx_scale
+	# It's parented to the scene (not us), so it survives our queue_free; free it after it plays.
+	get_tree().create_timer(death_vfx_lifetime).timeout.connect(fx.queue_free)
+
+func _make_particles_local(node: Node) -> void:
+	if node is GPUParticles3D:
+		(node as GPUParticles3D).local_coords = true
+	for child in node.get_children():
+		_make_particles_local(child)
+
+## Turn off looping on the effect's animations so the blast fires once, not on repeat.
+func _stop_vfx_loop(node: Node) -> void:
+	if node is AnimationPlayer:
+		var ap := node as AnimationPlayer
+		for anim_name in ap.get_animation_list():
+			var anim := ap.get_animation(anim_name)
+			if anim:
+				anim.loop_mode = Animation.LOOP_NONE
+	for child in node.get_children():
+		_stop_vfx_loop(child)
 
 # --- Targeting contract ---
 

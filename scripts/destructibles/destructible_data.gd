@@ -12,3 +12,5 @@ class_name DestructibleData
 @export var debris: DebrisType
 ## Visual scale multiplier, applied only when an instance does NOT keep its authored scale.
 @export var scale_mult: float = 1.0
+## Camera-shake trauma (0..1) added when the tornado first hits an item of this size.
+@export var hit_shake: float = 0.3

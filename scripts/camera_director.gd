@@ -34,6 +34,12 @@ extends Node
 ## How quickly the look-ahead eases in and out.
 @export var look_smooth: float = 4.0
 
+@export_group("Shake")
+## Max aim jitter (world units) at full trauma.
+@export var shake_strength: float = 14.0
+## How fast the shake eases off — lower = it lingers longer with a gentler fade.
+@export var shake_decay: float = 1.2
+
 @export_group("Lead with movement")
 ## Orbit the camera to the side opposite the tornado's heading, and slide it off-centre.
 @export var move_lead: bool = true
@@ -56,8 +62,10 @@ var _look_pan: Vector2 = Vector2.ZERO   # current eased ground-plane mouse look-
 var _look_lead: Vector2 = Vector2.ZERO  # current eased movement look-ahead
 var _dir: Vector2 = Vector2(1.0, 0.0)         # current camera horizontal direction (orbits)
 var _desired_dir: Vector2 = Vector2(1.0, 0.0)  # side it's swinging toward
+var _shake: float = 0.0                        # current shake trauma (0..1)
 
 func _ready() -> void:
+	add_to_group("camera_shake")  # destructibles call add_shake on us via this group
 	if phantom_camera_path != NodePath():
 		_pcam = get_node_or_null(phantom_camera_path)
 	if _pcam == null:
@@ -159,4 +167,16 @@ func _process(delta: float) -> void:
 				var right := Vector2(-fwd.y, fwd.x)      # screen-right on the ground
 				target_pan = (right * s.x + fwd * s.y) * amt
 	_look_pan = _look_pan.lerp(target_pan, clampf(look_smooth * delta, 0.0, 1.0))
-	_pcam.look_at_offset = _base_look_at + Vector3(_look_pan.x + _look_lead.x, 0.0, _look_pan.y + _look_lead.y)
+
+	# Camera shake: a random jitter on the aim that scales with trauma (so per-size differences
+	# stay clear) and tapers off exponentially — fading gradually with a long, gentle tail.
+	_shake = lerp(_shake, 0.0, clampf(shake_decay * delta, 0.0, 1.0))
+	if _shake < 0.004:
+		_shake = 0.0
+	var sh := _shake * shake_strength
+	var shake_off := Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0) * 0.5, randf_range(-1.0, 1.0)) * sh
+	_pcam.look_at_offset = _base_look_at + Vector3(_look_pan.x + _look_lead.x, 0.0, _look_pan.y + _look_lead.y) + shake_off
+
+## Add camera-shake trauma (0..1). Destructibles call this via the "camera_shake" group.
+func add_shake(amount: float) -> void:
+	_shake = clampf(_shake + amount, 0.0, 1.0)

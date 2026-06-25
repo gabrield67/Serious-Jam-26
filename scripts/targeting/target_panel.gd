@@ -27,11 +27,13 @@ func _ready() -> void:
 
 	visible = false
 
-## health = Vector2(current, max). screen_pos = where the target is on screen.
+## health = Vector2(current, max); a max of 0 means "no health" (hide the bar, name only).
 func show_for(display_name: String, health: Vector2, screen_pos: Vector2) -> void:
 	_name.text = display_name
-	_bar.max_value = maxf(health.y, 0.001)
-	_bar.value = clampf(health.x, 0.0, health.y)
+	_bar.visible = health.y > 0.0
+	if _bar.visible:
+		_bar.max_value = maxf(health.y, 0.001)
+		_bar.value = clampf(health.x, 0.0, health.y)
 	visible = true
 	# Center the box horizontally on the target and float it just above.
 	var s := _box.size

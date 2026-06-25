@@ -1,7 +1,8 @@
 extends Enemy
-## "Storm Chaser" truck — races to a spot in front of the tornado (along its heading), drops
-## a single barrel in its path, then turns and drives away WITHOUT driving into the storm. If
-## the player steers the tornado into it, though, it gets swept up like other debris.
+## "Storm Chaser" truck. If spawned on a road (place_on_road), it drives along the lane and
+## drops its barrel at the point on the road nearest the tornado. With no roads it falls back
+## to free-driving: races to a spot in front of the tornado and drops a barrel there. Either
+## way, if the player steers the tornado into it, it gets swept up like other debris.
 
 @export_group("Drive")
 @export var speed: float = 40.0
@@ -45,6 +46,13 @@ var _caught_t: float = 0.0
 var _spin: float = 0.0
 var _init_scale: Vector3 = Vector3.ONE
 
+# Road following (set by place_on_road).
+var _lane: Path3D = null
+var _offset: float = 0.0        # distance along the lane curve
+var _dir: float = 1.0           # travel direction along the lane (+1 / -1)
+var _lane_len: float = 0.0
+var _dropped: bool = false
+
 func _ready() -> void:
 	add_to_group("enemy")
 	_ground_y = global_position.y
@@ -69,11 +77,79 @@ func _physics_process(delta: float) -> void:
 		_update_caught(delta, c)
 		return
 
+	# On a road: follow the lane and drop at its closest point to the tornado.
+	if _lane != null and is_instance_valid(_lane):
+		_road_drive(delta, c)
+		return
+
+	# No road: free-drive in front of the tornado.
 	match _state:
 		State.RUN:
 			_run(delta, c)
 		State.LEAVE:
 			_leave(delta, c)
+
+## Spawn the truck onto the nearest road lane (group "road_lanes"), positioned to drive past
+## the point closest to the tornado. Returns false if there are no roads.
+func place_on_road() -> bool:
+	var torn := get_tree().get_first_node_in_group("tornado")
+	var tpos: Vector3 = torn.global_position if torn else global_position
+	var best: Path3D = null
+	var best_d := INF
+	for n in get_tree().get_nodes_in_group("road_lanes"):
+		var path := n as Path3D
+		if path == null or path.curve == null or path.curve.get_baked_length() <= 0.1:
+			continue
+		var co := path.curve.get_closest_offset(path.to_local(tpos))
+		var d := path.to_global(path.curve.sample_baked(co)).distance_to(tpos)
+		if d < best_d:
+			best_d = d
+			best = path
+	if best == null:
+		return false
+	_lane = best
+	_lane_len = best.curve.get_baked_length()
+	# Start at the lane end farther from the tornado and drive toward the near end, so it
+	# passes the closest point along the way.
+	var d0 := best.to_global(best.curve.sample_baked(0.0)).distance_to(tpos)
+	var d1 := best.to_global(best.curve.sample_baked(_lane_len)).distance_to(tpos)
+	if d0 >= d1:
+		_offset = 0.0
+		_dir = 1.0
+	else:
+		_offset = _lane_len
+		_dir = -1.0
+	_dropped = false
+	_place_on_lane()
+	return true
+
+func _road_drive(delta: float, c: Vector3) -> void:
+	_offset += _dir * speed * delta
+	# Drop at the point on the lane closest to the tornado (as close as the road gets).
+	if not _dropped:
+		var co := _lane.curve.get_closest_offset(_lane.to_local(c))
+		if (_dir > 0.0 and _offset >= co) or (_dir < 0.0 and _offset <= co):
+			_drop_barrel()
+			_dropped = true
+	# Drove off the end of the lane — drop if we somehow haven't, then despawn.
+	if _offset <= -2.0 or _offset >= _lane_len + 2.0:
+		if not _dropped:
+			_drop_barrel()
+			_dropped = true
+		queue_free()
+		return
+	_place_on_lane()
+
+## Snap to the lane at the current offset, facing along the travel direction.
+func _place_on_lane() -> void:
+	var o := clampf(_offset, 0.0, _lane_len)
+	global_position = _lane.to_global(_lane.curve.sample_baked(o))
+	var ahead := clampf(o + _dir * 2.0, 0.0, _lane_len)
+	var t := _lane.to_global(_lane.curve.sample_baked(ahead)) - global_position
+	t.y = 0.0
+	if t.length() > 0.01:
+		_heading = atan2(t.x, t.z)
+	rotation = Vector3(0.0, _heading + facing_offset, 0.0)
 
 func _run(delta: float, c: Vector3) -> void:
 	# Aim for a point in front of the tornado along the way it's headed. If the storm is

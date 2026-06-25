@@ -321,7 +321,6 @@ _data = {
 [node name="spikes" type="GPUParticles3D" parent="." unique_id=1630168630]
 material_override = SubResource("ShaderMaterial_phfx7")
 cast_shadow = 0
-emitting = false
 lifetime = 0.25
 one_shot = true
 explosiveness = 0.8
@@ -333,7 +332,6 @@ draw_pass_1 = ExtResource("3_3sx23")
 [node name="streaks" type="GPUParticles3D" parent="." unique_id=453874369]
 material_override = SubResource("ShaderMaterial_cu30k")
 cast_shadow = 0
-emitting = false
 amount = 12
 lifetime = 0.25
 one_shot = true

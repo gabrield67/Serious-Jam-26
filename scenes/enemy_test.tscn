@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="12_tank"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="13_plane"]
 [ext_resource type="Script" uid="uid://c4j07fqbfipl1" path="res://scripts/tools/enemy_toggle.gd" id="14_toggle"]
-[ext_resource type="Script" path="res://scripts/tools/debug_controls.gd" id="15_fujdbg"]
+[ext_resource type="Script" uid="uid://cc4pny7lvupm7" path="res://scripts/tools/debug_controls.gd" id="15_fujdbg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -163,7 +163,6 @@ max_health = 25.0
 
 [node name="Tank" parent="NPCs" unique_id=1960232787 instance=ExtResource("12_tank")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 130, 0, 0)
-aim_height = 20.0
 enemy_name = "Tank"
 max_health = 40.0
 

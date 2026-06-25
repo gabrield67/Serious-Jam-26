@@ -15,7 +15,7 @@ extends Enemy
 ## Move-speed multiplier applied to the tornado while the beam holds it (0.5 = half speed).
 @export var slow_factor: float = 0.5
 ## Where on the funnel the beam hits / aims.
-@export var aim_height: float = 5.0
+@export var aim_height: float = 20.0
 ## Beam thickness.
 @export var beam_thickness: float = 0.5
 

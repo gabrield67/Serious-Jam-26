@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dojyjhn6gyo1d" path="res://scripts/plane.gd" id="1_plane"]
 [ext_resource type="PackedScene" uid="uid://cdusttrail01" path="res://scenes/particles/DustTrail.tscn" id="2_dust"]
+[ext_resource type="PackedScene" uid="uid://ch6kqo2qu7mhf" path="res://Explosion VFX/Scenes/VFX_mini_explosion_1.tscn" id="3_mini1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8d8a"]
 resource_name = "Material"
@@ -316,6 +317,8 @@ shadow_mesh = SubResource("ArrayMesh_e1o88")
 [node name="plane" type="Node3D" unique_id=391191332]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("1_plane")
+enemy_name = "Plane"
+death_vfx = ExtResource("3_mini1")
 
 [node name="DustTrail" parent="." unique_id=321775021 instance=ExtResource("2_dust")]
 transform = Transform3D(1.942, 0, 0, 0, 1.942, 0, 0, 0, 1.942, 0, 1.3068484, 7.204501)

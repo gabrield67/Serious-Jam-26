@@ -9,3 +9,4 @@ destroy_time = 14.0
 value = 20.0
 debris = ExtResource("2_debris")
 scale_mult = 2.0
+hit_shake = 0.85

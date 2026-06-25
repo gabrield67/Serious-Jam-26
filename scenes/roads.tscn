@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dp083k15ncrbc"]
+
+[ext_resource type="Script" uid="uid://bxp3i4cnonh8y" path="res://addons/road-generator/nodes/road_manager.gd" id="1_mgr"]
+[ext_resource type="Script" uid="uid://cph7euje06kel" path="res://addons/road-generator/nodes/road_container.gd" id="2_cont"]
+[ext_resource type="Script" uid="uid://difs1qg4mpcpw" path="res://addons/road-generator/nodes/road_point.gd" id="3_pt"]
+[ext_resource type="Material" uid="uid://dpashsuk5lr4x" path="res://addons/road-generator/resources/road_texture.material" id="4_mat"]
+
+[node name="Roads" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("1_mgr")
+collision_layer = 0
+collision_mask = 0
+
+[node name="Road_NS" type="Node3D" parent="."]
+script = ExtResource("2_cont")
+material_resource = ExtResource("4_mat")
+use_lowpoly_preview = true
+generate_ai_lanes = true
+ai_lane_group = "road_lanes"
+
+[node name="RP_0" type="Node3D" parent="Road_NS"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 300, 0, -200)
+script = ExtResource("3_pt")
+traffic_dir = Array[int]([2, 1])
+lanes = Array[int]([5, 5])
+prior_mag = 8.0
+next_mag = 8.0
+next_pt_init = NodePath("../RP_1")
+
+[node name="RP_1" type="Node3D" parent="Road_NS"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 300, 0, 400)
+script = ExtResource("3_pt")
+traffic_dir = Array[int]([2, 1])
+lanes = Array[int]([5, 5])
+prior_mag = 8.0
+next_mag = 8.0
+prior_pt_init = NodePath("../RP_0")
+
+[node name="Road_EW" type="Node3D" parent="."]
+script = ExtResource("2_cont")
+material_resource = ExtResource("4_mat")
+use_lowpoly_preview = true
+generate_ai_lanes = true
+ai_lane_group = "road_lanes"
+
+[node name="RP_0" type="Node3D" parent="Road_EW"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -200, 0, 300)
+script = ExtResource("3_pt")
+traffic_dir = Array[int]([2, 1])
+lanes = Array[int]([5, 5])
+prior_mag = 8.0
+next_mag = 8.0
+next_pt_init = NodePath("../RP_1")
+
+[node name="RP_1" type="Node3D" parent="Road_EW"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 600, 0, 300)
+script = ExtResource("3_pt")
+traffic_dir = Array[int]([2, 1])
+lanes = Array[int]([5, 5])
+prior_mag = 8.0
+next_mag = 8.0
+prior_pt_init = NodePath("../RP_0")

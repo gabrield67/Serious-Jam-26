@@ -329,10 +329,12 @@ func _update_thrown(delta: float) -> void:
 		var v: Vector3 = entry["vel"]
 		var target = entry.get("target")
 		if target != null and is_instance_valid(target):
-			# Homing: steer toward the target and damage it on contact.
+			# Homing: steer toward the target; a thrown debris kills it on contact.
 			var to: Vector3 = target.global_position - node.global_position
 			if to.length() <= throw_hit_radius:
-				if target.has_method("take_damage"):
+				if target.has_method("kill"):
+					target.kill()
+				elif target.has_method("take_damage"):
 					target.take_damage(throw_damage)
 				node.queue_free()
 				_thrown.erase(entry)

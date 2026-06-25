@@ -9,6 +9,7 @@ class_name PickupItem
 
 func _ready() -> void:
 	add_to_group("pickup")
+	add_to_group("targetable")  # so the hover system highlights + labels it
 	# Layer 2 so the maw (mask 3) still detects it, but the tornado's body (mask 1) passes
 	# through instead of being blocked. mask 0 — it's just a target, it scans nothing.
 	collision_layer = 2
@@ -16,6 +17,12 @@ func _ready() -> void:
 	_ensure_collision()
 	if kind:
 		kind.apply_to(_find_mesh(), global_position)
+
+## Highlight on hover (pickups have no health bar — just a name label).
+func set_highlighted(on: bool) -> void:
+	var mesh := _find_mesh()
+	if mesh:
+		TargetHighlight.apply(mesh, on)
 
 ## Name shown in HUD/score; falls back to the node name when there's no kind.
 func get_display_name() -> String:
@@ -27,6 +34,8 @@ func get_display_name() -> String:
 func grab() -> void:
 	collision_layer = 0
 	remove_from_group("pickup")
+	remove_from_group("targetable")
+	set_highlighted(false)
 
 func _ensure_collision() -> void:
 	var mesh := _find_mesh()

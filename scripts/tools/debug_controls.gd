@@ -10,12 +10,14 @@ extends Node
 @export_multiline var controls: String = """[  or  ]             Fujita size  -  down / up
 F1 .. F6        jump to F0 .. F5
 Tab               cycle the tornado's visual style
-Hold Shift    fly the tornado around fast"""
+Hold Shift   fly the tornado around fast
+L-click enemy   instakill it"""
 
 ## Speed multiplier applied to the tornado while Shift is held.
 @export var fast_mult: float = 5.0
 
 var _tornado: Node
+var _targeting: Node
 
 ## Show the controls field as read-only help text rather than an editable value.
 func _validate_property(property: Dictionary) -> void:
@@ -26,6 +28,33 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	_tornado = get_tree().get_first_node_in_group("tornado")
+	_targeting = _find_targeting(get_tree().current_scene)
+
+## Left-click the hovered enemy to instakill it (and don't let the tornado also move there).
+func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint() or not enabled:
+		return
+	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
+		return
+	if _targeting == null or not is_instance_valid(_targeting):
+		_targeting = _find_targeting(get_tree().current_scene)
+	if _targeting == null or not _targeting.has_method("get_hovered"):
+		return
+	var e = _targeting.get_hovered()
+	if e and is_instance_valid(e) and e.is_in_group("enemy") and e.has_method("kill"):
+		e.kill()
+		get_viewport().set_input_as_handled()
+
+func _find_targeting(node: Node) -> Node:
+	if node == null:
+		return null
+	if node is TargetingController:
+		return node
+	for child in node.get_children():
+		var found := _find_targeting(child)
+		if found != null:
+			return found
+	return null
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():

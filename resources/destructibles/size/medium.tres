@@ -5,8 +5,6 @@
 
 [resource]
 script = ExtResource("1_script")
-display_name = "Medium"
-destroy_time = 2.0
 value = 5.0
 debris = ExtResource("2_debris")
-scale_mult = 1.0
+scale_mult = 0.6

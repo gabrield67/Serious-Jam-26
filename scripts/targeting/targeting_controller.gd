@@ -63,6 +63,10 @@ func _pick_target() -> Node:
 			return col
 	return null
 
+## The node currently under the cursor (used by debug tools), or null.
+func get_hovered() -> Node:
+	return _hovered
+
 func _nearest_enemy(cam: Camera3D, mp: Vector2) -> Node:
 	var best: Node = null
 	var best_d := enemy_pick_radius
@@ -93,10 +97,12 @@ func _update_panel() -> void:
 	var target: Node = _hovered
 	if target == null and _tornado and _tornado.has_method("get_chew_target"):
 		target = _tornado.get_chew_target()
-	if target and is_instance_valid(target) and target.has_method("get_health") and target is Node3D:
+	if target and is_instance_valid(target) and target is Node3D:
 		var cam := get_viewport().get_camera_3d()
 		if cam and not cam.is_position_behind(target.global_position):
 			var disp: String = target.get_display_name() if target.has_method("get_display_name") else String(target.name)
-			_panel.show_for(disp, target.get_health(), cam.unproject_position(target.global_position))
+			# Pickups have no health — pass Vector2.ZERO so the panel shows just the name.
+			var hp: Vector2 = target.get_health() if target.has_method("get_health") else Vector2.ZERO
+			_panel.show_for(disp, hp, cam.unproject_position(target.global_position))
 			return
 	_panel.hide_panel()

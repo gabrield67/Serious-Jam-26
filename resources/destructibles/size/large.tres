@@ -5,8 +5,8 @@
 
 [resource]
 script = ExtResource("1_script")
-display_name = "Large"
 destroy_time = 6.0
 value = 10.0
 debris = ExtResource("2_debris")
 scale_mult = 1.4
+hit_shake = 0.55

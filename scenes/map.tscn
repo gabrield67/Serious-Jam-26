@@ -17,6 +17,13 @@
 [ext_resource type="PackedScene" uid="uid://btb4p8sah11hc" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="15_mo32q"]
 [ext_resource type="PackedScene" uid="uid://bp7hlnb7jfn3y" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_6k6j1"]
 [ext_resource type="PackedScene" uid="uid://b64c6mgg0wb4b" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
+[ext_resource type="PackedScene" uid="uid://dp083k15ncrbc" path="res://scenes/roads.tscn" id="18_roads"]
+[ext_resource type="Script" uid="uid://ctvrqhr4nfi18" path="res://scripts/npc_spawner.gd" id="19_spawn"]
+[ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="20_truck"]
+[ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="21_heli"]
+[ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="22_plane"]
+[ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="23_tank"]
+[ext_resource type="AudioStream" uid="uid://b8ifd7f4rhl4f" path="res://sounds/game_music_moodmode.mp3" id="24_gamemusic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -75,6 +82,11 @@ script = ExtResource("4_tween")
 
 [node name="Map" type="Node3D" unique_id=1135035617]
 
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1135035618]
+stream = ExtResource("24_gamemusic")
+volume_db = -28.889
+autoplay = true
+
 [node name="Apartments" parent="." unique_id=499427553 instance=ExtResource("2_wslke")]
 transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -12.332565, 17.235254, -71.92551)
 
@@ -93,6 +105,12 @@ script = ExtResource("11_cloud")
 follow = null
 drift = null
 underside_darken = 0.45
+
+[node name="Roads" parent="." unique_id=1394464828 instance=ExtResource("18_roads")]
+
+[node name="NPCSpawner" type="Node" parent="." unique_id=1881858446]
+script = ExtResource("19_spawn")
+npc_scenes = Array[PackedScene]([ExtResource("20_truck"), ExtResource("21_heli"), ExtResource("22_plane"), ExtResource("23_tank")])
 
 [node name="PlaceholderGround" type="StaticBody3D" parent="." unique_id=1924351215]
 
@@ -124,6 +142,7 @@ lower_per_size = 12.0
 look_ahead = 30.0
 look_dead_zone = 1.0
 look_smooth = 2.0
+shake_strength = 5.0
 pan_speed = 5.0
 look_lead = 60.0
 ref_speed = 10.0
@@ -182,6 +201,10 @@ panel_path = NodePath("../HUD/TargetPanel")
 
 [node name="DebugControls" type="Node" parent="." unique_id=1849618863]
 script = ExtResource("10_fujdbg")
+controls = "[  or  ]             Fujita size  -  down / up
+F1 .. F6        jump to F0 .. F5
+Tab               cycle the tornado's visual style
+Hold Shift    fly the tornado around fast"
 
 [node name="House_5" parent="." unique_id=52566959 instance=ExtResource("14_c70he")]
 transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -42.309982, 11.037464, 44.516243)
@@ -193,4 +216,4 @@ transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -19.017838, 39.955585, 114.1
 transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -4, 0, 2, -1.7484555e-07, -92.147446, 6.574621, -50.028397)
 
 [node name="Tree_2" parent="." unique_id=2121477582 instance=ExtResource("17_m335s")]
-transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, -133.28177, 4.347871, -8.885902)
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, -35.946144, 4.347871, -8.885902)

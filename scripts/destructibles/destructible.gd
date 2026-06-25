@@ -31,6 +31,8 @@ var _progress: float = 0.0
 var _destroy_time: float = 1.0
 var _base_scale: Vector3
 var _fragments: CollapsingFragments  # spawned on first chew, drives the progressive crumble
+var _started: bool = false           # has the tornado made first contact
+var _highlighted: bool = false       # currently hovered
 
 func _ready() -> void:
 	add_to_group("consumable")
@@ -50,6 +52,11 @@ func _ready() -> void:
 ## this when the tornado moves away, so the crumble naturally pauses (and resumes on
 ## return). Once fully chewed, the remaining shards release and the building is gone.
 func chew(amount: float) -> bool:
+	if not _started:
+		_started = true
+		# Initial hit — shake the camera, harder for bigger items.
+		var amt: float = data.hit_shake if data else 0.3
+		get_tree().call_group("camera_shake", "add_shake", amt)
 	_progress += amount
 	if _fragments == null:
 		_begin_crumble()
@@ -80,6 +87,8 @@ func _begin_crumble() -> void:
 		frags.transform = Transform3D.IDENTITY
 	ctrl.setup(get_tree().get_first_node_in_group("tornado"))
 	_fragments = ctrl
+	if _highlighted:
+		TargetHighlight.apply(ctrl, true)  # keep the hover glow on the shards
 
 ## The materials this instance is showing per surface (palette tints applied in _ready),
 ## so the shards can be painted identically. Nulls = keep the shard's own material.
@@ -128,8 +137,12 @@ func get_health() -> Vector2:
 	return Vector2(maxf(_destroy_time - _progress, 0.0), _destroy_time)
 
 func set_highlighted(on: bool) -> void:
-	if _mesh:
-		TargetHighlight.apply(_mesh, on)
+	_highlighted = on
+	# Highlight the whole node (catches any mesh nesting) and the shards once it's crumbling
+	# (they live in the scene, not under us, and the intact mesh is hidden by then).
+	TargetHighlight.apply(self, on)
+	if _fragments and is_instance_valid(_fragments):
+		TargetHighlight.apply(_fragments, on)
 
 # --- Color: per mesh surface ("face"), independent of size ---
 
