@@ -191,6 +191,7 @@ func _spawn_debris() -> void:
 	if data == null or data.debris == null or data.debris.vfx == null:
 		return
 	var burst := data.debris.vfx.instantiate()
+	VFXUtil.tame_for_compatibility(burst)  # drop shadow lights / Decals so bursts don't sputter
 	get_tree().current_scene.add_child(burst)
 	if burst is Node3D:
 		burst.global_position = global_position

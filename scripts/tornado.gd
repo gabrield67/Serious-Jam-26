@@ -61,8 +61,12 @@ var debug_speed_mult: float = 1.0
 @export var throw_spin: float = 360.0
 ## Damage an auto-aimed throw deals to an enemy on hit.
 @export var throw_damage: float = 10.0
-## Speed of an auto-aimed (right-click-an-enemy) throw — fast and direct, no arc.
+## Top speed of an auto-aimed (right-click-an-enemy) throw — it accelerates up to this.
 @export var throw_at_speed: float = 120.0
+## Speed the debris leaves the tornado at, before it accelerates to throw_at_speed.
+@export var throw_start_speed: float = 35.0
+## How fast a thrown debris builds from throw_start_speed up to throw_at_speed (units/sec²).
+@export var throw_accel: float = 220.0
 ## How hard an auto-aimed throw curves toward its target (per second) so it reliably lands.
 @export var throw_homing: float = 12.0
 ## Distance from the target at which an auto-aimed throw counts as a hit.
@@ -314,9 +318,9 @@ func throw_at(target: Node3D) -> void:
 	var gpos := item.global_position
 	item.reparent(get_parent())
 	item.global_position = gpos
-	# Fire fast and straight at the enemy (homing keeps it on a moving target).
+	# Leave slow and accelerate toward the enemy (homing keeps it on a moving target).
 	var dir := (target.global_position - gpos).normalized()
-	_thrown.append({"node": item, "vel": dir * throw_at_speed, "life": 0.0, "target": target})
+	_thrown.append({"node": item, "vel": dir * throw_start_speed, "life": 0.0, "target": target, "speed": throw_start_speed})
 
 func _update_thrown(delta: float) -> void:
 	if _thrown.is_empty():
@@ -339,7 +343,14 @@ func _update_thrown(delta: float) -> void:
 				node.queue_free()
 				_thrown.erase(entry)
 				continue
-			v = v.lerp(to.normalized() * throw_at_speed, clampf(throw_homing * delta, 0.0, 1.0))
+			# Accelerate the speed up to throw_at_speed while steering the heading at the target.
+			var spd: float = move_toward(entry.get("speed", throw_start_speed), throw_at_speed, throw_accel * delta)
+			var heading := v.normalized() if v.length() > 0.001 else to.normalized()
+			heading = heading.lerp(to.normalized(), clampf(throw_homing * delta, 0.0, 1.0))
+			if heading.length() > 0.001:
+				heading = heading.normalized()
+			v = heading * spd
+			entry["speed"] = spd
 		else:
 			v.y -= throw_gravity * delta  # target died mid-flight — just fall
 		entry["vel"] = v

@@ -4,7 +4,7 @@ extends Sprite3D
 ##   Arrived/idle -> follows the mouse cursor on the ground (hover).
 
 @export var ground_height: float = 0.0
-@export var hover_offset: float = 0.05
+@export var hover_offset: float = 0.15
 @export var spin_speed: float = 30.0
 
 const _FLAT := Vector3(-PI / 2.0, 0.0, 0.0)

@@ -61,6 +61,8 @@ func _on_death() -> void:
 	# The effects' "Init" animation loops, so over the lifetime it replays (the minis blast
 	# 3x). Make it play once.
 	_stop_vfx_loop(fx)
+	# Strip Compatibility-killers (shadow-casting lights, Decals) so stacked deaths don't sputter.
+	VFXUtil.tame_for_compatibility(fx)
 	get_tree().current_scene.add_child(fx)
 	if fx is Node3D:
 		var n3 := fx as Node3D

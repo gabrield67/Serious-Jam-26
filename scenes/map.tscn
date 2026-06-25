@@ -24,10 +24,11 @@
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="22_plane"]
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="23_tank"]
 [ext_resource type="AudioStream" uid="uid://b8ifd7f4rhl4f" path="res://sounds/game_music_moodmode.mp3" id="24_gamemusic"]
+[ext_resource type="Script" uid="uid://b8snlop3dxfh5" path="res://scripts/vfx_prewarmer.gd" id="25_prewarm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
-sky_top_color = Color(0.38, 0.45, 0.55, 1)
 sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+sky_energy_multiplier = 0.38
 ground_bottom_color = Color(0.25, 0.27, 0.27, 1)
 ground_horizon_color = Color(0.7, 0.71, 0.72, 1)
 
@@ -40,6 +41,7 @@ sky = SubResource("Sky")
 ambient_light_source = 3
 ambient_light_energy = 0.6
 tonemap_mode = 2
+tonemap_exposure = 0.75
 fog_enabled = true
 fog_light_color = Color(0.7, 0.71, 0.72, 1)
 fog_density = 0.0003
@@ -61,7 +63,7 @@ seamless = true
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_color = Color(0.6, 0.6, 0.6, 1)
+albedo_color = Color(0.85, 0.85, 0.85, 1)
 albedo_texture = SubResource("CloudTex")
 uv1_scale = Vector3(14, 14, 1)
 
@@ -93,6 +95,9 @@ transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1685973432]
 environment = SubResource("Env")
 
+[node name="VFXPrewarmer" type="Node3D" parent="." unique_id=112297827]
+script = ExtResource("25_prewarm")
+
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=96083465]
 transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
 shadow_enabled = true
@@ -104,7 +109,7 @@ mesh = SubResource("CloudMesh")
 script = ExtResource("11_cloud")
 follow = null
 drift = null
-underside_darken = 0.45
+underside_darken = 0.25
 
 [node name="Roads" parent="." unique_id=1394464828 instance=ExtResource("18_roads")]
 
@@ -129,6 +134,7 @@ shape = SubResource("GroundShape")
 physics_interpolation_mode = 1
 transform = Transform3D(0, -0.35112345, 0.9363291, -1.4901161e-08, 0.9363292, 0.35112345, -1, 1.4901161e-08, 0, 160, 85, 0)
 top_level = true
+near = 1.0
 far = 8000.0
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1529851856]
@@ -169,6 +175,7 @@ align_rotation_with_view = Callable()
 [node name="GroundCursor" type="Sprite3D" parent="." unique_id=1689576190]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 pixel_size = 0.325
+alpha_cut = 1
 texture_filter = 5
 texture = ExtResource("5_cursor")
 script = ExtResource("6_groundcursor")
@@ -202,6 +209,7 @@ panel_path = NodePath("../HUD/TargetPanel")
 
 [node name="DebugControls" type="Node" parent="." unique_id=1849618863]
 script = ExtResource("10_fujdbg")
+left_click = false
 fast_mult = 20.0
 
 [node name="House_5" parent="." unique_id=52566959 instance=ExtResource("14_c70he")]

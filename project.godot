@@ -13,7 +13,7 @@ config_version=5
 config/name="'NADO"
 config/tags=PackedStringArray("jam")
 run/main_scene="uid://bm6ip6oknw3wn"
-config/features=PackedStringArray("4.7", "Forward Plus")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -71,3 +71,5 @@ common/physics_interpolation=true
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
