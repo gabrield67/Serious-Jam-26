@@ -117,6 +117,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_j6hep")
 
 [node name="helicoper" type="Node3D" unique_id=1301453332]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0)
 script = ExtResource("2_heli")
 
 [node name="Rotor_002" type="Node3D" parent="." unique_id=1214438470]

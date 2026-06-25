@@ -1,3 +1,130 @@
 [gd_scene format=3 uid="uid://bwv2g6y7ychem"]
 
+[ext_resource type="PackedScene" uid="uid://bfa3n8gndsl51" path="res://scenes/tornado.tscn" id="1_tornado"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_host"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_pcam"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_tween"]
+[ext_resource type="Texture2D" uid="uid://dg205j81ea1qi" path="res://assets/UI/cursor/crosshair135.png" id="5_cursor"]
+[ext_resource type="Script" uid="uid://bjaystaecgmd0" path="res://scripts/ground_cursor.gd" id="6_groundcursor"]
+[ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="7_fujita"]
+[ext_resource type="Script" uid="uid://bbcans6eh52nl" path="res://scripts/targeting/targeting_controller.gd" id="8_target"]
+[ext_resource type="Script" uid="uid://dohcgkohokg0x" path="res://scripts/targeting/target_panel.gd" id="9_panel"]
+[ext_resource type="Script" uid="uid://ce7k7r3fj1ogc" path="res://scripts/tools/fujita_debug.gd" id="10_fujdbg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+ground_bottom_color = Color(0.25, 0.27, 0.27, 1)
+ground_horizon_color = Color(0.7, 0.71, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.6
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.7, 0.71, 0.72, 1)
+fog_density = 0.0003
+
+[sub_resource type="BoxMesh" id="GroundMesh"]
+size = Vector3(4000, 2, 4000)
+
+[sub_resource type="StandardMaterial3D" id="GroundMat"]
+albedo_color = Color(0.31, 0.42, 0.26, 1)
+
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(4000, 2, 4000)
+
+[sub_resource type="Resource" id="TweenRes"]
+script = ExtResource("4_tween")
+
 [node name="Map" type="Node3D" unique_id=1135035617]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1685973432]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=96083465]
+transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
+shadow_enabled = true
+
+[node name="PlaceholderGround" type="StaticBody3D" parent="." unique_id=1924351215]
+
+[node name="Mesh" type="MeshInstance3D" parent="PlaceholderGround" unique_id=788090496]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("GroundMesh")
+surface_material_override/0 = SubResource("GroundMat")
+
+[node name="Collision" type="CollisionShape3D" parent="PlaceholderGround" unique_id=1187683483]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("GroundShape")
+
+[node name="Tornado" parent="." unique_id=1737715669 instance=ExtResource("1_tornado")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1980222075]
+physics_interpolation_mode = 1
+transform = Transform3D(0, -0.35112345, 0.9363291, -1.4901161e-08, 0.9363292, 0.35112345, -1, 1.4901161e-08, 0, 160, 85, 0)
+top_level = true
+far = 8000.0
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1529851856]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_host")
+
+[node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1596393269 node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(0, -0.3510781, 0.9362077, -1.4901161e-08, 0.93620825, 0.3510779, -1, 1.48992365e-08, 0, 160, 85, 0)
+top_level = true
+script = ExtResource("3_pcam")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("../Tornado")
+look_at_mode = 2
+look_at_target = NodePath("../Tornado")
+tween_resource = SubResource("TweenRes")
+follow_offset = Vector3(160, 85, 0)
+follow_damping = true
+follow_damping_value = Vector3(0.2, 0.2, 0.2)
+look_at_offset = Vector3(0, 25, 0)
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
+
+[node name="GroundCursor" type="Sprite3D" parent="." unique_id=1689576190]
+pixel_size = 0.325
+texture_filter = 5
+texture = ExtResource("5_cursor")
+script = ExtResource("6_groundcursor")
+spin_speed = 20.0
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1934856153]
+
+[node name="FujitaLabel" type="Label" parent="HUD" unique_id=972579932]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 620.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+text = "Health"
+script = ExtResource("7_fujita")
+
+[node name="TargetPanel" type="Control" parent="HUD" unique_id=1801255115]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("9_panel")
+
+[node name="TargetingController" type="Node" parent="." unique_id=1717237603]
+script = ExtResource("8_target")
+tornado_path = NodePath("../Tornado")
+panel_path = NodePath("../HUD/TargetPanel")
+
+[node name="FujitaDebug" type="Node" parent="." unique_id=1849618863]
+script = ExtResource("10_fujdbg")

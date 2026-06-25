@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const WORLD = preload("res://scenes/gym.tscn")
+const WORLD = preload("res://scenes/map.tscn")
 
 
 func _on_play_pressed() -> void:

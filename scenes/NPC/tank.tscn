@@ -633,6 +633,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ly1qi")
 
 [node name="Tank" type="Node3D" unique_id=114830562]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 script = ExtResource("1_tank")
 muzzle_path = NodePath("Sketchfab_model/Root/body/head/cannon/Marker3D")
 
