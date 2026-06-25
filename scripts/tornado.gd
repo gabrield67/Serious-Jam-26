@@ -10,6 +10,9 @@ extends CharacterBody3D
 @export var arrive_radius: float = 2.0
 @export var push_force: float = 14.0
 
+## Runtime debug hook: the debug controls set this to fly the tornado fast (1.0 = normal).
+var debug_speed_mult: float = 1.0
+
 @export_group("Power-up")
 ## Movement speed multiplier while powered up.
 @export var powerup_speed_mult: float = 1.6
@@ -150,6 +153,7 @@ func _speed_mult() -> float:
 		m *= powerup_speed_mult
 	if _slow_time > 0.0:
 		m *= _slow_factor
+	m *= debug_speed_mult  # debug controls set this (hold Shift to zip)
 	return m
 
 ## Switch the active style (a child of "Styles" by name); others hide + disable.
@@ -160,8 +164,8 @@ func set_style(style_name: String) -> void:
 	for child in _styles.get_children():
 		_set_vfx_active(child, child.name == style_name)
 
-## Debug: cycle to the next style under "Styles".
-func _cycle_style() -> void:
+## Cycle to the next style under "Styles" (used by the debug controls).
+func cycle_style() -> void:
 	if _styles == null:
 		return
 	var children := _styles.get_children()
@@ -191,8 +195,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
 		expel_debris()  # spit out armed bombs before they detonate
 		get_viewport().set_input_as_handled()
-	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
-		_cycle_style()  # debug: cycle through the VFX styles
 
 func _physics_process(delta: float) -> void:
 	if _powerup_time > 0.0:

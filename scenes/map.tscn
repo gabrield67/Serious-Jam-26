@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bfa3n8gndsl51" path="res://scenes/tornado.tscn" id="1_tornado"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_host"]
+[ext_resource type="PackedScene" uid="uid://d1wxv7knfpgt0" path="res://scenes/destructibles/generated/Apartments.tscn" id="2_wslke"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_pcam"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_tween"]
 [ext_resource type="Texture2D" uid="uid://dg205j81ea1qi" path="res://assets/UI/cursor/crosshair135.png" id="5_cursor"]
@@ -9,7 +10,13 @@
 [ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="7_fujita"]
 [ext_resource type="Script" uid="uid://bbcans6eh52nl" path="res://scripts/targeting/targeting_controller.gd" id="8_target"]
 [ext_resource type="Script" uid="uid://dohcgkohokg0x" path="res://scripts/targeting/target_panel.gd" id="9_panel"]
-[ext_resource type="Script" uid="uid://ce7k7r3fj1ogc" path="res://scripts/tools/fujita_debug.gd" id="10_fujdbg"]
+[ext_resource type="Script" uid="uid://cc4pny7lvupm7" path="res://scripts/tools/debug_controls.gd" id="10_fujdbg"]
+[ext_resource type="Script" uid="uid://bcihogyjp3u7b" path="res://scripts/cloud_drift.gd" id="11_cloud"]
+[ext_resource type="Script" uid="uid://cgs6u4duwhvhk" path="res://scripts/camera_director.gd" id="12_camdir"]
+[ext_resource type="PackedScene" uid="uid://cxs20jbwi8s0w" path="res://scenes/destructibles/generated/House_5.tscn" id="14_c70he"]
+[ext_resource type="PackedScene" uid="uid://btb4p8sah11hc" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="15_mo32q"]
+[ext_resource type="PackedScene" uid="uid://bp7hlnb7jfn3y" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_6k6j1"]
+[ext_resource type="PackedScene" uid="uid://b64c6mgg0wb4b" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -30,6 +37,30 @@ fog_enabled = true
 fog_light_color = Color(0.7, 0.71, 0.72, 1)
 fog_density = 0.0003
 
+[sub_resource type="Gradient" id="CloudGrad"]
+offsets = PackedFloat32Array(0.38, 0.58, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.85, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="CloudNoise"]
+frequency = 0.015
+fractal_octaves = 4
+
+[sub_resource type="NoiseTexture2D" id="CloudTex"]
+noise = SubResource("CloudNoise")
+color_ramp = SubResource("CloudGrad")
+seamless = true
+
+[sub_resource type="StandardMaterial3D" id="CloudMat"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.6, 0.6, 0.6, 1)
+albedo_texture = SubResource("CloudTex")
+uv1_scale = Vector3(14, 14, 1)
+
+[sub_resource type="PlaneMesh" id="CloudMesh"]
+size = Vector2(5000, 5000)
+
 [sub_resource type="BoxMesh" id="GroundMesh"]
 size = Vector3(4000, 2, 4000)
 
@@ -44,12 +75,24 @@ script = ExtResource("4_tween")
 
 [node name="Map" type="Node3D" unique_id=1135035617]
 
+[node name="Apartments" parent="." unique_id=499427553 instance=ExtResource("2_wslke")]
+transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -12.332565, 17.235254, -71.92551)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1685973432]
 environment = SubResource("Env")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=96083465]
 transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
 shadow_enabled = true
+
+[node name="CloudLayer" type="MeshInstance3D" parent="." unique_id=760906253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 98.75401, 0)
+material_override = SubResource("CloudMat")
+mesh = SubResource("CloudMesh")
+script = ExtResource("11_cloud")
+follow = null
+drift = null
+underside_darken = 0.45
 
 [node name="PlaceholderGround" type="StaticBody3D" parent="." unique_id=1924351215]
 
@@ -75,6 +118,15 @@ process_priority = 300
 process_physics_priority = 300
 script = ExtResource("2_host")
 
+[node name="CameraDirector" type="Node" parent="Camera3D" unique_id=1785447964]
+script = ExtResource("12_camdir")
+lower_per_size = 12.0
+look_ahead = 30.0
+look_dead_zone = 1.0
+look_smooth = 2.0
+pan_speed = 5.0
+look_lead = 60.0
+
 [node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1596393269 node_paths=PackedStringArray("follow_target", "look_at_target")]
 transform = Transform3D(0, -0.3510781, 0.9362077, -1.4901161e-08, 0.93620825, 0.3510779, -1, 1.48992365e-08, 0, 160, 85, 0)
 top_level = true
@@ -94,6 +146,7 @@ align_position_with_view = Callable()
 align_rotation_with_view = Callable()
 
 [node name="GroundCursor" type="Sprite3D" parent="." unique_id=1689576190]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 pixel_size = 0.325
 texture_filter = 5
 texture = ExtResource("5_cursor")
@@ -126,5 +179,17 @@ script = ExtResource("8_target")
 tornado_path = NodePath("../Tornado")
 panel_path = NodePath("../HUD/TargetPanel")
 
-[node name="FujitaDebug" type="Node" parent="." unique_id=1849618863]
+[node name="DebugControls" type="Node" parent="." unique_id=1849618863]
 script = ExtResource("10_fujdbg")
+
+[node name="House_5" parent="." unique_id=52566959 instance=ExtResource("14_c70he")]
+transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -42.309982, 11.037464, 44.516243)
+
+[node name="Skyscraper_1" parent="." unique_id=111216368 instance=ExtResource("15_mo32q")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -19.017838, 39.955585, 114.10949)
+
+[node name="Tree_1" parent="." unique_id=1525176856 instance=ExtResource("16_6k6j1")]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -4, 0, 2, -1.7484555e-07, -92.147446, 6.574621, -50.028397)
+
+[node name="Tree_2" parent="." unique_id=2121477582 instance=ExtResource("17_m335s")]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, -133.28177, 4.347871, -8.885902)

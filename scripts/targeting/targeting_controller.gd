@@ -5,6 +5,7 @@ class_name TargetingController
 ## name + health in a panel. Left-click is left entirely to the tornado (always moves);
 ## RIGHT-click throws an auto-aimed debris at the hovered enemy.
 
+
 ## Physics layers the hover ray checks. Destructibles = layer 2.
 @export_flags_3d_physics var target_mask: int = 2
 
