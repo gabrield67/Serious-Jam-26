@@ -800,6 +800,7 @@ _data = {
 }
 
 [node name="VFX_Tornado_Fire_V2" type="Node3D" unique_id=1683199678]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="SmTornadoExternalJ1" type="MeshInstance3D" parent="." unique_id=959239835]
 material_override = SubResource("ShaderMaterial_dlwqa")

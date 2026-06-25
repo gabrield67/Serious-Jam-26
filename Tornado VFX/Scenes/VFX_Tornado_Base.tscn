@@ -19,8 +19,8 @@
 
 [sub_resource type="Gradient" id="Gradient_baseGray"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.26971, 0.435685, 0.630705, 0.946058)
-colors = PackedColorArray(0.419813, 0.419813, 0.419813, 0, 0.6, 0.6, 0.6, 1, 0.359591, 0.359591, 0.35959, 1.05093, 0.299908, 0.299908, 0.299907, 1.03747, 0.162066, 0.162066, 0.162065, 1)
+offsets = PackedFloat32Array(0, 0.4340278, 0.5677083, 0.946058)
+colors = PackedColorArray(0.419813, 0.419813, 0.419813, 0, 0.359591, 0.359591, 0.35959, 1.05093, 0.29803923, 0.29803923, 0.41960785, 0.8039216, 0.162066, 0.162066, 0.162065, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_baseGray"]
 gradient = SubResource("Gradient_baseGray")
@@ -54,20 +54,22 @@ shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
 shader_parameter/AlphaTreshold = 0.278
 
 [sub_resource type="Gradient" id="Gradient_txrm7"]
-offsets = PackedFloat32Array(0, 0.489489, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.951852, 0.951852, 0.951852, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.5694444, 0.8263889)
+colors = PackedColorArray(0, 0, 0, 1, 0.9529412, 0.9529412, 0.9529412, 0.41960785, 0.39118537, 0.39118534, 0.39118534, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_cmyk8"]
 gradient = SubResource("Gradient_txrm7")
+fill_from = Vector2(0.13675214, 0)
 fill_to = Vector2(0, 1)
 
 [sub_resource type="Gradient" id="Gradient_ech5p"]
-offsets = PackedFloat32Array(0.792793, 0.993994)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.19965278, 0.993994)
+colors = PackedColorArray(1, 1, 1, 0, 0.36094868, 0.36094868, 0.36094865, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_r7rfx"]
 gradient = SubResource("Gradient_ech5p")
-fill_from = Vector2(1, 1)
+use_hdr = true
+fill_from = Vector2(0.991453, 0.9893162)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ngsjd"]
 render_priority = 0
@@ -76,10 +78,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
-shader_parameter/Color_Intensity2 = 10.0
+shader_parameter/Color_Intensity2 = 2.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
-shader_parameter/AlphaTreshold = 0.268
+shader_parameter/AlphaTreshold = 0.5950000282625
 
 [sub_resource type="Gradient" id="Gradient_0whxr"]
 offsets = PackedFloat32Array(0)
@@ -787,6 +789,7 @@ _data = {
 }
 
 [node name="VFX_Tornado_Base" type="Node3D" unique_id=1683199678]
+transform = Transform3D(13, 0, 0, 0, 13, 0, 0, 0, 13, 0, 0, 0)
 
 [node name="SmTornadoExternalJ1" type="MeshInstance3D" parent="." unique_id=959239835]
 material_override = SubResource("ShaderMaterial_dlwqa")
@@ -818,7 +821,7 @@ process_material = SubResource("ParticleProcessMaterial_p8kuk")
 draw_pass_1 = ExtResource("7_qag4v")
 
 [node name="ring4oniuon2top" type="GPUParticles3D" parent="." unique_id=638051781]
-transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 4.77347, 0)
+transform = Transform3D(0.99999994, 0, 0, 0, 1.9999999, 0, 0, 0, 0.99999994, 0, 4.050124, 0)
 material_override = SubResource("ShaderMaterial_ca8sl")
 cast_shadow = 0
 amount = 5
