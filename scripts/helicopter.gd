@@ -1,4 +1,4 @@
-extends Node3D
+extends Enemy
 ## Helicopter NPC
 
 @export_group("Rotors")

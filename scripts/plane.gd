@@ -1,4 +1,4 @@
-extends Node3D
+extends Enemy
 ## Plane NPC — circles the tornado at altitude, banking into the turn. It carries a
 ## world-space dust trail (a child DustTrail particle node) that lingers behind it.
 

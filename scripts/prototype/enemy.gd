@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name Enemy
+class_name Enemy2D  # renamed from Enemy to avoid clashing with the 3D game's Enemy
 ## Truck / ray-cannon archetype (Tornado Jockey style): slowly drives up into firing
 ## range, then plants and shoots. It does NOT flee — once your storm closes in it
 ## can't escape, so growing big and bearing down is the counterplay. Dies to thrown debris.

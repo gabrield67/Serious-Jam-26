@@ -51,14 +51,19 @@ extends CharacterBody3D
 @export var carry_bob_speed: float = 2.5
 
 @export_group("Throw")
-## Right-click flings a carried pickup toward the cursor at this speed.
-@export var throw_speed: float = 32.0
-## Upward kick added to the throw for an arc.
-@export var throw_lift: float = 7.0
+## Gravity applied to a thrown debris once its target dies mid-flight (it just falls).
 @export var throw_gravity: float = 22.0
 ## Seconds before an airborne throw despawns (also despawns on landing).
 @export var throw_lifetime: float = 5.0
 @export var throw_spin: float = 360.0
+## Damage an auto-aimed throw deals to an enemy on hit.
+@export var throw_damage: float = 10.0
+## Speed of an auto-aimed (right-click-an-enemy) throw — fast and direct, no arc.
+@export var throw_at_speed: float = 120.0
+## How hard an auto-aimed throw curves toward its target (per second) so it reliably lands.
+@export var throw_homing: float = 12.0
+## Distance from the target at which an auto-aimed throw counts as a hit.
+@export var throw_hit_radius: float = 6.0
 
 signal fujita_changed(level: int)
 
@@ -182,8 +187,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if _set_target_from_mouse(get_viewport().get_mouse_position()):
 			_seeking = true
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		_throw_debris()
+	# Right-click is handled by the TargetingController (auto-aim throw at the hovered enemy).
 	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
 		_cycle_style()  # debug: cycle through the VFX styles
 
@@ -291,24 +295,20 @@ func _collect_deferred(item: Node3D) -> void:
 	_carried.append(item)
 	_assign_orbit(item)
 
-func _throw_debris() -> void:
-	if _carried.is_empty():
+## Auto-aimed throw: fling a carried debris that homes onto `target` and damages it on
+## contact — so the player doesn't need aim to hit an enemy.
+func throw_at(target: Node3D) -> void:
+	if _carried.is_empty() or not is_instance_valid(target):
 		return
 	var item: Node3D = _carried.pop_back()
 	if not is_instance_valid(item):
 		return
-
-	# Aim from the tornado toward the point under the cursor.
-	var aim := _ground_point_from_mouse() - global_position
-	aim.y = 0.0
-	var dir := aim.normalized() if aim.length() > 0.01 else -global_transform.basis.z
-
 	var gpos := item.global_position
-	item.reparent(get_parent())  # out of the orbit, into the world
+	item.reparent(get_parent())
 	item.global_position = gpos
-
-	var vel := dir * throw_speed + Vector3.UP * throw_lift
-	_thrown.append({"node": item, "vel": vel, "life": 0.0})
+	# Fire fast and straight at the enemy (homing keeps it on a moving target).
+	var dir := (target.global_position - gpos).normalized()
+	_thrown.append({"node": item, "vel": dir * throw_at_speed, "life": 0.0, "target": target})
 
 func _update_thrown(delta: float) -> void:
 	if _thrown.is_empty():
@@ -319,28 +319,28 @@ func _update_thrown(delta: float) -> void:
 			_thrown.erase(entry)
 			continue
 		var v: Vector3 = entry["vel"]
-		v.y -= throw_gravity * delta
+		var target = entry.get("target")
+		if target != null and is_instance_valid(target):
+			# Homing: steer toward the target and damage it on contact.
+			var to: Vector3 = target.global_position - node.global_position
+			if to.length() <= throw_hit_radius:
+				if target.has_method("take_damage"):
+					target.take_damage(throw_damage)
+				node.queue_free()
+				_thrown.erase(entry)
+				continue
+			v = v.lerp(to.normalized() * throw_at_speed, clampf(throw_homing * delta, 0.0, 1.0))
+		else:
+			v.y -= throw_gravity * delta  # target died mid-flight — just fall
 		entry["vel"] = v
 		node.global_position += v * delta
 		node.rotation.x += deg_to_rad(throw_spin) * delta
 		entry["life"] += delta
-		if node.global_position.y <= 0.0 or entry["life"] >= throw_lifetime:
+		# A debris whose target died despawns on landing; homing ones expire by lifetime.
+		var grounded := target == null and node.global_position.y <= 0.0
+		if grounded or entry["life"] >= throw_lifetime:
 			node.queue_free()
 			_thrown.erase(entry)
-
-func _ground_point_from_mouse() -> Vector3:
-	var cam := get_viewport().get_camera_3d()
-	if not cam:
-		return global_position
-	var mp := get_viewport().get_mouse_position()
-	var o := cam.project_ray_origin(mp)
-	var d := cam.project_ray_normal(mp)
-	if is_zero_approx(d.y):
-		return global_position
-	var t := -o.y / d.y
-	if t < 0.0:
-		return global_position
-	return o + d * t
 
 ## Give a freshly-grabbed item its own orbit params so the debris swirls in a column
 ## (varied height, radius, speed and phase) rather than sitting in a flat even ring.
@@ -438,3 +438,14 @@ func get_destination() -> Vector3:
 ## True while traveling to a committed point (false once arrived / idle).
 func is_seeking() -> bool:
 	return _seeking
+
+## Command the tornado to travel to a world position (used by the targeting system).
+func move_to(world_pos: Vector3) -> void:
+	_target = Vector3(world_pos.x, 0.0, world_pos.z)
+	_seeking = true
+
+## The destructible the maw is currently chewing (for the targeting panel), or null.
+func get_chew_target() -> Node:
+	if _maw and _maw.has_method("get_chew_target"):
+		return _maw.get_chew_target()
+	return null

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="JGGJ"
+config/name="'NADO"
 config/tags=PackedStringArray("jam")
 run/main_scene="uid://bm6ip6oknw3wn"
 config/features=PackedStringArray("4.7", "Forward Plus")

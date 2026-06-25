@@ -1,4 +1,4 @@
-extends Node3D
+extends Enemy
 ## Tank turret NPC
 
 @export_group("Turret")

@@ -4,9 +4,10 @@
 [ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_h7yh2"]
 [ext_resource type="Resource" uid="uid://c0xsua3gsm4uc" path="res://resources/destructibles/palettes/bank_roof.tres" id="3_ee20g"]
 [ext_resource type="Resource" uid="uid://kpg435xv08cl" path="res://resources/destructibles/palettes/bank_walls.tres" id="4_h7yh2"]
+[ext_resource type="Resource" uid="uid://gkfbc3yf48nq" path="res://resources/destructibles/palettes/bank_overhang.tres" id="5_h7yh2"]
 
 [resource]
 script = ExtResource("1_ee20g")
 display_name = "Bank"
 match_keywords = PackedStringArray("bank")
-surface_palettes = Array[ExtResource("2_h7yh2")]([ExtResource("3_ee20g"), ExtResource("4_h7yh2")])
+surface_palettes = Array[ExtResource("2_h7yh2")]([ExtResource("3_ee20g"), ExtResource("4_h7yh2"), ExtResource("5_h7yh2")])

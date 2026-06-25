@@ -1,5 +1,5 @@
-extends Node3D
-## Truck NPC 
+extends Enemy
+## Truck NPC
 
 @export_group("Drive")
 @export var speed: float = 12.0

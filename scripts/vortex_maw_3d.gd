@@ -1,7 +1,8 @@
 extends Area3D
 class_name VortexMaw3D
 ## Contact-destroy core for the 3D tornado. Attach as a child of the Tornado.
-## Any Consumable3D overlapping this area is chewed down over time and destroyed.
+## Any "consumable"-group body (a Destructible) overlapping this area is chewed down over
+## time and destroyed; "pickup"-group bodies are grabbed instead.
 ## Movement stays in tornado.gd — this only handles destruction.
 
 @export var chew_rate: float = 1.0
@@ -33,6 +34,13 @@ func _find_shape() -> CollisionShape3D:
 	for c in get_children():
 		if c is CollisionShape3D:
 			return c
+	return null
+
+## The destructible currently being chewed (most recent), or null — for the target panel.
+func get_chew_target() -> Node:
+	for i in range(_inside.size() - 1, -1, -1):
+		if is_instance_valid(_inside[i]):
+			return _inside[i]
 	return null
 
 func _physics_process(delta: float) -> void:

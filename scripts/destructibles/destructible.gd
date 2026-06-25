@@ -34,6 +34,7 @@ var _fragments: CollapsingFragments  # spawned on first chew, drives the progres
 
 func _ready() -> void:
 	add_to_group("consumable")
+	add_to_group("targetable")
 	_mesh = _find_mesh()
 
 	_destroy_time = data.destroy_time if data else 1.0
@@ -119,6 +120,16 @@ func get_display_name() -> String:
 	if kind and kind.display_name != "":
 		return kind.display_name
 	return name
+
+# --- Targeting ---
+
+## Health = how much destruction is left: Vector2(remaining, total). Drains as it's chewed.
+func get_health() -> Vector2:
+	return Vector2(maxf(_destroy_time - _progress, 0.0), _destroy_time)
+
+func set_highlighted(on: bool) -> void:
+	if _mesh:
+		TargetHighlight.apply(_mesh, on)
 
 # --- Color: per mesh surface ("face"), independent of size ---
 

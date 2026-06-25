@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bm6ip6oknw3wn"]
+[gd_scene format=3 uid="uid://ddsqdvosdox3c"]
 
 [ext_resource type="VideoStream" uid="uid://cuhj5qs83tv23" path="res://Screens/HomeScreenMovie.ogv" id="1_ol48b"]
 [ext_resource type="Texture2D" uid="uid://dlrnyya04xgb2" path="res://Screens/Game Over.png" id="3_ahhes"]
