@@ -78,10 +78,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
-shader_parameter/Color_Intensity2 = 2.0
+shader_parameter/Color_Intensity2 = 10.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
-shader_parameter/AlphaTreshold = 0.5950000282625
+shader_parameter/AlphaTreshold = 0.268
 
 [sub_resource type="Gradient" id="Gradient_0whxr"]
 offsets = PackedFloat32Array(0)

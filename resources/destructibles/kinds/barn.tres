@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://csufiwelsfmn1"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_lpg27"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_oiwyx"]
+[ext_resource type="Resource" uid="uid://qtxpp8qibh2p" path="res://resources/destructibles/palettes/barn_roof.tres" id="3_lpg27"]
+[ext_resource type="Resource" uid="uid://c8yrmqsdov408" path="res://resources/destructibles/palettes/barn_walls.tres" id="4_oiwyx"]
+
+[resource]
+script = ExtResource("1_lpg27")
+display_name = "Barn"
+match_keywords = PackedStringArray("barn")
+surface_palettes = Array[ExtResource("2_oiwyx")]([ExtResource("3_lpg27"), ExtResource("4_oiwyx")])

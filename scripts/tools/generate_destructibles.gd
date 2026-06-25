@@ -36,10 +36,10 @@ const FRAG_CELL_SCALE := 0.9   ## <1 leaves gaps between shards (stops spawn-exp
 
 # Index 0..3 = small, medium, large, giant.
 const TIER_PATHS := [
-	"res://resources/destructibles/small.tres",
-	"res://resources/destructibles/medium.tres",
-	"res://resources/destructibles/large.tres",
-	"res://resources/destructibles/giant.tres",
+	"res://resources/destructibles/size/small.tres",
+	"res://resources/destructibles/size/medium.tres",
+	"res://resources/destructibles/size/large.tres",
+	"res://resources/destructibles/size/giant.tres",
 ]
 const GROUP_TIERS := {"small": 0, "medium": 1, "large": 2, "giant": 3}
 const DEFAULT_TIER := 1  # medium
@@ -47,7 +47,16 @@ const DEFAULT_TIER := 1  # medium
 ## Type archetypes (display name + per-surface palettes). A mesh gets the first kind
 ## whose keyword matches its name. Add your kind .tres paths here.
 const KIND_PATHS := [
+	"res://resources/destructibles/kinds/apartments.tres",
+	"res://resources/destructibles/kinds/bank.tres",
+	"res://resources/destructibles/kinds/barn.tres",
+	"res://resources/destructibles/kinds/church.tres",
+	"res://resources/destructibles/kinds/foliage.tres",
+	"res://resources/destructibles/kinds/gas.tres",
 	"res://resources/destructibles/kinds/house.tres",
+	"res://resources/destructibles/kinds/motel.tres",
+	"res://resources/destructibles/kinds/sign.tres",
+	"res://resources/destructibles/kinds/silo.tres",
 ]
 
 func _run() -> void:
@@ -82,7 +91,7 @@ func _run() -> void:
 		var minor: bool = j[2]
 
 		if minor:
-			if _save_pickup(child):
+			if _save_pickup(child, kinds):
 				pickups += 1
 			continue
 
@@ -101,7 +110,7 @@ func _run() -> void:
 				body.set("fragments_scene", load(frag_path))
 				print("  fractured %s" % child.name)
 			else:
-				print("  (no fragments for %s — likely flat/thin geometry)" % child.name)
+				print("  (no fragments for %s — mesh not CSG-solid: flipped/inconsistent normals, open holes, or flat geometry. Recalc normals + check Non-Manifold in Blender)" % child.name)
 		elif ResourceLoader.exists(frag_path):
 			body.set("fragments_scene", load(frag_path))
 		# Keep the model's intrinsic scale/rotation, drop placement offset.
@@ -130,11 +139,13 @@ func _run() -> void:
 	EditorInterface.get_resource_filesystem().scan()
 
 ## Bake a "minor" mesh into a reusable PickupItem scene (carried by the tornado, never
-## destroyed). Mirrors the destructible wrapping minus size/kind/fragments.
-func _save_pickup(child: MeshInstance3D) -> bool:
+## destroyed). Mirrors the destructible wrapping minus size/fragments; keeps the kind
+## (display name + per-surface palette colors).
+func _save_pickup(child: MeshInstance3D, kinds: Array) -> bool:
 	var body := StaticBody3D.new()
 	body.set_script(load(PICKUP))
 	body.name = child.name
+	body.set("kind", _kind_for(child.name, kinds))
 	# Keep the model's intrinsic scale/rotation, drop placement offset.
 	var t := child.transform
 	t.origin = Vector3.ZERO
@@ -156,7 +167,8 @@ func _save_pickup(child: MeshInstance3D) -> bool:
 	return true
 
 ## Fracture one mesh into a frozen RigidBody3D shard scene (CollapsingFragments drives it
-## at runtime). Returns null for geometry Voronoi can't tetrahedralize (flat signs, etc.).
+## at runtime). Returns null when the mesh isn't a clean closed solid (open/non-manifold)
+## — fix those in Blender (watertight + manifold) rather than shipping bad rubble.
 func _bake_fragments(vgen, source: MeshInstance3D) -> PackedScene:
 	if source.mesh == null:
 		return null
@@ -164,9 +176,30 @@ func _bake_fragments(vgen, source: MeshInstance3D) -> PackedScene:
 	config.num_samples = FRAG_SAMPLES
 	config.random_seed = FRAG_SEED
 	config.texture = null
-	var results: Array = vgen.create_from_mesh(source, config)
+
+	# Multi-material meshes import with their verts split at the material seam, which leaves
+	# CSG an unweldable crack. Fracture a single welded surface instead (same geometry) so
+	# multi-color models (houses) still shatter; shards come out single-surface.
+	# Multi-material meshes import with their verts split (and nudged apart) at the material
+	# seam — a hairline crack CSG rejects. Weld into one watertight surface before fracturing.
+	var clip_source := source
+	var temp: MeshInstance3D = null
+	if source.mesh.get_surface_count() > 1:
+		temp = MeshInstance3D.new()
+		temp.mesh = _weld_single_surface(source.mesh)
+		clip_source = temp
+
+	var results: Array = vgen.create_from_mesh(clip_source, config)
 	if results == null or results.is_empty():
+		# Diagnose future failures: 0 tetrahedra = degenerate/flat; >0 = non-watertight to CSG.
+		var pts: Array = vgen.sample_points(clip_source.mesh, config)
+		var tet: Array = vgen.create_delauney_tetrahedra(pts)
+		push_warning("Fragments: %s failed — %d sample points, %d tetrahedra" % [source.name, pts.size(), tet.size()])
+		if temp:
+			temp.free()
 		return null
+	if temp:
+		temp.free()
 
 	# Bake at the model's render scale so runtime placement needs position+rotation only.
 	var s: Vector3 = source.transform.basis.get_scale()
@@ -202,6 +235,55 @@ func _bake_fragments(vgen, source: MeshInstance3D) -> PackedScene:
 	var packed := PackedScene.new()
 	packed.pack(root)
 	return packed
+
+## Collapse all surfaces of a mesh into one position-welded surface, so CSG sees a single
+## watertight solid (multi-material meshes otherwise split verts at the material seam).
+## Welds by quantized position (so the seam closes) and recomputes smooth normals manually
+## — SurfaceTool.generate_normals() after index() is unreliable.
+func _weld_single_surface(mesh: Mesh) -> ArrayMesh:
+	var pos_to_i := {}
+	var out_v := PackedVector3Array()
+	var out_idx := PackedInt32Array()
+	for si in mesh.get_surface_count():
+		var arr := mesh.surface_get_arrays(si)
+		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+		var ix: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+		var src: Array = []
+		if ix != null and ix.size() > 0:
+			src = Array(ix)
+		else:
+			for k in v.size():
+				src.append(k)
+		for k in src:
+			var p: Vector3 = v[k]
+			# Round to ~0.01 so seam verts that the import nudged apart still merge.
+			var key := "%d_%d_%d" % [roundi(p.x * 100.0), roundi(p.y * 100.0), roundi(p.z * 100.0)]
+			if not pos_to_i.has(key):
+				pos_to_i[key] = out_v.size()
+				out_v.append(p)
+			out_idx.append(pos_to_i[key])
+
+	var normals := PackedVector3Array()
+	normals.resize(out_v.size())
+	for t in range(0, out_idx.size(), 3):
+		var a := out_idx[t]
+		var b := out_idx[t + 1]
+		var c := out_idx[t + 2]
+		var fn := (out_v[b] - out_v[a]).cross(out_v[c] - out_v[a])
+		normals[a] += fn
+		normals[b] += fn
+		normals[c] += fn
+	for n in normals.size():
+		normals[n] = normals[n].normalized() if normals[n].length() > 0.0 else Vector3.UP
+
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = out_v
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_INDEX] = out_idx
+	var out := ArrayMesh.new()
+	out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return out
 
 func _own_all(node: Node, owner_node: Node) -> void:
 	for c in node.get_children():

@@ -9,4 +9,4 @@
 script = ExtResource("1_script")
 display_name = "House"
 match_keywords = PackedStringArray("house")
-surface_palettes = Array[ExtResource("2_jlbgf")]([ExtResource("2_walls"), ExtResource("3_roof")])
+surface_palettes = Array[ExtResource("2_jlbgf")]([ExtResource("3_roof"), ExtResource("2_walls")])
