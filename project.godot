@@ -22,6 +22,7 @@ PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_came
 
 [display]
 
+window/size/mode=2
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 mouse_cursor/custom_image="res://assets/UI/cursor/crosshair002.png"

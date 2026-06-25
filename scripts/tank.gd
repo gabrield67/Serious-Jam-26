@@ -1,5 +1,6 @@
 extends Enemy
-## Tank turret NPC
+## Tank turret NPC — while the tornado is in range it locks a continuous laser onto it,
+## holding it slowed and slowly draining its strength for as long as the beam connects.
 
 @export_group("Turret")
 ## The node that swivels to aim. Defaults to the tank's head.
@@ -9,14 +10,14 @@ extends Enemy
 @export var facing_offset: float = 0.0
 
 @export_group("Laser")
-@export var fire_cooldown: float = 2.0
-## Strength (Fujita size) removed per hit.
-@export var damage: float = 1.0
-## Move-speed multiplier applied to the tornado while slowed (0.5 = half speed).
+## Strength (Fujita) drained per second the beam is on the tornado.
+@export var damage_per_sec: float = 1.5
+## Move-speed multiplier applied to the tornado while the beam holds it (0.5 = half speed).
 @export var slow_factor: float = 0.5
-@export var slow_duration: float = 1.5
 ## Where on the funnel the beam hits / aims.
 @export var aim_height: float = 5.0
+## Beam thickness.
+@export var beam_thickness: float = 0.5
 
 @export var muzzle_path: NodePath
 @export var muzzle_height: float = 2.0
@@ -26,13 +27,12 @@ extends Enemy
 @onready var _muzzle: Node3D = get_node_or_null(muzzle_path)
 
 var _target: Node3D
-var _cooldown: float = 0.0
 var _turret_rest: Basis
-var _turret_yaw: float = 0.0 
+var _turret_yaw: float = 0.0
+var _beam: Node3D
 
 func _ready() -> void:
 	add_to_group("enemy")
-	_cooldown = randf() * fire_cooldown
 	if _turret:
 		_turret_rest = _turret.global_transform.basis
 
@@ -44,10 +44,10 @@ func _physics_process(delta: float) -> void:
 
 	_aim(delta)
 
-	_cooldown -= delta
-	if _cooldown <= 0.0:
-		_cooldown = fire_cooldown
-		_fire()
+	if in_attack_range():
+		_fire_beam(delta)
+	else:
+		_stop_beam()
 
 func _aim(delta: float) -> void:
 	if _turret == null:
@@ -62,21 +62,34 @@ func _aim(delta: float) -> void:
 	# Rotate the rest pose around WORLD up — independent of the model's local axes.
 	_turret.global_transform = Transform3D(Basis(Vector3.UP, _turret_yaw) * _turret_rest, origin)
 
-func _fire() -> void:
-	if _target == null:
-		return
-	if _target.has_method("take_hit"):
-		_target.take_hit(damage)
-	if _target.has_method("apply_slow"):
-		_target.apply_slow(slow_factor, slow_duration)
+## Hold the beam on the tornado, draining and slowing it continuously.
+func _fire_beam(delta: float) -> void:
+	if _beam == null or not is_instance_valid(_beam):
+		_beam = laser_scene.instantiate()
+		_beam.set("continuous", true)
+		_beam.set("thickness", beam_thickness)
+		get_tree().current_scene.add_child(_beam)
 
-	if laser_scene:
-		var muzzle := _muzzle_position()
-		var aim := _target.global_position + Vector3(0, aim_height, 0)
-		var beam := laser_scene.instantiate()
-		get_tree().current_scene.add_child(beam)
-		if beam.has_method("setup"):
-			beam.setup(muzzle, aim)
+	var from := _muzzle_position()
+	var to := _target.global_position + Vector3(0, aim_height, 0)
+	if _beam.has_method("aim"):
+		_beam.aim(from, to)
+
+	# Small per-frame amounts: weakens slowly over time and never trips the heavy-hit Fujita
+	# knockdown — it's a steady drain. apply_slow is topped up each frame and lapses shortly
+	# after the beam drops.
+	if _target.has_method("take_hit"):
+		_target.take_hit(damage_per_sec * delta)
+	if _target.has_method("apply_slow"):
+		_target.apply_slow(slow_factor, 0.2)
+
+func _stop_beam() -> void:
+	if _beam and is_instance_valid(_beam):
+		_beam.queue_free()
+	_beam = null
+
+func _exit_tree() -> void:
+	_stop_beam()
 
 func _muzzle_position() -> Vector3:
 	if _muzzle:

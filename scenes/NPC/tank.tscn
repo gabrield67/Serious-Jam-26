@@ -724,7 +724,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.595, 0, 0, 0)
 mesh = SubResource("ArrayMesh_0ewds")
 
 [node name="head" type="Node3D" parent="Sketchfab_model/Root/body" unique_id=157788817]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.39049, 0.71414)
+transform = Transform3D(1, 0, 0, 0, 0.9226304, 0.3856853, 0, -0.3856853, 0.9226304, 0, -0.39049, 1.1080256)
 
 [node name="head_0" type="MeshInstance3D" parent="Sketchfab_model/Root/body/head" unique_id=984445554]
 mesh = SubResource("ArrayMesh_g1ot1")

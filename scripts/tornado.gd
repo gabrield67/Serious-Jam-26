@@ -188,6 +188,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _set_target_from_mouse(get_viewport().get_mouse_position()):
 			_seeking = true
 	# Right-click is handled by the TargetingController (auto-aim throw at the hovered enemy).
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
+		expel_debris()  # spit out armed bombs before they detonate
+		get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
 		_cycle_style()  # debug: cycle through the VFX styles
 
@@ -298,7 +301,10 @@ func _collect_deferred(item: Node3D) -> void:
 ## Auto-aimed throw: fling a carried debris that homes onto `target` and damages it on
 ## contact — so the player doesn't need aim to hit an enemy.
 func throw_at(target: Node3D) -> void:
-	if _carried.is_empty() or not is_instance_valid(target):
+	if not is_instance_valid(target):
+		return
+	_prune_carried()
+	if _carried.is_empty():
 		return
 	var item: Node3D = _carried.pop_back()
 	if not is_instance_valid(item):
@@ -342,6 +348,32 @@ func _update_thrown(delta: float) -> void:
 			node.queue_free()
 			_thrown.erase(entry)
 
+## Direction the tornado is currently travelling (horizontal, normalized), or ZERO if idle.
+## Enemies use this to plant things in the storm's path.
+func get_heading() -> Vector3:
+	var v := Vector3(velocity.x, 0.0, velocity.z)
+	if v.length() > 1.0:
+		return v.normalized()
+	var to := _target - global_position
+	to.y = 0.0
+	if to.length() > 1.0:
+		return to.normalized()
+	return Vector3.ZERO
+
+## Player action (Space): eject any armed bombs caught in the swirl before they detonate.
+## Leaves ordinary debris keepsakes in place — only ejectable hazards are spat out.
+func expel_debris() -> void:
+	for item in _carried.duplicate():
+		if not is_instance_valid(item):
+			_carried.erase(item)
+			continue
+		if item.has_method("eject"):
+			var gpos: Vector3 = item.global_position
+			item.reparent(get_parent())
+			item.global_position = gpos
+			item.eject()
+			_carried.erase(item)
+
 ## Give a freshly-grabbed item its own orbit params so the debris swirls in a column
 ## (varied height, radius, speed and phase) rather than sitting in a flat even ring.
 func _assign_orbit(item: Node3D) -> void:
@@ -351,7 +383,15 @@ func _assign_orbit(item: Node3D) -> void:
 	item.set_meta("c_speed", 1.0 + randf_range(-1.0, 1.0) * carry_speed_var)
 	item.set_meta("c_bobphase", randf() * TAU)
 
+## Drop any carried items that have been freed (e.g. a barrel that detonated) so stale
+## references don't linger in the swirl and crash the throw/carry code.
+func _prune_carried() -> void:
+	for i in range(_carried.size() - 1, -1, -1):
+		if not is_instance_valid(_carried[i]):
+			_carried.remove_at(i)
+
 func _update_carry(delta: float) -> void:
+	_prune_carried()
 	if _carried.is_empty():
 		return
 	_carry_angle -= deg_to_rad(carry_orbit_speed) * delta
@@ -394,6 +434,7 @@ func carry_capacity() -> int:
 
 ## Shrinking lowers the cap — any carried debris over it is released.
 func _enforce_carry_capacity() -> void:
+	_prune_carried()
 	var cap := carry_capacity()
 	while _carried.size() > cap:
 		var item: Node3D = _carried.pop_back()
@@ -421,6 +462,22 @@ func _apply_vfx_scale(s: Vector3) -> void:
 
 func get_level() -> int:
 	return _fujita.level() if _fujita else 0
+
+## Current funnel width multiplier from the Fujita scale (1.0 at the smallest size).
+## Enemies and projectiles multiply their contact radii by this so detection grows with
+## the visible funnel as the storm widens.
+func get_size_factor() -> float:
+	return _cur_scale.x
+
+## Testing: jump the Fujita scale to a specific level.
+func set_fujita_level(lvl: int) -> void:
+	if _fujita:
+		_fujita.set_level(lvl)
+
+## Testing: step the Fujita scale up (+1) or down (-1).
+func step_fujita(dir: int) -> void:
+	if _fujita:
+		_fujita.set_level(_fujita.level() + dir)
 
 func get_health() -> Vector2:
 	return Vector2(_health.current, _health.max_health) if _health else Vector2.ZERO

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cdusttrail01"]
 
 [sub_resource type="QuadMesh" id="DustQuad"]
-size = Vector2(1.2, 1.2)
+size = Vector2(3.2, 3.2)
 
 [sub_resource type="StandardMaterial3D" id="DustMat"]
 transparency = 1
@@ -21,17 +21,17 @@ point_count = 2
 
 [node name="DustTrail" type="CPUParticles3D"]
 local_coords = false
-amount = 40
-lifetime = 1.8
-randomness = 0.6
+amount = 110
+lifetime = 3.0
+randomness = 0.85
 mesh = SubResource("DustQuad")
 material_override = SubResource("DustMat")
 direction = Vector3(0, 1, 0)
-spread = 35.0
-gravity = Vector3(0, 1.5, 0)
-initial_velocity_min = 0.5
-initial_velocity_max = 2.5
-scale_amount_min = 0.5
-scale_amount_max = 1.5
+spread = 55.0
+gravity = Vector3(0, 1.0, 0)
+initial_velocity_min = 0.3
+initial_velocity_max = 2.0
+scale_amount_min = 1.4
+scale_amount_max = 3.4
 scale_amount_curve = SubResource("DustScale")
 color_ramp = SubResource("DustGrad")

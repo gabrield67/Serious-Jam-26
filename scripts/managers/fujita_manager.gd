@@ -44,6 +44,15 @@ func on_hit(amount: float) -> void:
 		value = maxf(min_value, value - heavy_hit_loss)
 		changed.emit(level(), value)
 
+## Testing: jump straight to a level. Sets the value to the middle of that level's band so
+## it sits stably at the level instead of immediately decaying out of it.
+func set_level(lvl: int) -> void:
+	lvl = clampi(lvl, 0, thresholds.size() - 1)
+	var lo := float(thresholds[lvl])
+	var hi := (lo + 3.0) if lvl + 1 >= thresholds.size() else float(thresholds[lvl + 1])
+	value = (lo + hi) * 0.5
+	changed.emit(level(), value)
+
 func level() -> int:
 	var lvl := 0
 	for i in thresholds.size():
