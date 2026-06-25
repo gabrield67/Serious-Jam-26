@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bfa3n8gndsl51"]
+
+[ext_resource type="Script" uid="uid://bsjage7kfry0q" path="res://scripts/tornado.gd" id="1_2nlrq"]
+[ext_resource type="Script" uid="uid://d0kjagnf4gw8q" path="res://scripts/vortex_maw_3d.gd" id="2_yxxy5"]
+[ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="3_mdjqp"]
+[ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="4_2nqqh"]
+[ext_resource type="PackedScene" uid="uid://caon602k6vnff" path="res://Tornado VFX/Scenes/VFX_Tornado_blue.tscn" id="5_g5iue"]
+
+[sub_resource type="CylinderShape3D" id="TornadoShape"]
+height = 12.0
+radius = 3.0
+
+[sub_resource type="CylinderShape3D" id="MawShape"]
+height = 12.0
+radius = 4.0
+
+[node name="Tornado" type="CharacterBody3D" unique_id=1767961767]
+transform = Transform3D(13, 0, 0, 0, 13, 0, 0, 0, 13, 0, 0, 0)
+script = ExtResource("1_2nlrq")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1547123497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+shape = SubResource("TornadoShape")
+
+[node name="Maw" type="Area3D" parent="." unique_id=339356675]
+collision_mask = 3
+script = ExtResource("2_yxxy5")
+base_radius = 1.0
+
+[node name="MawCollision" type="CollisionShape3D" parent="Maw" unique_id=166003659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+shape = SubResource("MawShape")
+
+[node name="Styles" type="Node3D" parent="." unique_id=16327529]
+
+[node name="Base" parent="Styles" unique_id=1683199678 instance=ExtResource("3_mdjqp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Fire" parent="Styles" unique_id=1152232541 instance=ExtResource("4_2nqqh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+
+[node name="Blue" parent="Styles" unique_id=769887517 instance=ExtResource("5_g5iue")]
+visible = false
