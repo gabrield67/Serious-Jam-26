@@ -1,0 +1,54 @@
+[gd_scene format=4 uid="uid://c1drxsv0p6fio"]
+
+[ext_resource type="Script" uid="uid://c2dswl0bbbmp" path="res://scripts/destructibles/destructible.gd" id="1_ctm35"]
+[ext_resource type="Resource" uid="uid://dsmalldestr01" path="res://resources/destructibles/small.tres" id="2_t1cei"]
+[ext_resource type="Resource" uid="uid://chousekind1" path="res://resources/destructibles/kinds/house.tres" id="3_fb6n6"]
+[ext_resource type="PackedScene" uid="uid://b5waxc2ohfyet" path="res://scenes/destructibles/fragments/Fragments_House_1.tscn" id="4_t1cei"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebei4"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_kbeli"]
+_surfaces = [{
+"aabb": AABB(-3.7723093, -3.7723088, -3.8407896, 7.5446167, 7.544617, 6.677593),
+"format": 34359742465,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAwAAAAIAAQAEAAIAAwACAAQAAQAFAAQABQADAAQAAQAGAAUABQAGAAMAAAAHAAEABwAAAAgAAAADAAgACQABAAcAAQAJAAYABwAIAAkACQADAAYACQAIAAMA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 10,
+"vertex_data": PackedByteArray("hG1xwIJtccAwjjVAfG1xQIJtccDAmWq/hG1xwIJtccDAmWq/hG1xwIBtcUDAmWq/hG1xwAAAAAB/z3XAfG1xQAAAAAB/z3XAfG1xQIBtcUDAmWq/fG1xQIJtccAwjjVAhG1xwIBtcUAwjjVAfG1xQIBtcUAwjjVA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4p2pd"]
+resource_name = "Map Objects_House_1"
+_surfaces = [{
+"aabb": AABB(-3.7723093, -3.7723088, -3.8407896, 7.5446167, 7.544617, 6.677593),
+"attribute_data": PackedByteArray("AADAPgAAQD8AACA/AAAAPwAAID8AAEA/AADAPgAAAD8AAMA+AACAPgAAID8AAAA/AADAPgAAAD8AACA/AACAPgAAID8AAMA+AADAPgAAgD4AACA/AAAAAAAAID8AAIA+AADAPgAAAAAAACA/AADAPgAAYD8AAIA+AABgPwAAwD4AACA/AACAPgAAID8AAAA/AABgPwAAwD4AAGA/AAAAPwAAID8AAMA+AADAPgAAAD8AAMA+AAAAAAAAwD4AAIA+AADAPgAAQD8AAMA+AABAPwAAYD8AAIA+AADAPgAAAAAAACA/AABAPwAAYD8AAMA+"),
+"format": 34359742487,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABQAEAAcABQAHAAgACQAKAAsACQAMAAoADQAOAA8ADQAQAA4AEQASABMAEQAUABIAFQAWABcAFQAYABYAGQAaABsAGgAZABwAGgAcAB0A"),
+"material": SubResource("StandardMaterial3D_ebei4"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 30,
+"vertex_data": PackedByteArray("hG1xwIJtccAwjjVAfG1xQIJtccDAmWq/hG1xwIJtccDAmWq/fG1xQIJtccAwjjVAfG1xQIBtcUAwjjVAfG1xQIJtccDAmWq/fG1xQIJtccAwjjVAfG1xQIBtcUDAmWq/fG1xQAAAAAB/z3XAfG1xQIBtcUAwjjVAhG1xwIBtcUDAmWq/fG1xQIBtcUDAmWq/hG1xwIBtcUAwjjVAfG1xQAAAAAB/z3XAhG1xwIBtcUDAmWq/hG1xwAAAAAB/z3XAfG1xQIBtcUDAmWq/fG1xQIJtccDAmWq/hG1xwAAAAAB/z3XAhG1xwIJtccDAmWq/fG1xQAAAAAB/z3XAfG1xQIJtccAwjjVAhG1xwIBtcUAwjjVAfG1xQIBtcUAwjjVAhG1xwIJtccAwjjVAhG1xwIJtccAwjjVAhG1xwIBtcUDAmWq/hG1xwIBtcUAwjjVAhG1xwIJtccDAmWq/hG1xwAAAAAB/z3XA/38AAP//////fwAA//////9/AAD//////38AAP////////9//////////3//////////f/////////9//////////3////+//3//////////f/////////9//////////3////////8ZyP//AAD/vxnI//8AAP+/Gcj//wAA/78ZyP//AAD/vxnIAAAAAP+/GcgAAAAA/78ZyAAAAAD/vxnIAAAAAP+//3//f////z//f/9/////P/9//3////8//3//f////z8AAP9/Mu0AAAAA/3/Z8AAAAAD/f6TMAAAAAP9/kO3+fwAA/3/Pzf5/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_kbeli")
+
+[node name="House_1" type="StaticBody3D" unique_id=2050436682]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_ctm35")
+data = ExtResource("2_t1cei")
+kind = ExtResource("3_fb6n6")
+fragments_scene = ExtResource("4_t1cei")
+keep_authored_scale = true
+
+[node name="House_1" type="MeshInstance3D" parent="." unique_id=209847604]
+mesh = SubResource("ArrayMesh_4p2pd")
+metadata/extras = {
+"poliigon_props": {}
+}

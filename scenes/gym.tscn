@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://wtexamna831i"]
+
+[ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/items/PowerUp.tscn" id="1_pcntt"]
+[ext_resource type="PackedScene" uid="uid://bymnp2ir08ogy" path="res://temp/map_objects.tscn" id="1_yftua"]
+[ext_resource type="Script" uid="uid://bsjage7kfry0q" path="res://scripts/tornado.gd" id="2_5dx68"]
+[ext_resource type="PackedScene" uid="uid://cte8b0862o2a" path="res://scenes/destructibles/generated/Apartments.tscn" id="2_yftua"]
+[ext_resource type="Script" uid="uid://d0kjagnf4gw8q" path="res://scripts/vortex_maw_3d.gd" id="3_tnts5"]
+[ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="4_h7ru6"]
+[ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="5_p6j5f"]
+[ext_resource type="PackedScene" uid="uid://caon602k6vnff" path="res://Tornado VFX/Scenes/VFX_Tornado_blue.tscn" id="6_apyjd"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_76gn4"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="8_qjt3c"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="9_p4h1t"]
+[ext_resource type="Texture2D" uid="uid://dg205j81ea1qi" path="res://assets/UI/cursor/crosshair135.png" id="11_nat86"]
+[ext_resource type="Script" uid="uid://bjaystaecgmd0" path="res://scripts/ground_cursor.gd" id="12_70mwv"]
+[ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/debris/Tree.tscn" id="13_25i3r"]
+[ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="14_tvh26"]
+[ext_resource type="PackedScene" uid="uid://c70052ikubh6p" path="res://scenes/destructibles/generated/Tree 1.tscn" id="16_g78wh"]
+[ext_resource type="PackedScene" uid="uid://ds1ysfdsg6fmy" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="17_12qpa"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+ground_bottom_color = Color(0.25, 0.27, 0.27, 1)
+ground_horizon_color = Color(0.7, 0.71, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.6
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.7, 0.71, 0.72, 1)
+fog_density = 0.0015
+
+[sub_resource type="BoxMesh" id="GroundMesh"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="StandardMaterial3D" id="GroundMat"]
+albedo_color = Color(0.31, 0.42, 0.26, 1)
+
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="CylinderShape3D" id="TornadoShape"]
+height = 12.0
+radius = 3.0
+
+[sub_resource type="CylinderShape3D" id="MawShape"]
+height = 12.0
+radius = 4.0
+
+[sub_resource type="Resource" id="Resource_p57ef"]
+script = ExtResource("9_p4h1t")
+
+[node name="Gym" type="Node3D" unique_id=553556477]
+
+[node name="Map Objects" parent="." unique_id=14317245 instance=ExtResource("1_yftua")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.6355, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=808378729]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=310126205]
+transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
+shadow_enabled = true
+
+[node name="Apartments" parent="." unique_id=1302257791 instance=ExtResource("2_yftua")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 8.509438, 11.49017, -72.908844)
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1123203704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.013210297, -0.5827751, -0.0017719269)
+mesh = SubResource("GroundMesh")
+surface_material_override/0 = SubResource("GroundMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=1669286392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("GroundShape")
+
+[node name="PowerUp" parent="." unique_id=1048475869 instance=ExtResource("1_pcntt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 97.28128)
+
+[node name="Tornado" type="CharacterBody3D" parent="." unique_id=271525483]
+transform = Transform3D(13.395, 0, 0, 0, 13.395, 0, 0, 0, 13.395, 0, 0, 0)
+script = ExtResource("2_5dx68")
+
+[node name="Collision" type="CollisionShape3D" parent="Tornado" unique_id=1848947250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+shape = SubResource("TornadoShape")
+
+[node name="Maw" type="Area3D" parent="Tornado" unique_id=1916984484]
+collision_mask = 3
+script = ExtResource("3_tnts5")
+base_radius = 1.0
+
+[node name="MawCollision" type="CollisionShape3D" parent="Tornado/Maw" unique_id=528179545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+shape = SubResource("MawShape")
+
+[node name="Styles" type="Node3D" parent="Tornado" unique_id=875550703]
+
+[node name="Base" parent="Tornado/Styles" unique_id=897267156 instance=ExtResource("4_h7ru6")]
+
+[node name="Fire" parent="Tornado/Styles" unique_id=688481346 instance=ExtResource("5_p6j5f")]
+visible = false
+
+[node name="Blue" parent="Tornado/Styles" unique_id=488281116 instance=ExtResource("6_apyjd")]
+visible = false
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2057751060]
+physics_interpolation_mode = 1
+transform = Transform3D(-0.00047898293, -0.54755133, 0.836772, -5.9604645e-08, 0.8367721, 0.5475514, -0.99999994, 0.00026220083, -0.00040078163, 104.427, 71.513, 0)
+top_level = true
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1069513929]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("7_76gn4")
+
+[node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1417305512 node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(-0.00047902256, -0.54752314, 0.8367682, -5.9609576e-08, 0.83672905, 0.5475489, -1.0000826, 0.00026218736, -0.00040077983, 104.427, 71.513, 0)
+top_level = true
+script = ExtResource("8_qjt3c")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("../Tornado")
+look_at_mode = 2
+look_at_target = NodePath("../Tornado")
+tween_resource = SubResource("Resource_p57ef")
+follow_offset = Vector3(104.427, 71.513, 0)
+follow_damping = true
+follow_damping_value = Vector3(0.2, 0.2, 0.2)
+look_at_offset = Vector3(0, 3.18, 0.05)
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
+
+[node name="GroundCursor" type="Sprite3D" parent="." unique_id=548446116]
+pixel_size = 0.025
+texture_filter = 5
+texture = ExtResource("11_nat86")
+script = ExtResource("12_70mwv")
+spin_speed = 20.0
+
+[node name="Trees" type="Node3D" parent="." unique_id=380900356]
+
+[node name="Tree1" parent="Trees" unique_id=367601616 instance=ExtResource("13_25i3r")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 16, 0, 6)
+
+[node name="Tree2" parent="Trees" unique_id=1706056838 instance=ExtResource("13_25i3r")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 22, 0, -3)
+
+[node name="Tree3" parent="Trees" unique_id=573874571 instance=ExtResource("13_25i3r")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 12, 0, -7)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=924066934]
+
+[node name="FujitaLabel" type="Label" parent="HUD" unique_id=676770397]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 620.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+text = "Health"
+script = ExtResource("14_tvh26")
+
+[node name="Tree 1" parent="." unique_id=1748903819 instance=ExtResource("16_g78wh")]
+transform = Transform3D(1.7356999, 0, 0, 0, 1.7356999, 0, 0, 0, 1.7356999, 26.430307, 1.6598129, 66.52428)
+
+[node name="Skyscraper_1" parent="." unique_id=2032370299 instance=ExtResource("17_12qpa")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 49.938484, 32.492153, -107.606415)

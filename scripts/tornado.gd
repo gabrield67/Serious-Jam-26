@@ -18,19 +18,20 @@ extends CharacterBody3D
 
 @export_group("Fujita / size")
 ## Width (x/z) growth added per Fujita level — makes the funnel fatter.
+## Height stays fixed; the storm only widens as it climbs the Fujita scale.
 @export var width_per_level: float = 0.45
-## Height (y) growth added per Fujita level.
-@export var height_per_level: float = 0.25
 ## How quickly the visual eases toward its target size.
 @export var grow_lerp: float = 4.0
 ## Destruction-speed multiplier added per Fujita level (damage to destructibles).
 @export var chew_per_level: float = 0.5
 
 @export_group("Carry")
-## Orbit radius for carried pickups (scales with the tornado's width).
-@export var carry_radius: float = 6.0
-## Height above the ground that carried pickups swirl at.
-@export var carry_height: float = 5.0
+## Orbit radius for carried pickups, in the tornado's LOCAL space — so the real-world
+## orbit is this × the tornado's node scale. Keep it tight (near the funnel) so the
+## swirling debris stays on screen.
+@export var carry_radius: float = 2.5
+## Height above the ground that carried pickups swirl at (also × node scale).
+@export var carry_height: float = 4.0
 ## How fast carried pickups orbit the funnel (deg/sec).
 @export var carry_orbit_speed: float = 120.0
 ## How fast each carried pickup spins on its own axis (deg/sec).
@@ -40,7 +41,7 @@ extends CharacterBody3D
 ## Extra debris capacity per Fujita level.
 @export var carry_per_level: int = 2
 ## Vertical spread of carried debris (column height around carry_height).
-@export var carry_height_spread: float = 5.0
+@export var carry_height_spread: float = 2.0
 ## Per-item radius variation (fraction of carry_radius).
 @export var carry_radius_var: float = 0.45
 ## Per-item orbit-speed variation (fraction).
@@ -272,6 +273,24 @@ func _grab_deferred(body: Node) -> void:
 		_carried.append(body)
 		_assign_orbit(body)
 
+## Public: add a debris chunk to the swirl (e.g. a piece of a fully-destroyed building).
+## Respects carry capacity; the item is freed if there's no room. Pass a plain Node3D —
+## it gets position-driven in the orbit, so it shouldn't simulate physics.
+func collect_debris(item: Node3D) -> void:
+	call_deferred("_collect_deferred", item)
+
+func _collect_deferred(item: Node3D) -> void:
+	if not is_instance_valid(item) or _carried.has(item):
+		return
+	if _carried.size() >= carry_capacity():
+		item.queue_free()  # no room in the swirl — discard
+		return
+	if item.has_method("grab"):
+		item.grab()
+	item.reparent(_carry_root)
+	_carried.append(item)
+	_assign_orbit(item)
+
 func _throw_debris() -> void:
 	if _carried.is_empty():
 		return
@@ -335,7 +354,7 @@ func _assign_orbit(item: Node3D) -> void:
 func _update_carry(delta: float) -> void:
 	if _carried.is_empty():
 		return
-	_carry_angle += deg_to_rad(carry_orbit_speed) * delta
+	_carry_angle -= deg_to_rad(carry_orbit_speed) * delta
 	_carry_time += delta
 	for item in _carried:
 		if not is_instance_valid(item):
@@ -360,10 +379,9 @@ func take_hit(amount: float) -> void:
 
 func _on_fujita_changed(level: int, _value: float) -> void:
 	var w := 1.0 + level * width_per_level
-	var h := 1.0 + level * height_per_level
-	_target_scale = Vector3(w, h, w)
-	if _maw and _maw.has_method("set_intensity"):
-		_maw.set_intensity(level)  # bigger storm -> wider destruction reach
+	_target_scale = Vector3(w, 1.0, w)  # width only — height stays constant
+	# Chew reach now tracks the visible funnel continuously via _apply_vfx_scale, so it
+	# grows smoothly with the storm instead of stepping per level here.
 	_update_chew()
 	if _health:
 		_health.set_max(_fujita.max_health())  # F-scale raises the health cap

@@ -13,10 +13,26 @@ extends EditorScript
 ##   4. Drag the generated scenes from OUT_DIR onto your map; duplicate freely.
 ##
 ## Re-running overwrites the generated scenes (it won't touch your map placements).
+##
+## With GENERATE_FRAGMENTS on, it ALSO Voronoi-fractures each mesh (via the enabled
+## VoronoiShatter addon) and bakes a frozen shard scene per model, linked to the
+## destructible's `fragments_scene` so it physically collapses on death.
 
-const SOURCE_NODE := "structure copy"
+const SOURCE_NODE := "Map Objects"
 const OUT_DIR := "res://scenes/destructibles/generated"
 const DESTRUCTIBLE := "res://scripts/destructibles/destructible.gd"
+## Meshes under a "minor" group node aren't destructibles — they become PickupItems the
+## tornado carries (not chewed, not fractured).
+const PICKUP := "res://scripts/pickup_item.gd"
+const MINOR_GROUP := "minor"
+## Baked shard scenes, written to FRAGMENTS_DIR as "Fragments_<MeshName>.tscn".
+const FRAGMENTS_DIR := "res://scenes/destructibles/fragments"
+## Fracture each mesh automatically (uses the VoronoiShatter addon's generator). When
+## false, only links a manually pre-baked Fragments_<name>.tscn if one already exists.
+const GENERATE_FRAGMENTS := true
+const FRAG_SAMPLES := 24       ## fracture pieces (fewer = bigger chunks, faster)
+const FRAG_SEED := 0
+const FRAG_CELL_SCALE := 0.9   ## <1 leaves gaps between shards (stops spawn-explosion)
 
 # Index 0..3 = small, medium, large, giant.
 const TIER_PATHS := [
@@ -47,17 +63,28 @@ func _run() -> void:
 	if not DirAccess.dir_exists_absolute(OUT_DIR):
 		DirAccess.make_dir_recursive_absolute(OUT_DIR)
 
+	if GENERATE_FRAGMENTS and not DirAccess.dir_exists_absolute(FRAGMENTS_DIR):
+		DirAccess.make_dir_recursive_absolute(FRAGMENTS_DIR)
+
 	var script: Script = load(DESTRUCTIBLE)
 	var tiers := TIER_PATHS.map(func(p): return load(p))
 	var kinds := KIND_PATHS.map(func(p): return load(p))
+	var vgen = VoronoiGenerator.new() if GENERATE_FRAGMENTS else null
 
 	var jobs: Array = []
-	_collect(src, DEFAULT_TIER, jobs)
+	_collect(src, DEFAULT_TIER, false, jobs)
 
 	var made := 0
+	var pickups := 0
 	for j in jobs:
 		var child: MeshInstance3D = j[0]
 		var tier: int = j[1]
+		var minor: bool = j[2]
+
+		if minor:
+			if _save_pickup(child):
+				pickups += 1
+			continue
 
 		var body := StaticBody3D.new()
 		body.set_script(script)
@@ -67,6 +94,16 @@ func _run() -> void:
 		body.set("data", tiers[tier])
 		body.set("kind", _kind_for(child.name, kinds))
 		body.set("keep_authored_scale", true)
+		var frag_path := "%s/Fragments_%s.tscn" % [FRAGMENTS_DIR, child.name]
+		if GENERATE_FRAGMENTS:
+			var fpacked := _bake_fragments(vgen, child)
+			if fpacked and ResourceSaver.save(fpacked, frag_path) == OK:
+				body.set("fragments_scene", load(frag_path))
+				print("  fractured %s" % child.name)
+			else:
+				print("  (no fragments for %s — likely flat/thin geometry)" % child.name)
+		elif ResourceLoader.exists(frag_path):
+			body.set("fragments_scene", load(frag_path))
 		# Keep the model's intrinsic scale/rotation, drop placement offset.
 		var t := child.transform
 		t.origin = Vector3.ZERO
@@ -87,16 +124,100 @@ func _run() -> void:
 			made += 1
 		body.free()
 
-	print("Generator: wrote %d destructible scenes to %s" % [made, OUT_DIR])
+	if vgen:
+		vgen.free()
+	print("Generator: wrote %d destructible + %d pickup scenes to %s" % [made, pickups, OUT_DIR])
 	EditorInterface.get_resource_filesystem().scan()
 
-func _collect(node: Node, tier: int, jobs: Array) -> void:
+## Bake a "minor" mesh into a reusable PickupItem scene (carried by the tornado, never
+## destroyed). Mirrors the destructible wrapping minus size/kind/fragments.
+func _save_pickup(child: MeshInstance3D) -> bool:
+	var body := StaticBody3D.new()
+	body.set_script(load(PICKUP))
+	body.name = child.name
+	# Keep the model's intrinsic scale/rotation, drop placement offset.
+	var t := child.transform
+	t.origin = Vector3.ZERO
+	body.transform = t
+
+	var mesh: MeshInstance3D = child.duplicate()
+	mesh.transform = Transform3D.IDENTITY
+	body.add_child(mesh)
+	mesh.owner = body
+
+	var packed := PackedScene.new()
+	packed.pack(body)
+	var path := "%s/%s.tscn" % [OUT_DIR, child.name]
+	var err := ResourceSaver.save(packed, path)
+	body.free()
+	if err != OK:
+		push_error("Generator: failed to save pickup %s (err %d)" % [path, err])
+		return false
+	return true
+
+## Fracture one mesh into a frozen RigidBody3D shard scene (CollapsingFragments drives it
+## at runtime). Returns null for geometry Voronoi can't tetrahedralize (flat signs, etc.).
+func _bake_fragments(vgen, source: MeshInstance3D) -> PackedScene:
+	if source.mesh == null:
+		return null
+	var config = VoronoiGeneratorConfig.new()
+	config.num_samples = FRAG_SAMPLES
+	config.random_seed = FRAG_SEED
+	config.texture = null
+	var results: Array = vgen.create_from_mesh(source, config)
+	if results == null or results.is_empty():
+		return null
+
+	# Bake at the model's render scale so runtime placement needs position+rotation only.
+	var s: Vector3 = source.transform.basis.get_scale()
+	var gap: Vector3 = s * FRAG_CELL_SCALE
+	# No material override — shards keep the model's surface materials so the Destructible
+	# can re-apply its per-instance palette colors to them at runtime (matching the build).
+
+	var root := Node3D.new()
+	root.name = "Fragments_%s" % source.name
+	var i := 0
+	for vm in results:
+		if vm == null or vm.mesh == null:
+			continue
+		var body := RigidBody3D.new()
+		body.name = "Shard_%d" % i
+		body.freeze = true  # CollapsingFragments releases them
+		body.position = -vm.position * s
+		var mi := MeshInstance3D.new()
+		mi.mesh = vm.mesh
+		mi.scale = gap
+		body.add_child(mi)
+		var col := CollisionShape3D.new()
+		col.shape = vm.mesh.create_convex_shape(true, true)
+		col.scale = gap
+		body.add_child(col)
+		root.add_child(body)
+		i += 1
+
+	if i == 0:
+		root.free()
+		return null
+	_own_all(root, root)
+	var packed := PackedScene.new()
+	packed.pack(root)
+	return packed
+
+func _own_all(node: Node, owner_node: Node) -> void:
+	for c in node.get_children():
+		c.owner = owner_node
+		_own_all(c, owner_node)
+
+func _collect(node: Node, tier: int, minor: bool, jobs: Array) -> void:
 	for c in node.get_children():
 		if c is MeshInstance3D:
-			jobs.append([c, tier])
+			jobs.append([c, tier, minor])
 		else:
 			var key := String(c.name).to_lower()
-			_collect(c, GROUP_TIERS.get(key, tier), jobs)
+			if key == MINOR_GROUP:
+				_collect(c, tier, true, jobs)
+			else:
+				_collect(c, GROUP_TIERS.get(key, tier), minor, jobs)
 
 func _kind_for(node_name: String, kinds: Array) -> Resource:
 	var lower := node_name.to_lower()

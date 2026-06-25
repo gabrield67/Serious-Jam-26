@@ -6,12 +6,10 @@ class_name VortexMaw3D
 
 @export var chew_rate: float = 1.0
 
-@export_group("Growth")
-## Contact-cylinder radius at F0.
-@export var base_radius: float = 4.0
-## Extra radius per Fujita level (wider destruction as the storm grows).
-@export var radius_per_level: float = 1.5
-@export var max_radius: float = 16.0
+## Direct-contact chew radius (tornado LOCAL space, so real reach = this × the tornado's
+## node scale). Fixed — it does NOT widen with the Fujita scale — so only the funnel core
+## actually touching a building triggers its fragmenting. Lower it for an even tighter hit.
+@export var base_radius: float = 2.0
 
 signal consumed(value: float)
 signal grabbed(body: Node)
@@ -23,13 +21,13 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	_shape = _find_shape()
+	_apply_radius()
 
-## Called by the tornado when its Fujita level changes — widens the contact reach.
-func set_intensity(level: int) -> void:
+func _apply_radius() -> void:
 	if _shape == null:
 		_shape = _find_shape()
 	if _shape and _shape.shape is CylinderShape3D:
-		_shape.shape.radius = minf(base_radius + level * radius_per_level, max_radius)
+		_shape.shape.radius = base_radius
 
 func _find_shape() -> CollisionShape3D:
 	for c in get_children():

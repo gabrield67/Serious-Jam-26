@@ -9,6 +9,9 @@ class_name Destructible
 ## Optional type: display name + per-surface palettes. Null = keep model materials,
 ## display name falls back to the node name.
 @export var kind: DestructibleKind
+## Pre-baked VoronoiShatter shard scene. When set, the building collapses into these
+## physics shards on death instead of just bursting particles. Null = particle burst.
+@export var fragments_scene: PackedScene
 
 @export_group("Per-instance overrides")
 ## Keep the model's authored scale instead of multiplying by data.scale_mult.
@@ -27,6 +30,7 @@ var _mesh: MeshInstance3D
 var _progress: float = 0.0
 var _destroy_time: float = 1.0
 var _base_scale: Vector3
+var _fragments: CollapsingFragments  # spawned on first chew, drives the progressive crumble
 
 func _ready() -> void:
 	add_to_group("consumable")
@@ -40,20 +44,65 @@ func _ready() -> void:
 	_apply_color()
 	_ensure_collision()
 
-## Maw contact. Returns true once destroyed.
+## Maw contact. The building crumbles progressively: shards break off as the tornado
+## chews, in proportion to how far along `destroy_time` we are. The maw stops calling
+## this when the tornado moves away, so the crumble naturally pauses (and resumes on
+## return). Once fully chewed, the remaining shards release and the building is gone.
 func chew(amount: float) -> bool:
 	_progress += amount
-	scale = _base_scale * lerpf(1.0, 0.08, clampf(_progress / _destroy_time, 0.0, 1.0))
+	if _fragments == null:
+		_begin_crumble()
+	if _fragments:
+		_fragments.crumble_to(_progress / _destroy_time)
 	if _progress >= _destroy_time:
-		_destroy()
+		_finish()
 		return true
 	return false
 
-func _destroy() -> void:
+## First chew: swap the intact mesh for the frozen shard collection (which the player
+## then watches break apart). No-op if this kind has no baked fragments.
+func _begin_crumble() -> void:
+	if fragments_scene == null:
+		return
+	if _mesh:
+		_mesh.visible = false
+	var ctrl := CollapsingFragments.new()
+	# Pass our per-surface materials (the instance's palette tints) so the shards match.
+	ctrl.surface_materials = _surface_materials()
+	get_tree().current_scene.add_child(ctrl)
+	# Position + rotation only — the baked shards already encode the model's size,
+	# so re-applying our scale would double it.
+	ctrl.global_transform = Transform3D(global_transform.basis.orthonormalized(), global_position)
+	var frags := fragments_scene.instantiate()
+	ctrl.add_child(frags)
+	if frags is Node3D:
+		frags.transform = Transform3D.IDENTITY
+	ctrl.setup(get_tree().get_first_node_in_group("tornado"))
+	_fragments = ctrl
+
+## The materials this instance is showing per surface (palette tints applied in _ready),
+## so the shards can be painted identically. Nulls = keep the shard's own material.
+func _surface_materials() -> Array:
+	var mats: Array = []
+	if _mesh:
+		for i in _mesh.get_surface_override_material_count():
+			mats.append(_mesh.get_surface_override_material(i))
+	return mats
+
+func _finish() -> void:
 	if data:
 		consumed.emit(data.value)
-		_spawn_debris()
+	_spawn_debris()
+	if _fragments:
+		_fragments.release_all()  # drop whatever's still standing; it lives on and cleans itself up
+	else:
+		_spawn_fragments_instant()  # no baked shards -> just a particle burst already spawned
 	queue_free()
+
+## Fallback for kinds without baked shards: nothing to collapse, the dust burst above
+## carries the destruction. (Kept as a hook in case we want a different no-shard effect.)
+func _spawn_fragments_instant() -> void:
+	pass
 
 func _spawn_debris() -> void:
 	if data == null or data.debris == null or data.debris.vfx == null:
