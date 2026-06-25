@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://dkay1q72jj0bx"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_0vnl2"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_lpdv1"]
+[ext_resource type="Resource" uid="uid://cc5ok1c67ckb1" path="res://resources/destructibles/palettes/motel_roof.tres" id="3_0vnl2"]
+[ext_resource type="Resource" uid="uid://cqvrbkkber4ap" path="res://resources/destructibles/palettes/motel_walls.tres" id="4_lpdv1"]
+
+[resource]
+script = ExtResource("1_0vnl2")
+display_name = "Motel"
+match_keywords = PackedStringArray("motel")
+surface_palettes = Array[ExtResource("2_lpdv1")]([ExtResource("3_0vnl2"), ExtResource("4_lpdv1")])

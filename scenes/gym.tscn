@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://wtexamna831i"]
 
 [ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/items/PowerUp.tscn" id="1_pcntt"]
-[ext_resource type="PackedScene" uid="uid://bymnp2ir08ogy" path="res://temp/map_objects.tscn" id="1_yftua"]
 [ext_resource type="Script" uid="uid://bsjage7kfry0q" path="res://scripts/tornado.gd" id="2_5dx68"]
-[ext_resource type="PackedScene" uid="uid://cte8b0862o2a" path="res://scenes/destructibles/generated/Apartments.tscn" id="2_yftua"]
 [ext_resource type="Script" uid="uid://d0kjagnf4gw8q" path="res://scripts/vortex_maw_3d.gd" id="3_tnts5"]
 [ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="4_h7ru6"]
 [ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="5_p6j5f"]
@@ -14,9 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://dg205j81ea1qi" path="res://assets/UI/cursor/crosshair135.png" id="11_nat86"]
 [ext_resource type="Script" uid="uid://bjaystaecgmd0" path="res://scripts/ground_cursor.gd" id="12_70mwv"]
 [ext_resource type="PackedScene" uid="uid://cqe834hxv4l17" path="res://scenes/debris/Tree.tscn" id="13_25i3r"]
+[ext_resource type="PackedScene" uid="uid://dvs53f1dtcb3d" path="res://temp/test_colors.tscn" id="14_83nkw"]
 [ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="14_tvh26"]
-[ext_resource type="PackedScene" uid="uid://c70052ikubh6p" path="res://scenes/destructibles/generated/Tree 1.tscn" id="16_g78wh"]
-[ext_resource type="PackedScene" uid="uid://ds1ysfdsg6fmy" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="17_12qpa"]
+[ext_resource type="PackedScene" uid="uid://wli18lhlabm1" path="res://scenes/destructibles/generated/House_1.tscn" id="15_yftua"]
+[ext_resource type="PackedScene" uid="uid://e26nbphrt2ht" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_pcntt"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.38, 0.45, 0.55, 1)
@@ -59,18 +58,12 @@ script = ExtResource("9_p4h1t")
 
 [node name="Gym" type="Node3D" unique_id=553556477]
 
-[node name="Map Objects" parent="." unique_id=14317245 instance=ExtResource("1_yftua")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.6355, 0, 0)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=808378729]
 environment = SubResource("Env")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=310126205]
 transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
 shadow_enabled = true
-
-[node name="Apartments" parent="." unique_id=1302257791 instance=ExtResource("2_yftua")]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 8.509438, 11.49017, -72.908844)
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
 
@@ -87,7 +80,7 @@ shape = SubResource("GroundShape")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 97.28128)
 
 [node name="Tornado" type="CharacterBody3D" parent="." unique_id=271525483]
-transform = Transform3D(13.395, 0, 0, 0, 13.395, 0, 0, 0, 13.395, 0, 0, 0)
+transform = Transform3D(13, 0, 0, 0, 13, 0, 0, 0, 13, 0, 0, 0)
 script = ExtResource("2_5dx68")
 
 [node name="Collision" type="CollisionShape3D" parent="Tornado" unique_id=1848947250]
@@ -170,8 +163,11 @@ theme_override_font_sizes/font_size = 28
 text = "Health"
 script = ExtResource("14_tvh26")
 
-[node name="Tree 1" parent="." unique_id=1748903819 instance=ExtResource("16_g78wh")]
-transform = Transform3D(1.7356999, 0, 0, 0, 1.7356999, 0, 0, 0, 1.7356999, 26.430307, 1.6598129, 66.52428)
+[node name="Map Objects" parent="." unique_id=1366542596 instance=ExtResource("14_83nkw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126.187256, 0, 0)
 
-[node name="Skyscraper_1" parent="." unique_id=2032370299 instance=ExtResource("17_12qpa")]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 49.938484, 32.492153, -107.606415)
+[node name="House_1" parent="." unique_id=855423907 instance=ExtResource("15_yftua")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 33.691513, 2.8368037, 37.67003)
+
+[node name="Tree_1" parent="." unique_id=371938878 instance=ExtResource("16_pcntt")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 53.684258, 1.6436553, 92.04619)

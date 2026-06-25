@@ -3,9 +3,25 @@ class_name PickupItem
 ## A thing the tornado picks up and carries (orbits) instead of destroying.
 ## Auto-generates a collision box from its mesh so the maw can detect it.
 
+## Optional type: display name + per-surface palettes (same system as Destructible).
+## Null = keep the model's own materials; display name falls back to the node name.
+@export var kind: DestructibleKind
+
 func _ready() -> void:
 	add_to_group("pickup")
+	# Layer 2 so the maw (mask 3) still detects it, but the tornado's body (mask 1) passes
+	# through instead of being blocked. mask 0 — it's just a target, it scans nothing.
+	collision_layer = 2
+	collision_mask = 0
 	_ensure_collision()
+	if kind:
+		kind.apply_to(_find_mesh(), global_position)
+
+## Name shown in HUD/score; falls back to the node name when there's no kind.
+func get_display_name() -> String:
+	if kind and kind.display_name != "":
+		return kind.display_name
+	return name
 
 ## Called when grabbed — go inert so it isn't detected again.
 func grab() -> void:

@@ -57,7 +57,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.582243, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3256607, 0, 0)
 
 [node name="VFX_Tornado_Base" parent="Tornadoes" unique_id=815117568 instance=ExtResource("3_wtpp6")]
-transform = Transform3D(13, 0, 0, 0, 13, 0, 0, 0, 13, 31.324615, 0, 0)
+transform = Transform3D(12.999999, -0.0010695785, -0.0014492224, 0.0010695785, 12.999999, 0.0017274204, 0.0014492224, -0.0017274204, 12.999999, 31.324615, 0, 0)
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1154768859]
 
