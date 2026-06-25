@@ -7,6 +7,6 @@
 
 [resource]
 script = ExtResource("1_dutk4")
-display_name = "Billboard"
+display_name = "Sign"
 match_keywords = PackedStringArray("billboard", "sign")
 surface_palettes = Array[ExtResource("2_c1sgs")]([ExtResource("3_f1aj1"), ExtResource("4_0y2k2")])

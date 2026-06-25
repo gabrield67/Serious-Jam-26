@@ -70,7 +70,7 @@ shadow_enabled = true
 [node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
 
 [node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1123203704]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.013210297, -0.5827751, -0.0017719269)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8514824, -7.8540154, 1.6035366)
 mesh = SubResource("GroundMesh")
 surface_material_override/0 = SubResource("GroundMat")
 

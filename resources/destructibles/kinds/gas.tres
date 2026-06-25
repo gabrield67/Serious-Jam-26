@@ -8,5 +8,5 @@
 [resource]
 script = ExtResource("1_tm03v")
 display_name = "Gas Station"
-match_keywords = PackedStringArray("gas station")
+match_keywords = PackedStringArray("gas")
 surface_palettes = Array[ExtResource("2_sb6kf")]([ExtResource("3_tm03v"), ExtResource("4_sb6kf")])
