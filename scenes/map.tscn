@@ -135,8 +135,12 @@ shape = SubResource("GroundShape")
 [node name="Tornado" parent="." unique_id=1767961767 instance=ExtResource("1_tornado")]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1980222075]
+<<<<<<< Updated upstream
 physics_interpolation_mode = 1
 transform = Transform3D(0, -0.35112345, 0.9363291, -1.4901161e-08, 0.9363292, 0.35112345, -1, 1.4901161e-08, 0, 160, 85, 0)
+=======
+transform = Transform3D(0, -0.3510781, 0.9362077, -1.4901161e-08, 0.93620825, 0.3510779, -1, 1.48992365e-08, 0, 160, 85, 0)
+>>>>>>> Stashed changes
 top_level = true
 near = 1.0
 far = 8000.0

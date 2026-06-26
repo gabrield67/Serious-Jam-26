@@ -50,11 +50,11 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.5730000272175
+shader_parameter/AlphaTreshold = 0.8678000101783996
 
 [sub_resource type="Gradient" id="Gradient_8kx2p"]
-offsets = PackedFloat32Array(0, 0.369295, 0.78185326)
-colors = PackedColorArray(0.44313726, 0.2, 0.18039216, 0, 0.9339977, 0.66025805, 0.14171329, 1, 0.41644794, 0, 0.0097638285, 1)
+offsets = PackedFloat32Array(0.027777778, 0.3125, 0.45833334, 0.5538194, 0.84375)
+colors = PackedColorArray(0.44313726, 0.2, 0.18039216, 0, 1, 0.42745098, 0, 0.7137255, 0.85107625, 0.55447197, 0.12057244, 1, 0.6110407, 0.24824941, 0.0593753, 1, 0.41644794, 0, 0.0097638285, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_7uv78"]
 gradient = SubResource("Gradient_8kx2p")
@@ -82,10 +82,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_7uv78")
-shader_parameter/Color_Intensity2 = 10.0
+shader_parameter/Color_Intensity2 = 1.8695656
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
-shader_parameter/AlphaTreshold = 0.268
+shader_parameter/AlphaTreshold = 0.6065454391385952
 
 [sub_resource type="Gradient" id="Gradient_3wtuu"]
 offsets = PackedFloat32Array(0.010416667, 0.186186, 0.5538194)
@@ -120,7 +120,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_m22cq")
 shader_parameter/Color_Intensity2 = 2.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_1k1cj")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6opjf")
-shader_parameter/AlphaTreshold = 0.5210000247475
+shader_parameter/AlphaTreshold = 0.9601667331457138
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -180,8 +180,8 @@ color = Color(0.85882354, 0, 0, 1)
 alpha_curve = SubResource("CurveTexture_frdhh")
 
 [sub_resource type="Curve" id="Curve_u076y"]
-_data = [Vector2(0, 0.043956), 0.0, -0.101518, 0, 0, Vector2(1, 0.818029), 2.85785, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0.006600663, 1), 0.0, -0.101518, 0, 0, Vector2(0.6039604, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.818029), 2.85785, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_asi7t"]
 texture_mode = 1
@@ -347,8 +347,8 @@ shader_parameter/Power = 0.82
 shader_parameter/Texture_Substract = SubResource("GradientTexture2D_dfiph")
 shader_parameter/Proximity_Fade = 0.3
 shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_mnqlx")
-shader_parameter/Transparency = 1.0
-shader_parameter/AlphaTreshold = 0.134
+shader_parameter/Transparency = 0.0
+shader_parameter/AlphaTreshold = 0.690713917016983
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qhpw8"]
 size = Vector2(8, 8)
@@ -368,7 +368,7 @@ render_priority = 0
 shader = ExtResource("13_3hdrx")
 shader_parameter/ColorParameter = Color(0.92, 0, 0.33733347, 1)
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_hu56e")
-shader_parameter/Opacity = 1.0
+shader_parameter/Opacity = 0.19999975
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xoqjk"]
 render_priority = -1
@@ -401,6 +401,7 @@ alpha_curve = SubResource("CurveTexture_s1smp")
 
 [sub_resource type="Animation" id="Animation_oaiv7"]
 resource_name = "End"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -408,10 +409,10 @@ tracks/0/path = NodePath("SmTornadoExternalJ1:material_override:shader_parameter
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4),
+"times": PackedFloat32Array(0.033333335, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.278, 1.0]
+"values": [0.706000033535, 1.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -423,7 +424,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.268, 1.0]
+"values": [0.8450000401375, 1.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -447,7 +448,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.233333, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [10.0, 10.0, 1.0]
+"values": [2.0, 10.0, 1.0]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -459,7 +460,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.283, 1.0]
+"values": [0.578000027455, 1.0]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -531,7 +532,7 @@ tracks/10/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.134, 0.134, 1.0]
+"values": [0.830000039425, 0.134, 1.0]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
@@ -543,7 +544,7 @@ tracks/11/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [1.0, 1.0, 0.0]
+"values": [0.9150000434625, 1.0, 0.0]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
@@ -567,7 +568,7 @@ tracks/13/keys = {
 "times": PackedFloat32Array(0, 0.266667, 0.466667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [1.0, 1.0, 0.0]
+"values": [0.46000002185, 1.0, 0.0]
 }
 tracks/14/type = "value"
 tracks/14/imported = false
@@ -591,14 +592,30 @@ tracks/15/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.433333),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [5.0, 5.0, 0.0]
+"values": [2.18, 5.0, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_e6g1b"]
 resource_name = "Idle_Loop"
 
+[sub_resource type="Animation" id="Animation_b3306"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmTornadoInnerJ1:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="Animation" id="Animation_bug78"]
 resource_name = "Start"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -609,7 +626,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0.0666667, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [1.0, 0.278]
+"values": [0.9050000429875, 0.5330000253175]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -621,7 +638,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.1, 0.366667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [1.0, 0.268]
+"values": [0.66000003135, 0.268]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -630,10 +647,10 @@ tracks/2/path = NodePath("SmTornadoInnerJ1:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [false, true]
+"values": [false, true, true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -642,7 +659,7 @@ tracks/3/path = NodePath("SmTornadoInnerJ1:material_override:shader_parameter/Co
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.1, 0.366667),
+"times": PackedFloat32Array(0.13333334, 0.366667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 6.0]
@@ -796,6 +813,7 @@ tracks/15/keys = {
 _data = {
 &"End": SubResource("Animation_oaiv7"),
 &"Idle_Loop": SubResource("Animation_e6g1b"),
+&"RESET": SubResource("Animation_b3306"),
 &"Start": SubResource("Animation_bug78")
 }
 
@@ -883,9 +901,13 @@ draw_pass_1 = SubResource("PlaneMesh_h1xv1")
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1464074892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85065, 0)
 light_color = Color(0.98, 0.18620001, 0.1994298, 1)
-light_energy = 5.0
+light_energy = 0.0
 omni_range = 6.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2119063184]
+libraries/ = SubResource("AnimationLibrary_18olx")
+autoplay = &"Start"
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="." unique_id=904378769]
 libraries/ = SubResource("AnimationLibrary_18olx")
 autoplay = &"Start"
