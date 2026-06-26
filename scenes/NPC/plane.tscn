@@ -1,12 +1,10 @@
 [gd_scene format=4 uid="uid://bhur7wlssq07x"]
 
-[ext_resource type="Script" uid="uid://dojyjhn6gyo1d" path="res://scripts/plane.gd" id="1_plane"]
-[ext_resource type="PackedScene" uid="uid://cdusttrail01" path="res://scenes/particles/DustTrail.tscn" id="2_dust"]
+[ext_resource type="Script" uid="uid://dojyjhn6gyo1d" path="res://scripts/enemy/plane.gd" id="1_plane"]
 [ext_resource type="PackedScene" uid="uid://ch6kqo2qu7mhf" path="res://Explosion VFX/Scenes/VFX_mini_explosion_1.tscn" id="3_mini1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8d8a"]
 resource_name = "Material"
-cull_mode = 2
 albedo_color = Color(0.9066351, 0.60839546, 0, 1)
 roughness = 0.9094158
 
@@ -46,7 +44,6 @@ shadow_mesh = SubResource("ArrayMesh_v724e")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4awue"]
 resource_name = "Material.001"
-cull_mode = 2
 albedo_color = Color(0.9064694, 0.050367147, 0, 1)
 roughness = 0.9613211
 
@@ -86,7 +83,6 @@ shadow_mesh = SubResource("ArrayMesh_2w1gx")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_epavc"]
 resource_name = "Material.005"
-cull_mode = 2
 albedo_color = Color(0.44004035, 0.6690967, 0.9063913, 1)
 roughness = 0.87914485
 
@@ -126,7 +122,6 @@ shadow_mesh = SubResource("ArrayMesh_btsf2")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5resc"]
 resource_name = "Material.002"
-cull_mode = 2
 albedo_color = Color(0.32953608, 0.32953608, 0.32953608, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8p4h6"]
@@ -165,7 +160,6 @@ shadow_mesh = SubResource("ArrayMesh_8p4h6")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s5sp3"]
 resource_name = "Material.004"
-cull_mode = 2
 albedo_color = Color(0.5284013, 0.5284013, 0.5284013, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_espp3"]
@@ -202,7 +196,6 @@ shadow_mesh = SubResource("ArrayMesh_espp3")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w3oq0"]
 resource_name = "Material.003"
-cull_mode = 2
 albedo_color = Color(0.90633976, 0.84080106, 0.6441614, 1)
 roughness = 0.847956
 
@@ -240,7 +233,6 @@ shadow_mesh = SubResource("ArrayMesh_48gkm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a68qv"]
 resource_name = "Material.006"
-cull_mode = 2
 albedo_color = Color(0.7556375, 0.6322031, 0.4481866, 1)
 roughness = 0.91484666
 
@@ -278,7 +270,6 @@ shadow_mesh = SubResource("ArrayMesh_glr7d")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w5sda"]
 resource_name = "Material.007"
-cull_mode = 2
 albedo_color = Color(0.26136056, 0.16884087, 0.09533, 1)
 roughness = 0.993337
 
@@ -317,12 +308,16 @@ shadow_mesh = SubResource("ArrayMesh_e1o88")
 [node name="plane" type="Node3D" unique_id=391191332]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("1_plane")
+orbit_radius = 40.0
+altitude = 60.0
+bank_angle = 30.0
+trail_lifetime = 6.0
 enemy_name = "Plane"
+threat_cost = 2.0
+spawn_min_level = 1
+spawn_weight = 3.0
 death_vfx = ExtResource("3_mini1")
 death_vfx_scale = 16.0
-
-[node name="DustTrail" parent="." unique_id=321775021 instance=ExtResource("2_dust")]
-transform = Transform3D(1.942, 0, 0, 0, 1.942, 0, 0, 0, 1.942, 0, 1.3068484, 7.204501)
 
 [node name="RootNode" type="Node3D" parent="." unique_id=1879351564]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, -2.220446e-18, 0, 2.220446e-18, 0.01, 0, 0, 0)

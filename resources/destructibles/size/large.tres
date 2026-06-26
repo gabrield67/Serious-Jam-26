@@ -7,5 +7,6 @@
 script = ExtResource("1_script")
 destroy_time = 6.0
 value = 10.0
+score = 300
 debris = ExtResource("2_debris")
 hit_shake = 0.55

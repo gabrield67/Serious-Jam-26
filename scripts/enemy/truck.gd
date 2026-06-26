@@ -46,6 +46,8 @@ var _target: Node3D
 var _state: State = State.RUN
 var _heading: float = 0.0       # travel direction (yaw), independent of facing_offset
 var _ground_y: float = 0.0
+var _ground_set: bool = false   # capture the spawn surface on the first physics frame
+var _ride: float = 0.0          # lift so the wheels rest on the surface, not sink through it
 var _leave_dir: Vector3 = Vector3.FORWARD
 var _caught_t: float = 0.0
 var _spin: float = 0.0
@@ -60,14 +62,18 @@ var _dropped: bool = false
 
 func _ready() -> void:
 	add_to_group("enemy")
-	_ground_y = global_position.y
 	_heading = rotation.y - facing_offset
+	_ride = _compute_ride()
 
 func _physics_process(delta: float) -> void:
 	if _target == null or not is_instance_valid(_target):
 		_target = get_tree().get_first_node_in_group("tornado")
 		if _target == null:
 			return
+	# Lock onto the surface the director dropped us on (it placed us after _ready ran).
+	if not _ground_set:
+		_ground_y = global_position.y
+		_ground_set = true
 	var c := _target.global_position
 
 	# Swept into the tornado on contact (the player drove it into us).
@@ -94,36 +100,51 @@ func _physics_process(delta: float) -> void:
 		State.LEAVE:
 			_leave(delta, c)
 
-## Spawn the truck onto the nearest road lane (group "road_lanes"), positioned to drive past
-## the point closest to the tornado. Returns false if there are no roads.
+## Spawn the truck onto a road lane (group "road_lanes"), starting from an OFF-SCREEN end and
+## driving past the point closest to the tornado (where it drops its barrel). Prefers lanes
+## whose start end is out of frame; among those, the one that gets nearest the tornado. Returns
+## false if there are no roads.
 func place_on_road() -> bool:
 	var torn := get_tree().get_first_node_in_group("tornado")
 	var tpos: Vector3 = torn.global_position if torn else global_position
+	var cam := get_viewport().get_camera_3d()
 	var best: Path3D = null
-	var best_d := INF
+	var best_score := INF
+	var best_offset := 0.0
+	var best_dir := 1.0
 	for n in get_tree().get_nodes_in_group("road_lanes"):
 		var path := n as Path3D
 		if path == null or path.curve == null or path.curve.get_baked_length() <= 0.1:
 			continue
+		var length := path.curve.get_baked_length()
+		# How near the road gets to the tornado (for the barrel drop).
 		var co := path.curve.get_closest_offset(path.to_local(tpos))
-		var d := path.to_global(path.curve.sample_baked(co)).distance_to(tpos)
-		if d < best_d:
-			best_d = d
+		var near_d := path.to_global(path.curve.sample_baked(co)).distance_to(tpos)
+		# Start at the end farther from the tornado, driving toward the near end so it passes the
+		# closest point along the way.
+		var p0 := path.to_global(path.curve.sample_baked(0.0))
+		var p1 := path.to_global(path.curve.sample_baked(length))
+		var offset := 0.0
+		var dir := 1.0
+		var start_pos := p0
+		if p1.distance_to(tpos) > p0.distance_to(tpos):
+			offset = length
+			dir = -1.0
+			start_pos = p1
+		# Heavily penalize lanes whose start would be on-camera, so off-screen ones always win.
+		var on_screen := cam != null and cam.is_position_in_frustum(start_pos)
+		var score := near_d + (100000.0 if on_screen else 0.0)
+		if score < best_score:
+			best_score = score
 			best = path
+			best_offset = offset
+			best_dir = dir
 	if best == null:
 		return false
 	_lane = best
 	_lane_len = best.curve.get_baked_length()
-	# Start at the lane end farther from the tornado and drive toward the near end, so it
-	# passes the closest point along the way.
-	var d0 := best.to_global(best.curve.sample_baked(0.0)).distance_to(tpos)
-	var d1 := best.to_global(best.curve.sample_baked(_lane_len)).distance_to(tpos)
-	if d0 >= d1:
-		_offset = 0.0
-		_dir = 1.0
-	else:
-		_offset = _lane_len
-		_dir = -1.0
+	_offset = best_offset
+	_dir = best_dir
 	_dropped = false
 	_place_on_lane()
 	return true
@@ -161,6 +182,7 @@ func _place_on_lane() -> void:
 			var right := Vector3(t.z, 0.0, -t.x).normalized()  # lane perpendicular on the ground
 			var slide := clampf(push.dot(right) * avoid_strength, -avoid_max_offset, avoid_max_offset)
 			lane_pos += right * slide
+	lane_pos.y += _ride  # rest on the road surface instead of sinking into it
 	global_position = lane_pos
 	rotation = Vector3(0.0, _heading + facing_offset, 0.0)
 
@@ -204,11 +226,37 @@ func _drive(delta: float) -> void:
 	_heading = _avoid_heading(_heading, delta)  # swerve around items in the way
 	var forward := Vector3(sin(_heading), 0.0, cos(_heading))
 	var pos := global_position + forward * speed * delta
-	pos.y = _ground_y
+	pos.y = _ground_y + _ride  # rest on the ground instead of sinking into it
 	global_position = pos
 	var r := rotation
 	r.y = _heading + facing_offset
 	rotation = r
+
+## Distance from this node's origin down to the lowest point of its model (the origin is at the
+## body's centre), so placement can lift the truck to rest on the surface. Computed once.
+func _compute_ride() -> float:
+	var lowest := INF
+	for n in _model_meshes(self, []):
+		var m := n as MeshInstance3D
+		if m == null or m.mesh == null:
+			continue
+		var aabb := m.mesh.get_aabb()
+		for i in 8:
+			var corner := aabb.position + Vector3(
+				aabb.size.x if (i & 1) else 0.0,
+				aabb.size.y if (i & 2) else 0.0,
+				aabb.size.z if (i & 4) else 0.0)
+			lowest = minf(lowest, (m.global_transform * corner).y)
+	if lowest == INF:
+		return 0.0
+	return maxf(global_position.y - lowest, 0.0)
+
+func _model_meshes(node: Node, acc: Array) -> Array:
+	if node is MeshInstance3D:
+		acc.append(node)
+	for c in node.get_children():
+		_model_meshes(c, acc)
+	return acc
 
 func _drop_barrel() -> void:
 	if barrel_scene == null:
@@ -226,6 +274,7 @@ func _update_caught(delta: float, c: Vector3) -> void:
 	rotation = Vector3(deg_to_rad(20.0) * sin(_spin * 0.5), _spin, deg_to_rad(18.0))
 	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
 	if _caught_t <= 0.0:
+		award_kill()  # sucked into the funnel counts as a kill
 		queue_free()
 
 ## Bend a heading away from nearby items, capped at avoid_turn_speed (used while free-driving).

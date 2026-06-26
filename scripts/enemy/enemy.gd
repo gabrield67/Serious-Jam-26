@@ -6,8 +6,21 @@ class_name Enemy
 
 @export var enemy_name: String = "Enemy"
 @export var max_health: float = 30.0
+## Damage-score points awarded when this enemy is destroyed or sucked into the tornado.
+@export var kill_score: int = 50
 ## Only attacks when the tornado is within this many world units (0 = always).
 @export var attack_range: float = 80.0
+## Extra attack range per tornado Fujita level (F0 = 0), so a bigger storm can be engaged from
+## farther out. 0 = fixed range.
+@export var attack_range_per_level: float = 0.0
+
+@export_group("Spawning")
+## How much of the spawn director's threat budget this enemy occupies while alive.
+@export var threat_cost: float = 1.0
+## Lowest tornado Fujita level (0 = F0) at which this enemy starts appearing.
+@export var spawn_min_level: int = 0
+## Relative weight when the director picks which unlocked type to spawn.
+@export var spawn_weight: float = 1.0
 
 @export_group("Death")
 ## Effect spawned where the enemy dies (auto-plays, then frees itself). Override per-scene
@@ -32,6 +45,15 @@ class_name Enemy
 @export var avoid_clearance: float = 8.0
 
 var health: float
+var _kill_awarded: bool = false   # score a kill once, whether it's destroyed or sucked up
+
+## Award this enemy's kill score once. Called on destruction (kill) and when sucked into the
+## tornado. Fleeing out of view doesn't call this, so escapees don't score.
+func award_kill() -> void:
+	if _kill_awarded:
+		return
+	_kill_awarded = true
+	GameStats.add_score(kill_score)
 
 ## True when the tornado is close enough to attack. Enemies gate their attacks on this.
 func in_attack_range() -> bool:
@@ -40,11 +62,23 @@ func in_attack_range() -> bool:
 	var t := get_tree().get_first_node_in_group("tornado")
 	if t == null or not (t is Node3D):
 		return false
-	return global_position.distance_to((t as Node3D).global_position) <= attack_range
+	var rng := attack_range
+	if attack_range_per_level != 0.0 and t.has_method("get_level"):
+		rng += float(t.call("get_level")) * attack_range_per_level
+	return global_position.distance_to((t as Node3D).global_position) <= rng
+
+## The effective attack range right now (including any Fujita-level bonus) — for beams/aim to
+## use the same reach the gate does.
+func effective_attack_range() -> float:
+	var rng := attack_range
+	if attack_range_per_level != 0.0:
+		var t := get_tree().get_first_node_in_group("tornado")
+		if t and t.has_method("get_level"):
+			rng += float(t.call("get_level")) * attack_range_per_level
+	return rng
 
 ## Horizontal repulsion (away from nearby destructibles + pickups) around `from`, for steering
-## avoidance. Each obstacle pushes harder the closer we are within its footprint + avoid_range.
-## When `flying` is true, obstacles whose top sits well below us are ignored — we clear them.
+## avoidance.
 func obstacle_push(from: Vector3, flying: bool = false) -> Vector3:
 	if not avoid_enabled:
 		return Vector3.ZERO
@@ -86,6 +120,7 @@ func take_damage(amount: float) -> void:
 func kill() -> void:
 	if health > 0.0:
 		health = 0.0
+	award_kill()
 	_on_death()
 	queue_free()
 

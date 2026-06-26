@@ -118,8 +118,6 @@ func _process(delta: float) -> void:
 		vel2 = Vector2(tv.x, tv.z)
 	var spd := vel2.length()
 
-	# Chase: aim the camera to the side OPPOSITE the tornado's heading (behind the motion).
-	# Only update the target side while actually moving, so it holds its angle when stopped.
 	if move_lead and spd > move_threshold:
 		_desired_dir = -vel2 / spd
 
@@ -151,9 +149,7 @@ func _process(delta: float) -> void:
 	var off := Vector3(_dir.x * hdist, _base_offset.y - lower_per_size * grow, _dir.y * hdist)
 	_pcam.follow_offset = off
 
-	# Mouse look-ahead: lean the aim toward the cursor so the player can scout ahead. Pans the
-	# look_at target across the ground (capped + eased). Screen axes come from the camera's
-	# current direction so right/forward stay correct as it orbits.
+	# Mouse look-ahead: lean the aim toward the cursor so the player can scout ahead
 	var target_pan := Vector2.ZERO
 	if mouse_look:
 		var vp := get_viewport()
@@ -171,8 +167,7 @@ func _process(delta: float) -> void:
 				target_pan = (right * s.x + fwd * s.y) * amt
 	_look_pan = _look_pan.lerp(target_pan, clampf(look_smooth * delta, 0.0, 1.0))
 
-	# Camera shake: a random jitter on the aim. Held while the tornado is chewing (target set
-	# by the maw, scaled by item size × how much is left), ramps up fast and tapers slowly.
+	# Camera shake
 	var rate := shake_attack if _chew_target > _shake else shake_decay
 	_shake = lerp(_shake, _chew_target, clampf(rate * delta, 0.0, 1.0))
 	if _shake < 0.004 and _chew_target <= 0.0:
@@ -181,8 +176,7 @@ func _process(delta: float) -> void:
 	var shake_off := Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0) * 0.5, randf_range(-1.0, 1.0)) * sh
 	_pcam.look_at_offset = _base_look_at + Vector3(_look_pan.x + _look_lead.x, 0.0, _look_pan.y + _look_lead.y) + shake_off
 
-## Continuous shake level (0..1) while the tornado is chewing. The maw sets this every frame
-## via the "camera_shake" group; 0 when nothing's being eaten.
+## Continuous shake level (0..1) while the tornado is chewing
 func set_chew_shake(level: float) -> void:
 	_chew_target = maxf(level, 0.0)
 

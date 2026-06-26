@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ctruckscene01"]
 
-[ext_resource type="Script" uid="uid://x76jwjjflw3x" path="res://scripts/truck.gd" id="1_truck"]
+[ext_resource type="Script" uid="uid://x76jwjjflw3x" path="res://scripts/enemy/truck.gd" id="1_truck"]
 [ext_resource type="ArrayMesh" uid="uid://d1iei7y7vwgh5" path="res://assets/meshes/Truck/Cartoon truck_Truck.res" id="2_g0vas"]
 [ext_resource type="ArrayMesh" uid="uid://cgouw2onfpcsa" path="res://assets/meshes/Truck/Cartoon truck_Cube_013.res" id="3_7pf62"]
 [ext_resource type="ArrayMesh" uid="uid://b02vx7tj4eghp" path="res://assets/meshes/Truck/Cartoon truck_Cube_012.res" id="4_7nuqt"]
@@ -13,9 +13,10 @@
 [ext_resource type="ArrayMesh" uid="uid://ddsqevxianxqr" path="res://assets/meshes/Truck/Cartoon truck_Cube_002.res" id="11_lhpfk"]
 
 [node name="Truck" type="Node3D" unique_id=1015583023]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 0, 0)
 script = ExtResource("1_truck")
 enemy_name = "Storm Chaser"
+spawn_weight = 4.0
 
 [node name="Model" type="Node3D" parent="." unique_id=1183348576]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

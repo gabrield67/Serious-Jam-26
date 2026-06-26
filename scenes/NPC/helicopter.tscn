@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://d3vfahgwuc1au"]
 
 [ext_resource type="Texture2D" uid="uid://b6b2dfkdq402b" path="res://Textures/PaletteTextureUltra_baseColor.png" id="1_4loa8"]
-[ext_resource type="Script" path="res://scripts/helicopter.gd" id="2_heli"]
+[ext_resource type="Script" uid="uid://dtm07y7k2r0rt" path="res://scripts/enemy/helicopter.gd" id="2_heli"]
 [ext_resource type="PackedScene" uid="uid://yrbt0hx220ou" path="res://Explosion VFX/Scenes/VFX_mini_explosion_2.tscn" id="3_mini2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6rk2k"]
@@ -121,6 +121,9 @@ shadow_mesh = SubResource("ArrayMesh_j6hep")
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0)
 script = ExtResource("2_heli")
 enemy_name = "Helicopter"
+threat_cost = 1.0
+spawn_min_level = 0
+spawn_weight = 5.0
 death_vfx = ExtResource("3_mini2")
 death_vfx_scale = 16.0
 

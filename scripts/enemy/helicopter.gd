@@ -199,6 +199,7 @@ func _update_caught(delta: float, c: Vector3) -> void:
 	# Shrink away as it's drawn in.
 	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
 	if _caught_t <= 0.0:
+		award_kill()  # sucked into the funnel counts as a kill
 		queue_free()
 
 ## True once it's flown out of the camera frame (with a distance fallback if there's no

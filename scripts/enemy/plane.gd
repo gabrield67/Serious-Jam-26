@@ -36,8 +36,26 @@ extends Enemy
 @export var trail_interval: float = 0.12
 ## How long each dust point stays harmful — match the visual trail's lifetime.
 @export var trail_lifetime: float = 3.0
+## How far behind the plane the (detached) dust trail emits — its tail.
+@export var dust_tail_offset: float = 8.0
+## Size of the spawned dust trail.
+@export var dust_scale: float = 2.0
 
-enum State { ORBIT, LEAVE }
+@export_group("Caught")
+## If the tornado core gets this close (horizontally, scaled by funnel size), it's sucked in.
+@export var catch_radius: float = 14.0
+## How long the spiral-up lasts before it despawns.
+@export var caught_time: float = 0.9
+## How high up the funnel it's lifted while being pulled in.
+@export var catch_lift: float = 40.0
+## How fast it spins while caught (deg/sec).
+@export var catch_spin: float = 720.0
+## How hard it's pulled toward the funnel axis while caught.
+@export var catch_pull: float = 4.0
+
+const DUST_SCENE := preload("res://scenes/particles/DustTrail.tscn")
+
+enum State { ORBIT, LEAVE, CAUGHT }
 
 var _target: Node3D
 var _state: State = State.ORBIT
@@ -48,9 +66,36 @@ var _leave_yaw: float = 0.0
 var _trail: Array[Vector3] = []     # recent path points that still carry damaging dust
 var _trail_age: Array[float] = []   # parallel: how long each has lingered
 var _drop_t: float = 0.0
+var _dust: Node3D                   # the visual dust trail, spawned into the scene (not a child)
+var _circling: bool = false         # true once it has reached the orbit ring (gates the dust)
+var _caught_t: float = 0.0          # countdown while being sucked into the funnel
+var _init_scale: Vector3 = Vector3.ONE
+var _spin: float = 0.0
 
 func _ready() -> void:
 	_angle = randf() * TAU
+	# Spawn the dust as its own scene node so the plane's rendering/flicker can't touch it;
+	# we pin it to the plane's tail every frame.
+	_dust = DUST_SCENE.instantiate() as Node3D
+	_dust.scale = Vector3.ONE * dust_scale
+	get_tree().current_scene.add_child(_dust)
+	_set_dust_emitting(false)  # off during the fly-in; starts only once it reaches the ring
+
+## Toggle the dust trail's particle emitter(s). The DustTrail node is a CPUParticles3D (and it's
+## world-space), so already-spawned puffs hang in the air and fade while new ones stop — the
+## trail tapers off instead of vanishing the instant it stops.
+func _set_dust_emitting(on: bool) -> void:
+	if _dust == null:
+		return
+	for p in _emitters(_dust, []):
+		p.set("emitting", on)
+
+func _emitters(node: Node, acc: Array) -> Array:
+	if node is GPUParticles3D or node is CPUParticles3D:
+		acc.append(node)
+	for c in node.get_children():
+		_emitters(c, acc)
+	return acc
 
 func _physics_process(delta: float) -> void:
 	if _target == null or not is_instance_valid(_target):
@@ -58,12 +103,47 @@ func _physics_process(delta: float) -> void:
 		if _target == null:
 			return
 	var c := _target.global_position
+	# Sucked into the tornado on contact (it accidentally flew in) — spiral up the funnel and vanish.
+	if _state != State.CAUGHT:
+		var dist := Vector2(c.x - global_position.x, c.z - global_position.z).length()
+		if dist <= catch_radius * _tornado_size():
+			_state = State.CAUGHT
+			_caught_t = caught_time
+			_init_scale = scale
+			_set_dust_emitting(false)
+	if _state == State.CAUGHT:
+		_update_caught(delta, c)
+		return
 	match _state:
 		State.ORBIT:
 			_orbit(delta, c)
 		State.LEAVE:
 			_leave(delta, c)
 	_update_trail(delta, c)
+	# Pin the detached trail to the plane's tail (behind it along the travel direction).
+	if is_instance_valid(_dust):
+		_dust.global_position = global_position - _leave_dir * dust_tail_offset
+
+## Caught in the tornado: spiral up the funnel, spinning and shrinking, then despawn.
+func _update_caught(delta: float, c: Vector3) -> void:
+	_caught_t -= delta
+	var target := c + Vector3(0.0, catch_lift, 0.0)
+	global_position = global_position.lerp(target, clampf(catch_pull * delta, 0.0, 1.0))
+	_spin += deg_to_rad(catch_spin) * delta
+	rotation = Vector3(deg_to_rad(25.0), _spin, deg_to_rad(15.0))
+	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
+	if _caught_t <= 0.0:
+		award_kill()  # sucked into the funnel counts as a kill
+		queue_free()
+
+## Stop the detached trail and let it fade, then free it, when the plane despawns.
+func _exit_tree() -> void:
+	if is_instance_valid(_dust):
+		_set_dust_emitting(false)
+		var tree := get_tree()
+		if tree:
+			tree.create_timer(6.0).timeout.connect(_dust.queue_free)
+		_dust = null
 
 func _orbit(delta: float, c: Vector3) -> void:
 	_angle += deg_to_rad(orbit_speed) * delta
@@ -76,17 +156,29 @@ func _orbit(delta: float, c: Vector3) -> void:
 	var push := obstacle_push(global_position, true)
 	if push.length() > 0.001:
 		target += Vector3(push.x, 0.0, push.z) * avoid_range
+	var prev := global_position
 	global_position = global_position.move_toward(target, flight_speed * _tornado_size() * delta)
 
-	# Face the direction of travel (tangent of the circle) and bank into the turn.
-	var tangent := Vector3(-sin(_angle), 0.0, cos(_angle))
-	_leave_yaw = atan2(tangent.x, tangent.z) + facing_offset
+	# Face the ACTUAL direction of travel — chasing the moving storm and dodging buildings bend
+	# the real path off the circle's tangent, so deriving the heading from actual movement keeps
+	# the nose pointed forward instead of flying sideways/backwards. Bank into the turn.
+	var vel := Vector3(global_position.x - prev.x, 0.0, global_position.z - prev.z)
+	if vel.length() > 0.0001:
+		_leave_yaw = atan2(vel.x, vel.z) + facing_offset
+		_leave_dir = vel.normalized()
 	rotation = Vector3(0.0, _leave_yaw, deg_to_rad(-bank_angle))
 
-	# Done looping — peel off straight along the current travel direction.
+	# Start the trail only once it has actually reached the orbit ring (not during the fly-in).
+	if not _circling:
+		var dist := Vector2(global_position.x - c.x, global_position.z - c.z).length()
+		if dist <= radius * 1.3:
+			_circling = true
+			_set_dust_emitting(true)
+
+	# Done looping — peel off straight along the current travel direction (already in _leave_dir).
 	if _swept >= float(loops) * TAU:
 		_state = State.LEAVE
-		_leave_dir = tangent.normalized()
+		_set_dust_emitting(false)  # stop laying the trail as it leaves
 
 func _leave(delta: float, c: Vector3) -> void:
 	# Fly straight away at altitude, leveling out the bank, until it's gone from view.
@@ -103,7 +195,7 @@ func _leave(delta: float, c: Vector3) -> void:
 ## it sits in one of the still-lingering puffs.
 func _update_trail(delta: float, c: Vector3) -> void:
 	_drop_t -= delta
-	if _drop_t <= 0.0:
+	if _drop_t <= 0.0 and _state == State.ORBIT and _circling:
 		_drop_t = trail_interval
 		_trail.append(global_position)
 		_trail_age.append(0.0)

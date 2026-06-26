@@ -89,11 +89,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		_tornado.step_fujita(1)
 		_report()
 	elif k >= KEY_F1 and k <= KEY_F6 and _tornado.has_method("set_fujita_level"):
-		_tornado.set_fujita_level(k - KEY_F1)
+		_tornado.set_fujita_level(k - KEY_F1)  # F1..F6 -> tiers F0..F5
 		_report()
 	elif k == KEY_TAB and _tornado.has_method("cycle_style"):
 		_tornado.cycle_style()
 
 func _report() -> void:
-	if _tornado.has_method("get_level"):
-		print("Fujita -> F%d" % _tornado.get_level())
+	if _tornado.has_method("get_fujita_label"):
+		print("Fujita -> F%d" % _tornado.get_fujita_label())

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://claserbeam01"]
 
-[ext_resource type="Script" path="res://scripts/laser_beam.gd" id="1_laser"]
+[ext_resource type="Script" uid="uid://uvvw7iiug6pd" path="res://scripts/enemy/laser_beam.gd" id="1_laser"]
 
 [sub_resource type="CylinderMesh" id="LaserMesh"]
 top_radius = 1.0
