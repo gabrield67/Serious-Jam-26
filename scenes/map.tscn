@@ -212,7 +212,7 @@ panel_path = NodePath("../HUD/TargetPanel")
 
 [node name="DebugControls" type="Node" parent="." unique_id=1849618863]
 script = ExtResource("10_fujdbg")
-left_click = false
+left_click = true
 fast_mult = 20.0
 
 [node name="House_5" parent="." unique_id=52566959 instance=ExtResource("14_c70he")]

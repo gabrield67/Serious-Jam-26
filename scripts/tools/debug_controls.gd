@@ -7,7 +7,7 @@ extends Node
 @export var enabled: bool = true
 
 ## Left Click switch — turn instakill on or off.
-@export var left_click: bool = true
+@export var right_click: bool = true
 
 ## Controls reference (read-only — shown in the inspector for quick reference).
 @export_multiline var controls: String = """[  or  ]             Fujita size  -  down / up
@@ -35,7 +35,7 @@ func _ready() -> void:
 
 ## Left-click the hovered enemy to instakill it (and don't let the tornado also move there).
 func _input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or not left_click:
+	if Engine.is_editor_hint() or not right_click:
 		return
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
 		return

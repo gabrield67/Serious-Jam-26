@@ -58,11 +58,11 @@ func obstacle_push(from: Vector3, flying: bool = false) -> Vector3:
 			if flying:
 				if not o.has_method("get_avoid_top_y"):
 					continue  # no height info (ground pickups, etc.) — flyers don't dodge these
-				if o.get_avoid_top_y() < ceiling:
+				if float(o.call("get_avoid_top_y")) < ceiling:
 					continue  # its top is below us — we clear it
 			var away := Vector3(from.x - o.global_position.x, 0.0, from.z - o.global_position.z)
 			var d := away.length()
-			var radius: float = o.get_avoid_radius() if o.has_method("get_avoid_radius") else 2.0
+			var radius: float = o.call("get_avoid_radius") if o.has_method("get_avoid_radius") else 2.0
 			if d < 0.001 or d > radius + avoid_range:
 				continue
 			var t := 1.0 - clampf((d - radius) / maxf(avoid_range, 0.001), 0.0, 1.0)
