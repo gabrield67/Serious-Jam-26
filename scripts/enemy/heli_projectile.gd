@@ -5,7 +5,7 @@ class_name HeliProjectile
 ## shrinking it on hit. Fizzles on hitting the ground or after its lifetime.
 
 @export var lifetime: float = 4.0
-@export var damage: float = 1.0
+## Per-hit damage is centralized in EnemyDamage.config (helicopter_shot).
 ## Detonates when this close (horizontally) to the tornado's column.
 @export var hit_radius: float = 6.0
 
@@ -48,5 +48,5 @@ func _on_body_entered(body: Node) -> void:
 
 func _hit_tornado() -> void:
 	if _tornado and _tornado.has_method("take_hit"):
-		_tornado.take_hit(damage)
+		_tornado.take_hit(EnemyDamage.config.helicopter_shot)
 	queue_free()

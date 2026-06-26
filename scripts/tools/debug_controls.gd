@@ -14,7 +14,7 @@ extends Node
 F1 .. F6        jump to F0 .. F5
 Tab               cycle the tornado's visual style
 Hold Shift   fly the tornado around fast
-L-click enemy   instakill enemy"""
+R-click enemy   instakill enemy"""
 
 ## Speed multiplier applied to the tornado while Shift is held.
 @export var fast_mult: float = 5.0

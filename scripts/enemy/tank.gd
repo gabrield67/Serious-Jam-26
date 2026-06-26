@@ -10,10 +10,7 @@ extends Enemy
 @export var facing_offset: float = 0.0
 
 @export_group("Laser")
-## Strength (Fujita) drained per second the beam is on the tornado.
-@export var damage_per_sec: float = 1.5
-## Move-speed multiplier applied to the tornado while the beam holds it (0.5 = half speed).
-@export var slow_factor: float = 0.5
+## Damage/slow are centralized in EnemyDamage.config (tank_dps, tank_slow).
 ## Where on the funnel the beam hits / aims.
 @export var aim_height: float = 20.0
 ## Beam thickness.
@@ -79,9 +76,9 @@ func _fire_beam(delta: float) -> void:
 	# knockdown — it's a steady drain. apply_slow is topped up each frame and lapses shortly
 	# after the beam drops.
 	if _target.has_method("take_hit"):
-		_target.take_hit(damage_per_sec * delta)
+		_target.take_hit(EnemyDamage.config.tank_dps * delta)
 	if _target.has_method("apply_slow"):
-		_target.apply_slow(slow_factor, 0.2)
+		_target.apply_slow(EnemyDamage.config.tank_slow, 0.2)
 
 func _stop_beam() -> void:
 	if _beam and is_instance_valid(_beam):
