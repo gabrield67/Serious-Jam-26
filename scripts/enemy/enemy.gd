@@ -6,6 +6,8 @@ class_name Enemy
 
 @export var enemy_name: String = "Enemy"
 @export var max_health: float = 30.0
+## Damage-score points awarded when this enemy is destroyed or sucked into the tornado.
+@export var kill_score: int = 50
 ## Only attacks when the tornado is within this many world units (0 = always).
 @export var attack_range: float = 80.0
 ## Extra attack range per tornado Fujita level (F0 = 0), so a bigger storm can be engaged from
@@ -43,6 +45,15 @@ class_name Enemy
 @export var avoid_clearance: float = 8.0
 
 var health: float
+var _kill_awarded: bool = false   # score a kill once, whether it's destroyed or sucked up
+
+## Award this enemy's kill score once. Called on destruction (kill) and when sucked into the
+## tornado. Fleeing out of view doesn't call this, so escapees don't score.
+func award_kill() -> void:
+	if _kill_awarded:
+		return
+	_kill_awarded = true
+	GameStats.add_score(kill_score)
 
 ## True when the tornado is close enough to attack. Enemies gate their attacks on this.
 func in_attack_range() -> bool:
@@ -109,6 +120,7 @@ func take_damage(amount: float) -> void:
 func kill() -> void:
 	if health > 0.0:
 		health = 0.0
+	award_kill()
 	_on_death()
 	queue_free()
 

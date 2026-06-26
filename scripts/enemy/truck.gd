@@ -274,6 +274,7 @@ func _update_caught(delta: float, c: Vector3) -> void:
 	rotation = Vector3(deg_to_rad(20.0) * sin(_spin * 0.5), _spin, deg_to_rad(18.0))
 	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
 	if _caught_t <= 0.0:
+		award_kill()  # sucked into the funnel counts as a kill
 		queue_free()
 
 ## Bend a heading away from nearby items, capped at avoid_turn_speed (used while free-driving).

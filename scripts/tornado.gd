@@ -107,6 +107,7 @@ var _thrown: Array = []  # [{node, vel, life}]
 
 func _ready() -> void:
 	add_to_group("tornado")
+	GameStats.start_run()  # reset + start the run's time and score
 	_target = global_position
 	_base_max_speed = max_speed
 	_carry_root = Node3D.new()
@@ -459,7 +460,11 @@ func _update_chew() -> void:
 	_maw.chew_rate = _base_chew * mult
 
 func _on_died() -> void:
-	pass  # no fail state yet
+	# Out of health (the combined meter bottomed out): freeze the run stats, brief beat, then the
+	# game-over screen.
+	GameStats.stop_run()
+	var tree := get_tree()
+	tree.create_timer(1.2).timeout.connect(tree.change_scene_to_file.bind("res://Screens/GameOverScreen.tscn"))
 
 func _apply_vfx_scale(s: Vector3) -> void:
 	if _styles == null:

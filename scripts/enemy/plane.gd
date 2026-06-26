@@ -133,6 +133,7 @@ func _update_caught(delta: float, c: Vector3) -> void:
 	rotation = Vector3(deg_to_rad(25.0), _spin, deg_to_rad(15.0))
 	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
 	if _caught_t <= 0.0:
+		award_kill()  # sucked into the funnel counts as a kill
 		queue_free()
 
 ## Stop the detached trail and let it fade, then free it, when the plane despawns.

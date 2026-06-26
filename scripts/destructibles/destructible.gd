@@ -175,6 +175,7 @@ func _all_particles(node: Node, acc: Array) -> Array:
 func _finish() -> void:
 	if data:
 		consumed.emit(data.value)
+		GameStats.add_score(data.score)
 	_spawn_debris()
 	if _fragments:
 		_fragments.release_all()  # drop whatever's still standing; it lives on and cleans itself up

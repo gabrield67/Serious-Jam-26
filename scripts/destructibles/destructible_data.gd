@@ -6,8 +6,10 @@ class_name DestructibleData
 
 ## Seconds for the tornado to fully destroy this.
 @export var destroy_time: float = 2.0
-## Reward when destroyed (Fujita/size growth, score, etc.).
+## Reward when destroyed (Fujita/size growth).
 @export var value: float = 1.0
+## Damage-score points awarded for destroying one of these (separate from the Fujita value above).
+@export var score: int = 25
 ## Debris emitted on destruction.
 @export var debris: DebrisType
 ## Visual scale multiplier, applied only when an instance does NOT keep its authored scale.
