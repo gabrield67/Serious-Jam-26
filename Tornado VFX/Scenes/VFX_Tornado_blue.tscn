@@ -50,7 +50,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.546000025935
+shader_parameter/AlphaTreshold = 0.578000027455
 
 [sub_resource type="Gradient" id="Gradient_enp5q"]
 offsets = PackedFloat32Array(0, 0.106557, 0.188525, 0.303279)
@@ -85,7 +85,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_em0ie")
 shader_parameter/Color_Intensity2 = 22.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_b2fpe")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6s6ch")
-shader_parameter/AlphaTreshold = 0.682000032395
+shader_parameter/AlphaTreshold = 0.9830000466925
 
 [sub_resource type="Gradient" id="Gradient_yuhc4"]
 offsets = PackedFloat32Array(0.270492, 0.483607, 0.663934, 0.786885)
@@ -120,7 +120,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_n174o")
 shader_parameter/Color_Intensity2 = 8.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_in3p3")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_tkkhr")
-shader_parameter/AlphaTreshold = 0.578000027455
+shader_parameter/AlphaTreshold = 0.283
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -411,7 +411,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.278, 1.0]
+"values": [0.52400002489, 1.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -423,7 +423,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.268, 1.0]
+"values": [0.75200003572, 1.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -444,10 +444,10 @@ tracks/3/path = NodePath("SmTornadoInnerJ1:material_override:shader_parameter/Co
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.233333, 0.4),
+"times": PackedFloat32Array(-0.275, 0.233333, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [22.0, 22.0, 1.0]
+"values": [2.0, 22.0, 1.0]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -531,7 +531,7 @@ tracks/10/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.134, 0.134, 1.0]
+"values": [0.17600000836, 0.134, 1.0]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
@@ -567,7 +567,7 @@ tracks/13/keys = {
 "times": PackedFloat32Array(0, 0.266667, 0.466667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [1.0, 1.0, 0.0]
+"values": [0.990000047025, 1.0, 0.0]
 }
 tracks/14/type = "value"
 tracks/14/imported = false
@@ -608,6 +608,7 @@ tracks/16/keys = {
 
 [sub_resource type="Animation" id="Animation_e6g1b"]
 resource_name = "Idle_Loop"
+loop_mode = 1
 
 [sub_resource type="Animation" id="Animation_bug78"]
 resource_name = "Start"
@@ -618,10 +619,10 @@ tracks/0/path = NodePath("SmTornadoExternalJ1:material_override:shader_parameter
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0666667, 0.4),
+"times": PackedFloat32Array(0.0666667, 0.43333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [1.0, 0.278]
+"values": [1.0, 0.578000027455]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -633,7 +634,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.1, 0.366667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [1.0, 0.268]
+"values": [1.0, 0.9830000466925]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1010,7 +1011,7 @@ omni_range = 6.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1921858338]
 libraries/ = SubResource("AnimationLibrary_18olx")
-autoplay = &"Start"
+autoplay = &"Idle_Loop"
 
 [node name="smallparticles_constant" type="GPUParticles3D" parent="." unique_id=170114097]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.447, 0)
