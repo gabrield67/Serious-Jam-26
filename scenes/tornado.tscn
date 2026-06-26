@@ -17,6 +17,8 @@ radius = 4.0
 [node name="Tornado" type="CharacterBody3D" unique_id=1767961767]
 transform = Transform3D(13, 0, 0, 0, 13, 0, 0, 0, 13, 0, 0, 0)
 script = ExtResource("1_2nlrq")
+powerup_speed_mult = 1.5
+lightning_origin_height = 5.0
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=1547123497]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)

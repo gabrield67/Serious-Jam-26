@@ -14,7 +14,7 @@ extends Node
 F1 .. F6        jump to F0 .. F5
 Tab               cycle the tornado's visual style
 Hold Shift   fly the tornado around fast
-R-click enemy   instakill enemy"""
+R-click enemy   instakill enemy (lightning when Blue)"""
 
 ## Speed multiplier applied to the tornado while Shift is held.
 @export var fast_mult: float = 5.0
@@ -44,7 +44,17 @@ func _input(event: InputEvent) -> void:
 	if _targeting == null or not _targeting.has_method("get_hovered"):
 		return
 	var e = _targeting.get_hovered()
-	if e and is_instance_valid(e) and e.is_in_group("enemy") and e.has_method("kill"):
+	if not (e and is_instance_valid(e) and e.is_in_group("enemy")):
+		return
+	if _tornado == null or not is_instance_valid(_tornado):
+		_tornado = get_tree().get_first_node_in_group("tornado")
+	# While Blue, fire the lightning bolt (which kills the enemy) instead of a plain instakill,
+	# so the debug right-click still shoots lightning when powered up.
+	if _tornado and is_instance_valid(_tornado) and _tornado.has_method("is_blue") \
+			and _tornado.is_blue() and _tornado.has_method("fire_lightning"):
+		_tornado.fire_lightning(e)
+		get_viewport().set_input_as_handled()
+	elif e.has_method("kill"):
 		e.kill()
 		get_viewport().set_input_as_handled()
 

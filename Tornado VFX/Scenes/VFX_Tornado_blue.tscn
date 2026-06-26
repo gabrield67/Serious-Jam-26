@@ -970,6 +970,7 @@ draw_pass_1 = ExtResource("8_be7wm")
 
 [node name="sparks3dark" type="GPUParticles3D" parent="." unique_id=1659317932]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_7d40g")
 cast_shadow = 0
 amount = 20

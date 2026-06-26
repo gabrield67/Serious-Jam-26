@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dkulsp5dnws41" path="res://Tornado VFX/Scenes/VFX_Tornado_Base.tscn" id="3_wtpp6"]
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="4_tank"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="5_plane"]
+[ext_resource type="PackedScene" uid="uid://d3xo8xsgrxdjc" path="res://scenes/items/BluePickup.tscn" id="8_byxht"]
 [ext_resource type="PackedScene" uid="uid://bjwyta414kd3e" path="res://Explosion VFX/Scenes/VFX_Smokey_Dust.tscn" id="9_of0it"]
+[ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/items/PowerUp.tscn" id="9_xv6k7"]
 [ext_resource type="PackedScene" uid="uid://bh35xsk4f8kg0" path="res://Explosion VFX/Scenes/VFX_mini_explosion_soil_1.tscn" id="10_lbxln"]
 [ext_resource type="PackedScene" uid="uid://ch6kqo2qu7mhf" path="res://Explosion VFX/Scenes/VFX_mini_explosion_1.tscn" id="11_byxht"]
 [ext_resource type="PackedScene" uid="uid://yrbt0hx220ou" path="res://Explosion VFX/Scenes/VFX_mini_explosion_2.tscn" id="12_xv6k7"]
@@ -1727,6 +1729,12 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -36.957607, 0, 0)
 
 [node name="Plane" parent="NPCs" unique_id=2032584447 instance=ExtResource("5_plane")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -4.0195465, -1.9073486e-06, 0)
+
+[node name="BluePickup" parent="NPCs" unique_id=2081457352 instance=ExtResource("8_byxht")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.384052, 8, 54.77391)
+
+[node name="PowerUp" parent="NPCs" unique_id=1800004186 instance=ExtResource("9_xv6k7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.21805, 8, 35.545425)
 
 [node name="Explosions_Dust" type="Node3D" parent="." unique_id=1771836718]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -160.85)

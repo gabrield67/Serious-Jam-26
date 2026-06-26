@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://uvvw7iiug6pd" path="res://scripts/enemy/laser_beam.gd" id="1_laser"]
 
+[sub_resource type="StandardMaterial3D" id="LaserMat"]
+shading_mode = 0
+albedo_color = Color(0.4, 0.95, 1, 1)
+
 [sub_resource type="CylinderMesh" id="LaserMesh"]
 top_radius = 1.0
 bottom_radius = 1.0
@@ -9,16 +13,14 @@ height = 1.0
 radial_segments = 6
 rings = 0
 
-[sub_resource type="StandardMaterial3D" id="LaserMat"]
-shading_mode = 0
-albedo_color = Color(0.4, 0.95, 1, 1)
-emission_enabled = true
-emission = Color(0.3, 0.85, 1, 1)
-emission_energy_multiplier = 6.0
-
-[node name="LaserBeam" type="Node3D"]
+[node name="LaserBeam" type="Node3D" unique_id=1937639276]
 script = ExtResource("1_laser")
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("LaserMesh")
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1245435117]
 material_override = SubResource("LaserMat")
+mesh = SubResource("LaserMesh")
+
+[node name="Glow" type="OmniLight3D" parent="." unique_id=2067574812]
+light_color = Color(0.4, 0.95, 1, 1)
+light_energy = 4.0
+omni_range = 1.5035393

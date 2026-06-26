@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dffqyu05l5wii"]
+
+[ext_resource type="Script" uid="uid://dctioilflk0mn" path="res://scripts/items/lightning_bolt.gd" id="1_lb"]
+
+[node name="LightningBolt" type="Node3D" unique_id=1511990272]
+script = ExtResource("1_lb")
+thickness = 1.5
+segments = 10
+jaggedness = 3.0

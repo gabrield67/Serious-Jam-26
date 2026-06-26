@@ -42,6 +42,18 @@ class_name Destructible
 ## Extra time the dust node lingers after the burst before despawning (seconds).
 @export var dust_fade: float = 1.2
 
+@export_group("Audio")
+## Collapse sound played (3D, positioned at this object) when the tornado starts destroying it.
+@export var collapse_sound: AudioStream = preload("res://sounds/building_collapse.mp3")
+## Seconds into the clip to start playback (trims dead air at the front without editing the file).
+@export var collapse_start: float = 3.53
+## Loudness of the collapse sound.
+@export var collapse_volume_db: float = 0.0
+## Distance at which the collapse sound is at reference loudness (bigger = carries farther).
+@export var collapse_unit_size: float = 40.0
+## Beyond this distance the collapse sound is inaudible (0 = no limit).
+@export var collapse_max_distance: float = 400.0
+
 signal consumed(value: float)
 
 ## Shared across instances: one material per chosen color (keeps batching sane).
@@ -54,6 +66,7 @@ var _base_scale: Vector3
 var _fragments: CollapsingFragments  # spawned on first chew, drives the progressive crumble
 var _highlighted: bool = false       # currently hovered
 var _dust_spawned: bool = false      # the one-shot dust burst already fired
+var _collapse_player: AudioStreamPlayer3D  # the 3D collapse sound, while in contact
 
 func _ready() -> void:
 	add_to_group("consumable")
@@ -77,6 +90,7 @@ func chew(amount: float) -> bool:
 	if not _dust_spawned:
 		_dust_spawned = true
 		_spawn_dust()  # one burst on first contact
+		_spawn_collapse_sound()  # directional collapse sfx from this building
 	if _fragments == null:
 		_begin_crumble()
 	if _fragments:
@@ -117,6 +131,34 @@ func _surface_materials() -> Array:
 		for i in _mesh.get_surface_override_material_count():
 			mats.append(_mesh.get_surface_override_material(i))
 	return mats
+
+## Play the collapse sound as a 3D sound positioned at this object, so it's directional.
+## Parented to the scene (not us) so it survives our queue_free; it stops when the tornado
+## leaves (on_chew_stopped) or frees itself if it finishes playing first.
+func _spawn_collapse_sound() -> void:
+	if collapse_sound == null:
+		return
+	var p := AudioStreamPlayer3D.new()
+	p.stream = collapse_sound
+	p.volume_db = collapse_volume_db
+	p.unit_size = collapse_unit_size
+	p.max_distance = collapse_max_distance
+	get_tree().current_scene.add_child(p)
+	if _mesh:
+		p.global_position = _mesh.global_position  # center of the model, not its pivot
+	else:
+		p.global_position = global_position
+	p.finished.connect(p.queue_free)
+	p.play(collapse_start)  # skip the clip's intro
+	_collapse_player = p
+
+## Called by the maw when the tornado stops touching this object (it left, or we were
+## destroyed). Stop the collapse sound so it only sounds while actively being chewed.
+func on_chew_stopped() -> void:
+	if _collapse_player and is_instance_valid(_collapse_player):
+		_collapse_player.stop()
+		_collapse_player.queue_free()
+	_collapse_player = null
 
 ## Spawn the dust, shaped to the object so it fills the object's volume.
 func _spawn_dust() -> void:

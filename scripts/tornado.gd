@@ -14,10 +14,19 @@ extends CharacterBody3D
 var debug_speed_mult: float = 1.0
 
 @export_group("Power-up")
-## Movement speed multiplier while powered up.
+## Movement speed multiplier while powered up (Fire mode).
 @export var powerup_speed_mult: float = 1.6
-## Maw destroy-speed multiplier while powered up.
+## Maw destroy-speed multiplier while powered up (Fire mode = more building damage).
 @export var powerup_chew_mult: float = 3.0
+
+@export_group("Blue / lightning")
+## Style name (child under "Styles") for the blue/electric tornado.
+@export var blue_style: String = "Blue"
+## The lightning bolt item fired at enemies while Blue (flies from the funnel and kills them).
+@export var lightning_bolt_scene: PackedScene = preload("res://scenes/items/LightningBolt.tscn")
+## Height up the funnel (in the tornado's LOCAL units) the bolt fires from. The funnel spans
+## ~0..12 locally, so 6 is roughly its middle.
+@export var lightning_origin_height: float = 6.0
 
 @export_group("Fujita / size")
 ## Width (x/z) growth added per Fujita level — makes the funnel fatter.
@@ -88,7 +97,9 @@ var _current_style: String = ""
 var _target: Vector3
 var _seeking: bool = false  # actively traveling to a committed destination
 
-var _powerup_time: float = 0.0
+# Active timed transformation: "" = base, otherwise a style name ("Fire" / "Blue").
+var _mode: String = ""
+var _mode_time: float = 0.0
 var _base_max_speed: float = 0.0
 var _base_chew: float = 1.0
 
@@ -131,13 +142,23 @@ func _ready() -> void:
 	_on_fujita_changed(_fujita.level(), _fujita.value)
 	_cur_scale = _target_scale
 
-## Briefly powers up the tornado: fire VFX + faster movement & destruction.
+## Briefly powers up the tornado (Fire mode): fire VFX + faster movement & destruction.
+## Kept for back-compat; delegates to the general transformation system.
 func power_up(duration: float) -> void:
-	_powerup_time = maxf(_powerup_time, duration)
-	_update_chew()
-	set_style(powerup_style)
+	transform_into(powerup_style, duration)
 
-func _end_power_up() -> void:
+## Timed transformation into a special tornado. Fire = more building damage + speed;
+## Blue = electric zaps to nearby enemies. Grabbing a new pickup overrides the current
+## mode and refreshes the timer.
+func transform_into(mode_name: String, duration: float) -> void:
+	_mode = mode_name
+	_mode_time = duration
+	_update_chew()
+	set_style(mode_name)
+
+func _end_transform() -> void:
+	_mode = ""
+	_mode_time = 0.0
 	_update_chew()
 	set_style(default_style)
 
@@ -149,7 +170,7 @@ func apply_slow(factor: float, duration: float) -> void:
 ## Combined movement-speed multiplier from power-up (faster) and slow (slower).
 func _speed_mult() -> float:
 	var m := 1.0
-	if _powerup_time > 0.0:
+	if _mode == powerup_style and _mode_time > 0.0:
 		m *= powerup_speed_mult
 	if _slow_time > 0.0:
 		m *= _slow_factor
@@ -197,10 +218,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _physics_process(delta: float) -> void:
-	if _powerup_time > 0.0:
-		_powerup_time -= delta
-		if _powerup_time <= 0.0:
-			_end_power_up()
+	if _mode_time > 0.0:
+		_mode_time -= delta
+		if _mode_time <= 0.0:
+			_end_transform()
 	if _slow_time > 0.0:
 		_slow_time -= delta
 
@@ -418,6 +439,33 @@ func _update_carry(delta: float) -> void:
 		item.rotation.y += deg_to_rad(carry_item_spin) * delta
 		item.rotation.x += deg_to_rad(carry_item_spin * 0.5) * delta
 
+# --- Blue mode: electricity ---
+
+## True whenever the tornado is currently the Blue one — via a pickup (timed) OR the debug
+## Tab style-cycle. Based on the visible style so both paths enable the lightning attack.
+func is_blue() -> bool:
+	return _current_style == blue_style
+
+## Player-fired lightning (Blue mode): spawn a bolt from the funnel to the targeted enemy
+## and kill it. Same right-click path the debris throw uses. Returns true if it fired.
+func fire_lightning(target: Node3D) -> bool:
+	if not is_blue() or not is_instance_valid(target):
+		return false
+	if lightning_bolt_scene != null:
+		var bolt := lightning_bolt_scene.instantiate()
+		get_tree().current_scene.add_child(bolt)
+		if bolt.has_method("setup"):
+			# Fire from the middle of the funnel. global_transform applies the tornado's
+			# (large) node scale to this local-space height.
+			var from := global_transform * Vector3(0.0, lightning_origin_height, 0.0)
+			var to := target.global_position + Vector3.UP
+			bolt.setup(from, to)
+	if target.has_method("kill"):
+		target.kill()
+	elif target.has_method("take_damage"):
+		target.take_damage(9999.0)
+	return true
+
 # --- Fujita / size ---
 
 func _on_consumed(value: float) -> void:
@@ -455,7 +503,7 @@ func _update_chew() -> void:
 	if _maw == null:
 		return
 	var mult := 1.0 + _fujita.level() * chew_per_level
-	if _powerup_time > 0.0:
+	if _mode == powerup_style and _mode_time > 0.0:  # Fire: extra building damage
 		mult *= powerup_chew_mult
 	_maw.chew_rate = _base_chew * mult
 

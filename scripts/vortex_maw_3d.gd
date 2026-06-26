@@ -71,6 +71,9 @@ func _on_body_entered(body: Node) -> void:
 
 func _on_body_exited(body: Node) -> void:
 	_inside.erase(body)
+	# Let a destructible know the tornado left it (e.g. to stop its collapse sound).
+	if body.has_method("on_chew_stopped"):
+		body.on_chew_stopped()
 
 func _on_consumed(value: float) -> void:
 	consumed.emit(value)

@@ -817,7 +817,6 @@ skeleton = NodePath("../..")
 transform = Transform3D(12.999999, 0, 0, 0, 12.999999, 0, 0, 0, 12.999999, 0, -0.2308232, 0)
 material_override = SubResource("ShaderMaterial_ca8sl")
 cast_shadow = 0
-emitting = false
 amount = 4
 lifetime = 0.35
 fixed_fps = 60

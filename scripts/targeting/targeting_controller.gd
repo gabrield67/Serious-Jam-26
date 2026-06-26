@@ -24,6 +24,18 @@ func _ready() -> void:
 	_tornado = get_node_or_null(tornado_path)
 	_panel = get_node_or_null(panel_path)
 
+## Resolve the tornado, caching it. Falls back to the "tornado" group when tornado_path
+## isn't set in the scene (it gets dropped on map re-saves), so right-click actions always
+## reach the tornado.
+func _get_tornado() -> Node:
+	if _tornado and is_instance_valid(_tornado):
+		return _tornado
+	if tornado_path != NodePath(""):
+		_tornado = get_node_or_null(tornado_path)
+	if _tornado == null:
+		_tornado = get_tree().get_first_node_in_group("tornado")
+	return _tornado
+
 func _physics_process(_delta: float) -> void:
 	# Picking raycasts the physics space, which must be touched in _physics_process.
 	_set_hovered(_pick_target())
@@ -35,8 +47,13 @@ func _physics_process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if _hovered != null and is_instance_valid(_hovered) and _hovered.is_in_group("enemy"):
-			if _tornado and _tornado.has_method("throw_at"):
-				_tornado.throw_at(_hovered)
+			var t := _get_tornado()
+			# Blue power-up: right-click fires a lightning bolt that kills the enemy.
+			# Otherwise it's the normal auto-aimed debris throw.
+			if t and t.has_method("is_blue") and t.is_blue() and t.has_method("fire_lightning"):
+				t.fire_lightning(_hovered)
+			elif t and t.has_method("throw_at"):
+				t.throw_at(_hovered)
 			get_viewport().set_input_as_handled()  # consume so no manual throw also fires
 
 ## What's under the cursor right now (or null).
@@ -95,8 +112,10 @@ func _update_panel() -> void:
 	if _panel == null:
 		return
 	var target: Node = _hovered
-	if target == null and _tornado and _tornado.has_method("get_chew_target"):
-		target = _tornado.get_chew_target()
+	if target == null:
+		var t := _get_tornado()
+		if t and t.has_method("get_chew_target"):
+			target = t.get_chew_target()
 	if target and is_instance_valid(target) and target is Node3D:
 		var cam := get_viewport().get_camera_3d()
 		if cam and not cam.is_position_behind(target.global_position):
