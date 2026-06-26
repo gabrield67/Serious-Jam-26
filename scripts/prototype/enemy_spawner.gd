@@ -1,7 +1,7 @@
 extends Node2D
 ## Spawns enemies from a ring around the tornado.
 
-@export var enemy_scene: PackedScene = preload("res://scenes/enemy.tscn")
+@export var enemy_scene: PackedScene = preload("res://scenes/prototype/enemy.tscn")
 @export var spawn_radius: float = 900.0
 @export var start_delay: float = 3.0
 

@@ -15,7 +15,7 @@ class_name Enemy2D  # renamed from Enemy to avoid clashing with the 3D game's En
 @export var fire_cooldown: float = 2.6
 @export var projectile_speed: float = 470.0
 @export var muzzle_offset: float = 22.0
-@export var projectile_scene: PackedScene = preload("res://scenes/enemy_projectile.tscn")
+@export var projectile_scene: PackedScene = preload("res://scenes/prototype/enemy_projectile.tscn")
 
 var _target: Node2D
 var _cooldown: float = 0.0
