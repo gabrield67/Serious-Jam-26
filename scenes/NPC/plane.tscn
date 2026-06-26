@@ -6,7 +6,7 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8d8a"]
 resource_name = "Material"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.9066351, 0.60839546, 0, 1)
 roughness = 0.9094158
 
@@ -46,7 +46,7 @@ shadow_mesh = SubResource("ArrayMesh_v724e")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4awue"]
 resource_name = "Material.001"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.9064694, 0.050367147, 0, 1)
 roughness = 0.9613211
 
@@ -86,7 +86,7 @@ shadow_mesh = SubResource("ArrayMesh_2w1gx")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_epavc"]
 resource_name = "Material.005"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.44004035, 0.6690967, 0.9063913, 1)
 roughness = 0.87914485
 
@@ -126,7 +126,7 @@ shadow_mesh = SubResource("ArrayMesh_btsf2")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5resc"]
 resource_name = "Material.002"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.32953608, 0.32953608, 0.32953608, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8p4h6"]
@@ -165,7 +165,7 @@ shadow_mesh = SubResource("ArrayMesh_8p4h6")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s5sp3"]
 resource_name = "Material.004"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.5284013, 0.5284013, 0.5284013, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_espp3"]
@@ -202,7 +202,7 @@ shadow_mesh = SubResource("ArrayMesh_espp3")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w3oq0"]
 resource_name = "Material.003"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.90633976, 0.84080106, 0.6441614, 1)
 roughness = 0.847956
 
@@ -240,7 +240,7 @@ shadow_mesh = SubResource("ArrayMesh_48gkm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a68qv"]
 resource_name = "Material.006"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.7556375, 0.6322031, 0.4481866, 1)
 roughness = 0.91484666
 
@@ -278,7 +278,7 @@ shadow_mesh = SubResource("ArrayMesh_glr7d")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w5sda"]
 resource_name = "Material.007"
-cull_mode = 2
+cull_mode = 0
 albedo_color = Color(0.26136056, 0.16884087, 0.09533, 1)
 roughness = 0.993337
 
