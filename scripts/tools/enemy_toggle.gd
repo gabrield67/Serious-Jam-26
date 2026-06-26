@@ -1,58 +1,81 @@
 extends Node3D
-## Test helper: activates one enemy child at a time so you can isolate behavior.
-## Press number keys 1..N to show only that enemy, 0 to show them all. Attach to the
-## node whose Node3D children are the enemies (e.g. the "NPCs" node).
+## Test helper: each number key 1..N spawns a fresh copy of that enemy type — press the same
+## key repeatedly to stack up several (e.g. press "plane" twice for two planes). Press 0 to
+## clear everything spawned. The Node3D children are used as hidden prototypes (one per type,
+## in child order) so spawns match exactly how they're set up in this scene.
 
-## Which enemy starts active (1-based, in child order). 0 = all enemies active.
+## Which enemy to spawn once on start (1-based, in child order). 0 = start empty.
 @export var active: int = 1
-## Optional Label to show the current selection on-screen.
+## Optional Label to show the controls / spawn count on-screen.
 @export var hint_label_path: NodePath
+## Random horizontal spread so repeated spawns don't stack exactly on top of each other.
+@export var spawn_spread: float = 8.0
 
-var _enemies: Array[Node3D] = []
+var _templates: Array[Node3D] = []
+var _spawned: Array[Node3D] = []
 var _hint: Label
 
 func _ready() -> void:
 	for c in get_children():
 		if c is Node3D:
-			_enemies.append(c as Node3D)
+			_templates.append(c as Node3D)
+			_disable_template(c as Node3D)
 	if hint_label_path != NodePath():
 		_hint = get_node_or_null(hint_label_path) as Label
-	_apply(active)
+	if active >= 1 and active <= _templates.size():
+		_spawn(active - 1)
+	_update_hint()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var k: int = (event as InputEventKey).keycode
 		if k == KEY_0:
-			_apply(0)
+			_clear()
 		elif k >= KEY_1 and k <= KEY_9:
-			_apply(k - KEY_0)
+			var idx := k - KEY_1
+			if idx < _templates.size():
+				_spawn(idx)
 
-## which: 0 = all active, otherwise the 1-based index of the only active enemy.
-func _apply(which: int) -> void:
-	active = which
-	for i in _enemies.size():
-		_set_active(_enemies[i], which == 0 or which == i + 1)
+## Hide a prototype and stop it running so it only serves as a template to copy.
+func _disable_template(e: Node3D) -> void:
+	e.visible = false
+	e.set_process(false)
+	e.set_physics_process(false)
+	e.remove_from_group("enemy")
+	e.remove_from_group("targetable")
+
+## Spawn a fresh, active copy of the prototype at `index`.
+func _spawn(index: int) -> void:
+	var t := _templates[index]
+	var inst := t.duplicate() as Node3D
+	# Same parent as the prototype, so its local transform places it identically (plus a jitter).
+	var off := Vector3(randf_range(-spawn_spread, spawn_spread), 0.0, randf_range(-spawn_spread, spawn_spread))
+	inst.position = t.position + off
+	inst.visible = true
+	add_child(inst)
+	inst.set_process(true)
+	inst.set_physics_process(true)
+	if not inst.is_in_group("enemy"):
+		inst.add_to_group("enemy")
+	if not inst.is_in_group("targetable"):
+		inst.add_to_group("targetable")
+	_spawned.append(inst)
 	_update_hint()
 
-func _set_active(e: Node3D, on: bool) -> void:
-	e.visible = on
-	e.set_process(on)
-	e.set_physics_process(on)
-	# Drop disabled enemies from the targeting groups so they can't be hovered/hit.
-	if on:
-		if not e.is_in_group("enemy"):
-			e.add_to_group("enemy")
-		if not e.is_in_group("targetable"):
-			e.add_to_group("targetable")
-	else:
-		e.remove_from_group("enemy")
-		e.remove_from_group("targetable")
+## Remove every spawned enemy (the prototypes stay).
+func _clear() -> void:
+	for e in _spawned:
+		if is_instance_valid(e):
+			e.queue_free()
+	_spawned.clear()
+	_update_hint()
 
 func _update_hint() -> void:
-	var who: String = "All"
-	if active >= 1 and active <= _enemies.size():
-		who = _enemies[active - 1].name
-	var line := "Enemy [%s]   (1-%d isolate, 0 all)" % [who, _enemies.size()]
+	_spawned = _spawned.filter(func(e): return is_instance_valid(e))
+	var keys := ""
+	for i in _templates.size():
+		keys += "%d:%s  " % [i + 1, _templates[i].name]
+	var line := "Spawn  %s  (0 clear)   on screen: %d" % [keys, _spawned.size()]
 	print(line)
 	if _hint:
 		_hint.text = line
