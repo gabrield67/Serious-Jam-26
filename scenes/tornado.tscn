@@ -39,6 +39,6 @@ visible = false
 
 [node name="Fire" parent="Styles" unique_id=1152232541 instance=ExtResource("4_2nqqh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-visible = false
 
 [node name="Blue" parent="Styles" unique_id=769887517 instance=ExtResource("5_g5iue")]
+visible = false

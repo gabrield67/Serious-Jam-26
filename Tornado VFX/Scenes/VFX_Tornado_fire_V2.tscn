@@ -803,12 +803,14 @@ _data = {
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="SmTornadoExternalJ1" type="MeshInstance3D" parent="." unique_id=959239835]
+visible = false
 material_override = SubResource("ShaderMaterial_dlwqa")
 cast_shadow = 0
 mesh = ExtResource("3_nixsl")
 skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ1" type="MeshInstance3D" parent="." unique_id=1217916868]
+visible = false
 material_override = SubResource("ShaderMaterial_ngsjd")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
@@ -816,6 +818,7 @@ skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ2" type="MeshInstance3D" parent="." unique_id=1646457126]
 transform = Transform3D(1.25, 0, 0, 0, 1, 0, 0, 0, 1.25, 0, 0, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_rdpqi")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
