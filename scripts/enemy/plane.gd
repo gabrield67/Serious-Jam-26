@@ -54,6 +54,16 @@ extends Enemy
 
 const DUST_SCENE := preload("res://scenes/particles/DustTrail.tscn")
 
+@export_group("Audio")
+## Looping engine sound, played 3D from the plane (stops when it's destroyed/caught).
+@export var engine_sound: AudioStream = preload("res://sounds/plane_UncleSigmund (Freesound).mp3")
+## Loudness of the engine sound.
+@export var engine_volume_db: float = 4.0
+## Distance at which the engine is at reference loudness (bigger = carries farther).
+@export var engine_unit_size: float = 25.0
+## Beyond this distance the engine is inaudible (0 = no limit).
+@export var engine_max_distance: float = 400.0
+
 enum State { ORBIT, LEAVE, CAUGHT }
 
 var _target: Node3D
@@ -79,6 +89,22 @@ func _ready() -> void:
 	_dust.scale = Vector3.ONE * dust_scale
 	get_tree().current_scene.add_child(_dust)
 	_set_dust_emitting(false)  # off during the fly-in; starts only once it reaches the ring
+	_start_engine_sound()
+
+## Looping 3D engine sound, attached to the plane so it follows it and stops when the plane
+## is freed (destroyed or sucked into the funnel).
+func _start_engine_sound() -> void:
+	if engine_sound == null:
+		return
+	if engine_sound is AudioStreamMP3:
+		(engine_sound as AudioStreamMP3).loop = true
+	var p := AudioStreamPlayer3D.new()
+	p.stream = engine_sound
+	p.volume_db = engine_volume_db
+	p.unit_size = engine_unit_size
+	p.max_distance = engine_max_distance
+	add_child(p)
+	p.play()
 
 ## Toggle the dust trail's particle emitter(s). The DustTrail node is a CPUParticles3D (and it's
 ## world-space), so already-spawned puffs hang in the air and fade while new ones stop — the

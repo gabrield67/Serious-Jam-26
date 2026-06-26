@@ -54,6 +54,17 @@ class_name Destructible
 ## Beyond this distance the collapse sound is inaudible (0 = no limit).
 @export var collapse_max_distance: float = 400.0
 
+@export_group("Ground mark")
+## Leave a scorch/rubble mark on the ground once fully destroyed. Foliage never does,
+## regardless of this flag.
+@export var leave_ground_mark: bool = true
+## Tint of the mark.
+@export var mark_color: Color = Color(0.06, 0.05, 0.04)
+## Mark size relative to the object's footprint (1 = footprint, >1 spills past it).
+@export var mark_size_mult: float = 2.2
+## Opacity at the mark's center (it fades to transparent at the edges).
+@export var mark_opacity: float = 0.8
+
 signal consumed(value: float)
 
 ## Shared across instances: one material per chosen color (keeps batching sane).
@@ -218,6 +229,7 @@ func _finish() -> void:
 	if data:
 		consumed.emit(data.value)
 		GameStats.add_score(data.score)
+	_spawn_ground_mark()
 	_spawn_debris()
 	if _fragments:
 		_fragments.release_all()  # drop whatever's still standing; it lives on and cleans itself up
@@ -229,6 +241,54 @@ func _finish() -> void:
 ## carries the destruction. (Kept as a hook in case we want a different no-shard effect.)
 func _spawn_fragments_instant() -> void:
 	pass
+
+## True if this is foliage (a tree/bush) — those don't scar the ground.
+func _is_foliage() -> bool:
+	return kind != null and kind.display_name == "Foliage"
+
+## Soft radial mark texture (white center -> transparent edge), shared by all marks. The
+## per-instance color/opacity come from the material, so one texture serves every building.
+static var _mark_tex: Texture2D
+static func _mark_texture() -> Texture2D:
+	if _mark_tex == null:
+		var g := Gradient.new()
+		g.offsets = PackedFloat32Array([0.0, 1.0])
+		g.colors = PackedColorArray([Color(1, 1, 1, 1), Color(1, 1, 1, 0)])
+		var t := GradientTexture2D.new()
+		t.gradient = g
+		t.width = 128
+		t.height = 128
+		t.fill = GradientTexture2D.FILL_RADIAL
+		t.fill_from = Vector2(0.5, 0.5)
+		t.fill_to = Vector2(1.0, 0.5)  # radius reaches the edge
+		_mark_tex = t
+	return _mark_tex
+
+## Lay a flat scorch/rubble mark on the ground at this object's footprint. (Decal nodes
+## aren't supported on the gl_compatibility renderer, so it's a flat textured quad.)
+func _spawn_ground_mark() -> void:
+	if not leave_ground_mark or _is_foliage():
+		return
+	var r := get_avoid_radius() * mark_size_mult
+	if r <= 0.01:
+		return
+	var mi := MeshInstance3D.new()
+	var pm := PlaneMesh.new()  # default orientation lies flat in the XZ plane, facing up
+	pm.size = Vector2(r * 2.0, r * 2.0)
+	mi.mesh = pm
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_texture = _mark_texture()
+	mat.albedo_color = Color(mark_color.r, mark_color.g, mark_color.b, mark_opacity)
+	mi.material_override = mat
+	get_tree().current_scene.add_child(mi)
+	# Center on the model's footprint, just above the ground. A small random lift avoids
+	# z-fighting between overlapping marks.
+	var c := global_position
+	if _mesh and _mesh.mesh:
+		c = _mesh.global_transform * _mesh.mesh.get_aabb().get_center()
+	mi.global_position = Vector3(c.x, randf_range(0.04, 0.08), c.z)
 
 func _spawn_debris() -> void:
 	if data == null or data.debris == null or data.debris.vfx == null:

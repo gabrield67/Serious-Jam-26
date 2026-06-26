@@ -20,6 +20,16 @@ extends Enemy
 @export var muzzle_height: float = 2.0
 @export var laser_scene: PackedScene = preload("res://scenes/items/LaserBeam.tscn")
 
+@export_group("Audio")
+## Looping laser sound, played 3D from the turret while the beam is firing.
+@export var laser_sound: AudioStream = preload("res://sounds/laser_cognito perceptu (Freesound).mp3")
+## Loudness of the laser sound.
+@export var laser_volume_db: float = 4.0
+## Distance at which the laser is at reference loudness (bigger = carries farther).
+@export var laser_unit_size: float = 25.0
+## Beyond this distance the laser is inaudible (0 = no limit).
+@export var laser_max_distance: float = 400.0
+
 @onready var _turret: Node3D = get_node_or_null(turret_path)
 @onready var _muzzle: Node3D = get_node_or_null(muzzle_path)
 
@@ -27,11 +37,28 @@ var _target: Node3D
 var _turret_rest: Basis
 var _turret_yaw: float = 0.0
 var _beam: Node3D
+var _laser_audio: AudioStreamPlayer3D
 
 func _ready() -> void:
 	add_to_group("enemy")
 	if _turret:
 		_turret_rest = _turret.global_transform.basis
+	_setup_laser_audio()
+
+## Create the looping laser sound player (attached to the turret/tank so it's directional),
+## ready to start when the beam fires.
+func _setup_laser_audio() -> void:
+	if laser_sound == null:
+		return
+	if laser_sound is AudioStreamMP3:
+		(laser_sound as AudioStreamMP3).loop = true
+	_laser_audio = AudioStreamPlayer3D.new()
+	_laser_audio.stream = laser_sound
+	_laser_audio.volume_db = laser_volume_db
+	_laser_audio.unit_size = laser_unit_size
+	_laser_audio.max_distance = laser_max_distance
+	var host: Node = _turret if _turret else self
+	host.add_child(_laser_audio)
 
 func _physics_process(delta: float) -> void:
 	if _target == null or not is_instance_valid(_target):
@@ -66,6 +93,8 @@ func _fire_beam(delta: float) -> void:
 		_beam.set("continuous", true)
 		_beam.set("thickness", beam_thickness)
 		get_tree().current_scene.add_child(_beam)
+	if _laser_audio and not _laser_audio.playing:
+		_laser_audio.play()
 
 	var from := _muzzle_position()
 	var to := _target.global_position + Vector3(0, aim_height, 0)
@@ -84,6 +113,8 @@ func _stop_beam() -> void:
 	if _beam and is_instance_valid(_beam):
 		_beam.queue_free()
 	_beam = null
+	if _laser_audio and _laser_audio.playing:
+		_laser_audio.stop()
 
 func _exit_tree() -> void:
 	_stop_beam()

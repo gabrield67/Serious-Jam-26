@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c46x53d7fsaql"
+path="res://.godot/imported/plane_UncleSigmund (Freesound).mp3-d09d99fb30a7c4c6c8eceb8e4fd3dfef.mp3str"
+
+[deps]
+
+source_file="res://sounds/plane_UncleSigmund (Freesound).mp3"
+dest_files=["res://.godot/imported/plane_UncleSigmund (Freesound).mp3-d09d99fb30a7c4c6c8eceb8e4fd3dfef.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

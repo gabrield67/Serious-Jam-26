@@ -68,6 +68,17 @@ extends Enemy
 @export var aim_height: float = 5.0
 @export var projectile_scene: PackedScene = preload("res://scenes/items/heli_projectile.tscn")
 
+@export_group("Audio")
+## Looping rotor sound, played 3D from the helicopter so it's directional. Stops when the
+## heli is destroyed/caught (the player is a child, freed with it).
+@export var rotor_sound: AudioStream = preload("res://sounds/helicopter.mp3")
+## Loudness of the rotor sound.
+@export var rotor_volume_db: float = 4.0
+## Distance at which the rotor is at reference loudness (bigger = carries farther).
+@export var rotor_unit_size: float = 25.0
+## Beyond this distance the rotor is inaudible (0 = no limit).
+@export var rotor_max_distance: float = 400.0
+
 @onready var _main: Node3D = get_node_or_null(main_rotor_path)
 @onready var _tail: Node3D = get_node_or_null(tail_rotor_path)
 
@@ -91,6 +102,22 @@ func _ready() -> void:
 	_heading = rotation.y
 	_facing = rotation.y
 	_bob_t = randf() * TAU
+	_start_rotor_sound()
+
+## Looping 3D rotor sound, attached to the helicopter so it follows it and stops when the
+## heli is freed (destroyed or sucked into the funnel).
+func _start_rotor_sound() -> void:
+	if rotor_sound == null:
+		return
+	if rotor_sound is AudioStreamMP3:
+		(rotor_sound as AudioStreamMP3).loop = true
+	var p := AudioStreamPlayer3D.new()
+	p.stream = rotor_sound
+	p.volume_db = rotor_volume_db
+	p.unit_size = rotor_unit_size
+	p.max_distance = rotor_max_distance
+	add_child(p)
+	p.play()
 
 func _physics_process(delta: float) -> void:
 	if _main:
