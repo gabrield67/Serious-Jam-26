@@ -82,4 +82,5 @@ fragments_scene = ExtResource("3_83co4")
 keep_authored_scale = true
 
 [node name="Skyscraper_1" type="MeshInstance3D" parent="." unique_id=1623847443]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40.008347)
 mesh = SubResource("ArrayMesh_7ji8q")
