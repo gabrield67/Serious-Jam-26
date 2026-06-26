@@ -47,8 +47,8 @@ class_name Destructible
 @export var collapse_sound: AudioStream = preload("res://sounds/building_collapse.mp3")
 ## Seconds into the clip to start playback (trims dead air at the front without editing the file).
 @export var collapse_start: float = 3.53
-## Loudness of the collapse sound.
-@export var collapse_volume_db: float = 0.0
+## Loudness of the collapse sound (decibels; +6 dB ≈ twice as loud in amplitude).
+@export var collapse_volume_db: float = 10.0
 ## Distance at which the collapse sound is at reference loudness (bigger = carries farther).
 @export var collapse_unit_size: float = 40.0
 ## Beyond this distance the collapse sound is inaudible (0 = no limit).
