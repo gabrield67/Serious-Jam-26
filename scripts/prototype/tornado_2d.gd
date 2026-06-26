@@ -28,7 +28,7 @@ extends CharacterBody2D
 @export var orbit_radius_per_debris: float = 2.5
 @export var orbit_speed: float = 160.0  # deg/sec
 @export var throw_speed: float = 1400.0
-@export var debris_projectile: PackedScene = preload("res://scenes/debris_projectile.tscn")
+@export var debris_projectile: PackedScene = preload("res://scenes/prototype/debris_projectile.tscn")
 
 ## Minimum SIZE for each Fujita level F0..F5.
 const FUJITA_MIN := [0, 3, 6, 10, 15, 21]
