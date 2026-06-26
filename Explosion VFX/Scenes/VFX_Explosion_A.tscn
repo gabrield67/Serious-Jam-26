@@ -139,7 +139,7 @@ albedo_texture = SubResource("GradientTexture2D_os0sn")
 emission_operator = 1
 rim_tint = 1.0
 rim_texture = ExtResource("4_popeq")
-use_particle_trails = true
+use_particle_trails = false
 proximity_fade_enabled = true
 proximity_fade_distance = 0.5
 
@@ -186,10 +186,7 @@ collision_bounce = 0.4
 _data = [Vector2(0, 0.35513), 0.0, 0.0, 0, 0, Vector2(0.0518732, 1), 0.0, 0.0, 0, 0, Vector2(0.207493, 0.399098), 0.0, 0.0, 0, 0, Vector2(0.363112, 0.743517), 0.0, 0.0, 0, 0, Vector2(0.489914, 0.274521), 0.0, 0.0, 0, 0, Vector2(0.570605, 0.978016), 0.0, 0.0, 0, 0, Vector2(0.668588, 0.252537), 0.0, 0.0, 0, 0, Vector2(0.766571, 0.934047), 0.0, 0.0, 0, 0, Vector2(1, 0.670237), 0.0, 0.0, 0, 0]
 point_count = 9
 
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_7rkrx"]
-radius = 0.1
-section_rings = 6
-curve = SubResource("Curve_i583n")
+[sub_resource type="QuadMesh" id="TubeTrailMesh_7rkrx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s3uyr"]
 render_priority = 0
@@ -446,7 +443,7 @@ alpha_curve = SubResource("CurveTexture_tmhkm")
 collision_mode = 1
 collision_friction = 0.05
 collision_bounce = 0.4
-sub_emitter_mode = 1
+sub_emitter_mode = 0
 sub_emitter_frequency = 52.73
 
 [sub_resource type="SphereMesh" id="SphereMesh_k6k3r"]
@@ -535,7 +532,7 @@ scale_max = 0.3
 scale_curve = SubResource("CurveTexture_vieer")
 color_ramp = SubResource("GradientTexture1D_4ymj6")
 alpha_curve = SubResource("CurveTexture_gxx3c")
-sub_emitter_mode = 1
+sub_emitter_mode = 0
 sub_emitter_frequency = 0.4
 sub_emitter_keep_velocity = true
 
@@ -784,7 +781,7 @@ lifetime = 1.8
 one_shot = true
 explosiveness = 1.0
 fixed_fps = 60
-trail_enabled = true
+trail_enabled = false
 trail_lifetime = 0.7
 process_material = SubResource("ParticleProcessMaterial_3xsgb")
 draw_pass_1 = SubResource("TubeTrailMesh_7rkrx")
@@ -862,7 +859,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113388, 0)
 material_override = SubResource("StandardMaterial3D_i1n5r")
 emitting = false
 amount = 5
-sub_emitter = NodePath("../sub_Ribbon_trails_C")
+sub_emitter = NodePath("")
 lifetime = 1.2
 one_shot = true
 explosiveness = 1.0

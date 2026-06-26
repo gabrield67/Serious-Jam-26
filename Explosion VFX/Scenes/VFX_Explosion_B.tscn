@@ -480,7 +480,7 @@ emission_operator = 1
 emission_texture = ExtResource("9_3i1hg")
 rim_tint = 1.0
 rim_texture = ExtResource("5_vjvxw")
-use_particle_trails = true
+use_particle_trails = false
 proximity_fade_enabled = true
 proximity_fade_distance = 0.5
 
@@ -529,17 +529,14 @@ alpha_curve = SubResource("CurveTexture_tmhkm")
 collision_mode = 1
 collision_friction = 0.05
 collision_bounce = 0.4
-sub_emitter_mode = 1
+sub_emitter_mode = 0
 sub_emitter_frequency = 52.73
 
 [sub_resource type="Curve" id="Curve_aweqn"]
 _data = [Vector2(0, 0.375546), 0.0, 0.0, 0, 0, Vector2(0.0577367, 0.982969), 0.0, 0.0, 0, 0, Vector2(0.210162, 0.437991), 0.0, 0.0, 0, 0, Vector2(1, 0.00630677), 0.0, 0.0, 0, 0]
 point_count = 4
 
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_4k8xw"]
-radius = 0.2
-section_rings = 6
-curve = SubResource("Curve_aweqn")
+[sub_resource type="QuadMesh" id="TubeTrailMesh_4k8xw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nexqj"]
 render_priority = 0
@@ -591,7 +588,7 @@ scale_max = 0.3
 scale_curve = SubResource("CurveTexture_se2fq")
 color_ramp = SubResource("GradientTexture1D_lhclk")
 alpha_curve = SubResource("CurveTexture_vfgcf")
-sub_emitter_mode = 1
+sub_emitter_mode = 0
 sub_emitter_frequency = 0.4
 sub_emitter_keep_velocity = true
 
@@ -1130,13 +1127,13 @@ draw_pass_1 = SubResource("QuadMesh_47fcp")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93267, 0)
 material_override = SubResource("StandardMaterial3D_r748b")
 emitting = false
-sub_emitter = NodePath("../sub_Ribbon_trails_B")
+sub_emitter = NodePath("")
 lifetime = 1.3
 one_shot = true
 explosiveness = 1.0
 randomness = 0.1
 fixed_fps = 60
-trail_enabled = true
+trail_enabled = false
 trail_lifetime = 0.2
 process_material = SubResource("ParticleProcessMaterial_0wm6c")
 draw_pass_1 = SubResource("TubeTrailMesh_4k8xw")

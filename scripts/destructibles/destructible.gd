@@ -134,17 +134,17 @@ func _spawn_dust() -> void:
 func _shape_dust(d3: Node3D) -> void:
 	var half := Vector3(2.0, 2.0, 2.0)
 	var center := global_position
-	var basis := global_transform.basis.orthonormalized()
+	var box_basis := global_transform.basis.orthonormalized()
 	if _mesh and _mesh.mesh:
 		var gt := _mesh.global_transform
 		var aabb := _mesh.mesh.get_aabb()
 		half = (aabb.size * 0.5) * gt.basis.get_scale()
 		center = gt * aabb.get_center()
-		basis = gt.basis.orthonormalized()
+		box_basis = gt.basis.orthonormalized()
 	var obj_size := maxf(half.x, maxf(half.y, half.z)) * 2.0   # largest full extent
 	var life := clampf(obj_size * dust_lifetime_per_size, 0.3, 4.0)
 	half *= dust_oversize  # let the cloud spill a bit past the object
-	d3.global_transform = Transform3D(basis, center)
+	d3.global_transform = Transform3D(box_basis, center)
 	var volume := maxf(half.x * half.y * half.z * 8.0, 0.001)
 	for p in _all_particles(d3, []):
 		p.position = Vector3.ZERO

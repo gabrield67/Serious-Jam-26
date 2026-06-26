@@ -199,7 +199,9 @@ func _tint_shard(s: RigidBody3D) -> void:
 	var mi := _find_mesh(s)
 	if mi == null:
 		return
-	for i in surface_materials.size():
+	# Shards can have fewer surfaces than the source building, so only paint the ones that exist.
+	var count := mini(surface_materials.size(), mi.get_surface_override_material_count())
+	for i in count:
 		var mat: Material = surface_materials[i]
 		if mat != null:
 			mi.set_surface_override_material(i, mat)
