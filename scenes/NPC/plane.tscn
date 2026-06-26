@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://bhur7wlssq07x"]
 
-[ext_resource type="Script" uid="uid://dojyjhn6gyo1d" path="res://scripts/plane.gd" id="1_plane"]
+[ext_resource type="Script" uid="uid://dojyjhn6gyo1d" path="res://scripts/enemy/plane.gd" id="1_plane"]
 [ext_resource type="PackedScene" uid="uid://cdusttrail01" path="res://scenes/particles/DustTrail.tscn" id="2_dust"]
 [ext_resource type="PackedScene" uid="uid://ch6kqo2qu7mhf" path="res://Explosion VFX/Scenes/VFX_mini_explosion_1.tscn" id="3_mini1"]
 
@@ -317,7 +317,13 @@ shadow_mesh = SubResource("ArrayMesh_e1o88")
 [node name="plane" type="Node3D" unique_id=391191332]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
 script = ExtResource("1_plane")
+orbit_radius = 40.0
+bank_angle = 30.0
+trail_lifetime = 6.0
 enemy_name = "Plane"
+threat_cost = 2.0
+spawn_min_level = 1
+spawn_weight = 3.0
 death_vfx = ExtResource("3_mini1")
 death_vfx_scale = 16.0
 

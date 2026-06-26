@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://benemy0proto1"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://bc3qc0o4pecoh" path="res://scripts/enemy/enemy.gd" id="1_enemy"]
 
 [sub_resource type="CircleShape2D" id="EnemyShape"]
 radius = 16.0

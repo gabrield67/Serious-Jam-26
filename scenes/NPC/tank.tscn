@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cl7kv1uohxtnn"]
 
-[ext_resource type="Script" uid="uid://movolppi7jed" path="res://scripts/tank.gd" id="1_tank"]
+[ext_resource type="Script" uid="uid://movolppi7jed" path="res://scripts/enemy/tank.gd" id="1_tank"]
 [ext_resource type="PackedScene" uid="uid://bwlhnbmg4j1i3" path="res://Explosion VFX/Scenes/VFX_Explosion_B.tscn" id="2_expB"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b25fg"]
@@ -637,6 +637,9 @@ shadow_mesh = SubResource("ArrayMesh_ly1qi")
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 script = ExtResource("1_tank")
 enemy_name = "Tank"
+threat_cost = 3.0
+spawn_min_level = 2
+spawn_weight = 2.0
 death_vfx = ExtResource("2_expB")
 muzzle_path = NodePath("Sketchfab_model/Root/body/head/cannon/Marker3D")
 

@@ -9,6 +9,14 @@ class_name Enemy
 ## Only attacks when the tornado is within this many world units (0 = always).
 @export var attack_range: float = 80.0
 
+@export_group("Spawning")
+## How much of the spawn director's threat budget this enemy occupies while alive.
+@export var threat_cost: float = 1.0
+## Lowest tornado Fujita level (0 = F0) at which this enemy starts appearing.
+@export var spawn_min_level: int = 0
+## Relative weight when the director picks which unlocked type to spawn.
+@export var spawn_weight: float = 1.0
+
 @export_group("Death")
 ## Effect spawned where the enemy dies (auto-plays, then frees itself). Override per-scene
 ## for a different blast — e.g. the tank uses Explosion B.

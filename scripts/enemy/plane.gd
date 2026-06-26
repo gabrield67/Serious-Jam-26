@@ -48,9 +48,29 @@ var _leave_yaw: float = 0.0
 var _trail: Array[Vector3] = []     # recent path points that still carry damaging dust
 var _trail_age: Array[float] = []   # parallel: how long each has lingered
 var _drop_t: float = 0.0
+var _dust: Node3D                   # the visual dust-trail emitter (DustTrail child)
+var _circling: bool = false         # true once it has reached the orbit ring (gates the dust)
 
 func _ready() -> void:
 	_angle = randf() * TAU
+	_dust = get_node_or_null("DustTrail")
+	_set_dust_emitting(false)  # off during the fly-in; starts only once it reaches the ring
+
+## Toggle the dust trail's particle emitter(s). The DustTrail node is a CPUParticles3D (and it's
+## world-space), so already-spawned puffs hang in the air and fade while new ones stop — the
+## trail tapers off instead of vanishing the instant it stops.
+func _set_dust_emitting(on: bool) -> void:
+	if _dust == null:
+		return
+	for p in _emitters(_dust, []):
+		p.set("emitting", on)
+
+func _emitters(node: Node, acc: Array) -> Array:
+	if node is GPUParticles3D or node is CPUParticles3D:
+		acc.append(node)
+	for c in node.get_children():
+		_emitters(c, acc)
+	return acc
 
 func _physics_process(delta: float) -> void:
 	if _target == null or not is_instance_valid(_target):
@@ -76,17 +96,29 @@ func _orbit(delta: float, c: Vector3) -> void:
 	var push := obstacle_push(global_position, true)
 	if push.length() > 0.001:
 		target += Vector3(push.x, 0.0, push.z) * avoid_range
+	var prev := global_position
 	global_position = global_position.move_toward(target, flight_speed * _tornado_size() * delta)
 
-	# Face the direction of travel (tangent of the circle) and bank into the turn.
-	var tangent := Vector3(-sin(_angle), 0.0, cos(_angle))
-	_leave_yaw = atan2(tangent.x, tangent.z) + facing_offset
+	# Face the ACTUAL direction of travel — chasing the moving storm and dodging buildings bend
+	# the real path off the circle's tangent, so deriving the heading from actual movement keeps
+	# the nose pointed forward instead of flying sideways/backwards. Bank into the turn.
+	var vel := Vector3(global_position.x - prev.x, 0.0, global_position.z - prev.z)
+	if vel.length() > 0.0001:
+		_leave_yaw = atan2(vel.x, vel.z) + facing_offset
+		_leave_dir = vel.normalized()
 	rotation = Vector3(0.0, _leave_yaw, deg_to_rad(-bank_angle))
 
-	# Done looping — peel off straight along the current travel direction.
+	# Start the trail only once it has actually reached the orbit ring (not during the fly-in).
+	if not _circling:
+		var dist := Vector2(global_position.x - c.x, global_position.z - c.z).length()
+		if dist <= radius * 1.3:
+			_circling = true
+			_set_dust_emitting(true)
+
+	# Done looping — peel off straight along the current travel direction (already in _leave_dir).
 	if _swept >= float(loops) * TAU:
 		_state = State.LEAVE
-		_leave_dir = tangent.normalized()
+		_set_dust_emitting(false)  # stop laying the trail as it leaves
 
 func _leave(delta: float, c: Vector3) -> void:
 	# Fly straight away at altitude, leveling out the bank, until it's gone from view.
@@ -103,7 +135,7 @@ func _leave(delta: float, c: Vector3) -> void:
 ## it sits in one of the still-lingering puffs.
 func _update_trail(delta: float, c: Vector3) -> void:
 	_drop_t -= delta
-	if _drop_t <= 0.0:
+	if _drop_t <= 0.0 and _state == State.ORBIT and _circling:
 		_drop_t = trail_interval
 		_trail.append(global_position)
 		_trail_age.append(0.0)

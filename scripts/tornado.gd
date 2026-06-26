@@ -97,8 +97,7 @@ var _slow_factor: float = 1.0
 
 var _target_scale: Vector3 = Vector3.ONE
 var _cur_scale: Vector3 = Vector3.ONE
-var _fujita: FujitaManager
-var _health: HealthManager
+var _fujita: FujitaManager  # the single combined health / F-scale meter
 
 var _carry_root: Node3D
 var _carried: Array[Node3D] = []
@@ -117,12 +116,8 @@ func _ready() -> void:
 	_fujita = FujitaManager.new()
 	_fujita.name = "FujitaManager"
 	add_child(_fujita)
-	_health = HealthManager.new()
-	_health.name = "HealthManager"
-	add_child(_health)
 	_fujita.changed.connect(_on_fujita_changed)
-	_health.died.connect(_on_died)
-	_health.set_max(_fujita.max_health())
+	_fujita.died.connect(_on_died)
 
 	if _maw:
 		_base_chew = _maw.chew_rate
@@ -427,20 +422,18 @@ func _update_carry(delta: float) -> void:
 func _on_consumed(value: float) -> void:
 	_fujita.add(value)
 
-## Damage from enemies — chips health; heavy hits also dent the Fujita scale.
+## Damage from enemies — drains the combined meter (which lowers the F-scale and can kill).
 func take_hit(amount: float) -> void:
-	_health.take_damage(amount)
-	_fujita.on_hit(amount)
+	_fujita.damage(amount)
 
 func _on_fujita_changed(level: int, _value: float) -> void:
+	# Start tier is F1 (index 1 -> 1.45x), F0 below it sits at the 1.0x base, growing from there.
 	var w := 1.0 + level * width_per_level
 	_target_scale = Vector3(w, 1.0, w)  # width only — height stays constant
 	# Chew reach now tracks the visible funnel continuously via _apply_vfx_scale, so it
 	# grows smoothly with the storm instead of stepping per level here.
 	_update_chew()
-	if _health:
-		_health.set_max(_fujita.max_health())  # F-scale raises the health cap
-	_enforce_carry_capacity()                  # ...and limits how much debris you hold
+	_enforce_carry_capacity()  # the F-scale also limits how much debris you hold
 	fujita_changed.emit(level)
 
 ## Debris-hold limit: grows with the Fujita level.
@@ -475,8 +468,13 @@ func _apply_vfx_scale(s: Vector3) -> void:
 		if child is Node3D:
 			child.scale = s
 
+## 0-based tier index (0 = F-1) — used internally for scaling, carry capacity, chew rate.
 func get_level() -> int:
 	return _fujita.level() if _fujita else 0
+
+## The displayed F-number for the current tier (0 .. 5).
+func get_fujita_label() -> int:
+	return _fujita.f_label() if _fujita else 0
 
 ## Current funnel width multiplier from the Fujita scale (1.0 at the smallest size).
 ## Enemies and projectiles multiply their contact radii by this so detection grows with
@@ -494,8 +492,9 @@ func step_fujita(dir: int) -> void:
 	if _fujita:
 		_fujita.set_level(_fujita.level() + dir)
 
+## Health == the combined meter's current value vs its full-bar max.
 func get_health() -> Vector2:
-	return Vector2(_health.current, _health.max_health) if _health else Vector2.ZERO
+	return Vector2(_fujita.value, _fujita.max_value()) if _fujita else Vector2.ZERO
 
 func get_fujita_progress() -> Dictionary:
 	return _fujita.progress() if _fujita else {}
