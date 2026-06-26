@@ -327,9 +327,6 @@ spawn_weight = 3.0
 death_vfx = ExtResource("3_mini1")
 death_vfx_scale = 16.0
 
-[node name="DustTrail" parent="." unique_id=321775021 instance=ExtResource("2_dust")]
-transform = Transform3D(1.942, 0, 0, 0, 1.942, 0, 0, 0, 1.942, 0, 1.3068484, 7.204501)
-
 [node name="RootNode" type="Node3D" parent="." unique_id=1879351564]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, -2.220446e-18, 0, 2.220446e-18, 0.01, 0, 0, 0)
 

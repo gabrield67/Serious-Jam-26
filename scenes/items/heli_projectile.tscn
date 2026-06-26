@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cheliproj3d01"]
 
-[ext_resource type="Script" path="res://scripts/heli_projectile.gd" id="1_hp"]
+[ext_resource type="Script" uid="uid://b8g83m6std75l" path="res://scripts/enemy/heli_projectile.gd" id="1_hp"]
 
 [sub_resource type="SphereMesh" id="ProjMesh"]
 radius = 0.35

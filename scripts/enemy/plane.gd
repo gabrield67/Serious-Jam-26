@@ -36,6 +36,12 @@ extends Enemy
 @export var trail_interval: float = 0.12
 ## How long each dust point stays harmful — match the visual trail's lifetime.
 @export var trail_lifetime: float = 3.0
+## How far behind the plane the (detached) dust trail emits — its tail.
+@export var dust_tail_offset: float = 8.0
+## Size of the spawned dust trail.
+@export var dust_scale: float = 2.0
+
+const DUST_SCENE := preload("res://scenes/particles/DustTrail.tscn")
 
 enum State { ORBIT, LEAVE }
 
@@ -48,12 +54,16 @@ var _leave_yaw: float = 0.0
 var _trail: Array[Vector3] = []     # recent path points that still carry damaging dust
 var _trail_age: Array[float] = []   # parallel: how long each has lingered
 var _drop_t: float = 0.0
-var _dust: Node3D                   # the visual dust-trail emitter (DustTrail child)
+var _dust: Node3D                   # the visual dust trail, spawned into the scene (not a child)
 var _circling: bool = false         # true once it has reached the orbit ring (gates the dust)
 
 func _ready() -> void:
 	_angle = randf() * TAU
-	_dust = get_node_or_null("DustTrail")
+	# Spawn the dust as its own scene node so the plane's rendering/flicker can't touch it;
+	# we pin it to the plane's tail every frame.
+	_dust = DUST_SCENE.instantiate() as Node3D
+	_dust.scale = Vector3.ONE * dust_scale
+	get_tree().current_scene.add_child(_dust)
 	_set_dust_emitting(false)  # off during the fly-in; starts only once it reaches the ring
 
 ## Toggle the dust trail's particle emitter(s). The DustTrail node is a CPUParticles3D (and it's
@@ -84,6 +94,18 @@ func _physics_process(delta: float) -> void:
 		State.LEAVE:
 			_leave(delta, c)
 	_update_trail(delta, c)
+	# Pin the detached trail to the plane's tail (behind it along the travel direction).
+	if is_instance_valid(_dust):
+		_dust.global_position = global_position - _leave_dir * dust_tail_offset
+
+## Stop the detached trail and let it fade, then free it, when the plane despawns.
+func _exit_tree() -> void:
+	if is_instance_valid(_dust):
+		_set_dust_emitting(false)
+		var tree := get_tree()
+		if tree:
+			tree.create_timer(6.0).timeout.connect(_dust.queue_free)
+		_dust = null
 
 func _orbit(delta: float, c: Vector3) -> void:
 	_angle += deg_to_rad(orbit_speed) * delta

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cbarrel3d01"]
 
-[ext_resource type="Script" path="res://scripts/barrel.gd" id="1_barrel"]
+[ext_resource type="Script" uid="uid://bmd2ekcx7rahf" path="res://scripts/enemy/barrel.gd" id="1_barrel"]
 
 [sub_resource type="CylinderMesh" id="BarrelMesh"]
 top_radius = 0.6
