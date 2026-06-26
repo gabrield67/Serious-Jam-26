@@ -1730,12 +1730,6 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -36.957607, 0, 0)
 [node name="Plane" parent="NPCs" unique_id=2032584447 instance=ExtResource("5_plane")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -4.0195465, -1.9073486e-06, 0)
 
-[node name="BluePickup" parent="NPCs" unique_id=2081457352 instance=ExtResource("8_byxht")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.384052, 8, 54.77391)
-
-[node name="PowerUp" parent="NPCs" unique_id=1800004186 instance=ExtResource("9_xv6k7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.21805, 8, 35.545425)
-
 [node name="Explosions_Dust" type="Node3D" parent="." unique_id=1771836718]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -160.85)
 
@@ -1895,3 +1889,9 @@ mesh = SubResource("ArrayMesh_aahkv")
 
 [node name="Barrel" parent="." unique_id=94530724 instance=ExtResource("15_of0it")]
 transform = Transform3D(3.045, 0, 0, 0, 3.045, 0, 0, 0, 3.045, -52.315063, 0.8, 11.52027)
+
+[node name="BluePickup" parent="." unique_id=2040059518 instance=ExtResource("8_byxht")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 103.0428, 19.2, 50.615093)
+
+[node name="PowerUp" parent="." unique_id=351830873 instance=ExtResource("9_xv6k7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 128.44327, 19.2, 18.979807)

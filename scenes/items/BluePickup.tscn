@@ -1,34 +1,28 @@
 [gd_scene format=3 uid="uid://d3xo8xsgrxdjc"]
 
-[ext_resource type="Script" path="res://scripts/power_up_pickup.gd" id="1_pu"]
-
-[sub_resource type="SphereMesh" id="PuMesh"]
-radius = 0.7
-height = 1.4
-
-[sub_resource type="StandardMaterial3D" id="PuMat"]
-albedo_color = Color(0.3, 0.6, 1, 1)
-emission_enabled = true
-emission = Color(0.25, 0.55, 1, 1)
-emission_energy_multiplier = 6.0
+[ext_resource type="Script" uid="uid://cnojqcp6mc8lc" path="res://scripts/power_up_pickup.gd" id="1_pu"]
+[ext_resource type="Texture2D" uid="uid://cr0ajib5rmtqu" path="res://assets/SVGs/lightning.svg" id="2_icon"]
 
 [sub_resource type="SphereShape3D" id="PuShape"]
 radius = 1.2
 
-[node name="BluePickup" type="Area3D"]
+[node name="BluePickup" type="Area3D" unique_id=2040059518]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
 collision_layer = 0
-collision_mask = 1
 script = ExtResource("1_pu")
 transform_mode = "Blue"
 
-[node name="Visual" type="MeshInstance3D" parent="."]
-mesh = SubResource("PuMesh")
-material_override = SubResource("PuMat")
+[node name="Visual" type="Sprite3D" parent="." unique_id=199698832]
+modulate = Color(0.45, 0.75, 1, 1)
+pixel_size = 0.006
+billboard = 1
+texture_filter = 4
+texture = ExtResource("2_icon")
 
-[node name="Collision" type="CollisionShape3D" parent="."]
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1417822333]
 shape = SubResource("PuShape")
 
-[node name="Glow" type="OmniLight3D" parent="."]
+[node name="Glow" type="OmniLight3D" parent="." unique_id=86716149]
 light_color = Color(0.4, 0.65, 1, 1)
 light_energy = 4.0
 omni_range = 8.0

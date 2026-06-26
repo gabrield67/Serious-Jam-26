@@ -9,23 +9,28 @@ class_name PowerUpPickup
 ## under the tornado's "Styles" node.
 @export var transform_mode: String = "Fire"
 @export var duration: float = 5.0
-@export var spin_speed: float = 90.0   # deg/sec
 @export var bob_height: float = 0.4
 @export var bob_speed: float = 2.0
+## Gentle size pulse of the glowing symbol (fraction; 0 = no pulse).
+@export var pulse_amount: float = 0.12
 
 @onready var _visual: Node3D = get_node_or_null("Visual")
 
 var _t: float = 0.0
 var _base_y: float = 0.0
+var _base_scale: Vector3 = Vector3.ONE
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	_base_y = position.y
+	if _visual:
+		_base_scale = _visual.scale
 
 func _process(delta: float) -> void:
 	_t += delta
 	if _visual:
-		_visual.rotation.y += deg_to_rad(spin_speed) * delta
+		# Pulse the symbol's size so it reads as a lively glow (billboards can't show a spin).
+		_visual.scale = _base_scale * (1.0 + sin(_t * bob_speed) * pulse_amount)
 	position.y = _base_y + sin(_t * bob_speed) * bob_height
 
 func _on_body_entered(body: Node) -> void:

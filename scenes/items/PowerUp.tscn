@@ -1,34 +1,28 @@
 [gd_scene format=3 uid="uid://cpowerup3d01"]
 
-[ext_resource type="Script" path="res://scripts/power_up_pickup.gd" id="1_pu"]
-
-[sub_resource type="SphereMesh" id="PuMesh"]
-radius = 0.7
-height = 1.4
-
-[sub_resource type="StandardMaterial3D" id="PuMat"]
-albedo_color = Color(1, 0.78, 0.25, 1)
-emission_enabled = true
-emission = Color(1, 0.6, 0.15, 1)
-emission_energy_multiplier = 6.0
+[ext_resource type="Script" uid="uid://cnojqcp6mc8lc" path="res://scripts/power_up_pickup.gd" id="1_pu"]
+[ext_resource type="Texture2D" uid="uid://c37gk4pnf3bmx" path="res://assets/SVGs/flame.svg" id="2_icon"]
 
 [sub_resource type="SphereShape3D" id="PuShape"]
 radius = 1.2
 
-[node name="PowerUp" type="Area3D"]
+[node name="PowerUp" type="Area3D" unique_id=351830873]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
 collision_layer = 0
-collision_mask = 1
 script = ExtResource("1_pu")
-transform_mode = "Fire"
 
-[node name="Visual" type="MeshInstance3D" parent="."]
-mesh = SubResource("PuMesh")
-material_override = SubResource("PuMat")
+[node name="Visual" type="Sprite3D" parent="." unique_id=546753835]
+modulate = Color(1, 0.55, 0.18, 1)
+pixel_size = 0.006
+billboard = 1
+texture_filter = 4
+texture = ExtResource("2_icon")
 
-[node name="Collision" type="CollisionShape3D" parent="."]
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=958182243]
 shape = SubResource("PuShape")
 
-[node name="Glow" type="OmniLight3D" parent="."]
-light_color = Color(1, 0.7, 0.3, 1)
+[node name="Glow" type="OmniLight3D" parent="." unique_id=157884767]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
+light_color = Color(1, 0.6, 0.25, 1)
 light_energy = 4.0
 omni_range = 8.0
