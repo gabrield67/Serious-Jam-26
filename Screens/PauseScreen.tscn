@@ -1,13 +1,25 @@
-[gd_scene format=3 uid="uid://dcxo0rcl7euib"]
+[gd_scene load_steps=5 format=3 uid="uid://dcxo0rcl7euib"]
 
 [ext_resource type="VideoStream" uid="uid://cuhj5qs83tv23" path="res://Screens/HomeScreenMovie.ogv" id="1_x0kbq"]
 [ext_resource type="Texture2D" uid="uid://dsev3rjkir5yp" path="res://Screens/Pause.png" id="2_x0kbq"]
-[ext_resource type="Script" uid="uid://bj0450beg3gka" path="res://Screens/HomeMenu.gd" id="3_vcmqj"]
-[ext_resource type="Script" uid="uid://gp8341a78twm" path="res://Screens/play.gd" id="4_l0415"]
+[ext_resource type="Script" path="res://Screens/pause_menu.gd" id="3_pause"]
+[ext_resource type="FontFile" uid="uid://uqctrxieyoo7" path="res://Screens/Font/28 Days Later.ttf" id="4_font"]
 
-[node name="PauseScreen" type="Node3D" unique_id=498429856]
+[node name="PauseScreen" type="CanvasLayer"]
+layer = 128
+process_mode = 3
+visible = false
+script = ExtResource("3_pause")
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=925039629]
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -20,15 +32,14 @@ offset_bottom = 323.5
 grow_horizontal = 2
 grow_vertical = 2
 stream = ExtResource("1_x0kbq")
-autoplay = true
 loop = true
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=659900458]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(581, 243)
 scale = Vector2(0.7450149, 0.74768525)
 texture = ExtResource("2_x0kbq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1263592190]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -41,18 +52,19 @@ grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("3_vcmqj")
+theme_override_constants/separation = 16
 
-[node name="Play" type="Button" parent="VBoxContainer" unique_id=929098138]
+[node name="Continue" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 40
 text = "Continue?"
-script = ExtResource("4_l0415")
 
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=924232625]
+[node name="MainMenu" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 40
-text = "Quit"
+text = "Main Menu"
 
-[connection signal="pressed" from="VBoxContainer/Play" to="VBoxContainer" method="_on_play_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="VBoxContainer" method="_on_button_2_pressed"]
+[connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
