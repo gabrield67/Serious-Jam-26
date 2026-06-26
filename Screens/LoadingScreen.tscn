@@ -47,11 +47,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 64
-text = "Loading..."
+text = "LOADING"
 horizontal_alignment = 1
 
 [node name="Bar" type="ProgressBar" parent="Center/VBox" unique_id=445475920]
 custom_minimum_size = Vector2(360, 24)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 20
+show_percentage = false

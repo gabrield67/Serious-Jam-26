@@ -12,7 +12,6 @@ extends Control
 static var target_path: String = "res://scenes/map.tscn"
 
 @onready var _bar: ProgressBar = $Center/VBox/Bar
-@onready var _label: Label = $Center/VBox/Label
 
 var _path: String
 var _progress: Array = []
@@ -31,15 +30,13 @@ func _process(_delta: float) -> void:
 	var status := ResourceLoader.load_threaded_get_status(_path, _progress)
 	match status:
 		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-			var pct := 0.0
+			# The display font lacks '.' and '%' glyphs (they render as boxes on
+			# web, which has no system fallback), so progress shows on the bar only.
 			if _progress.size() > 0:
-				pct = float(_progress[0]) * 100.0
-			_bar.value = pct
-			_label.text = "Loading... %d%%" % int(pct)
+				_bar.value = float(_progress[0]) * 100.0
 		ResourceLoader.THREAD_LOAD_LOADED:
 			set_process(false)
 			_bar.value = 100.0
-			_label.text = "Loading... 100%"
 			var packed: PackedScene = ResourceLoader.load_threaded_get(_path)
 			get_tree().change_scene_to_packed(packed)
 		ResourceLoader.THREAD_LOAD_FAILED, ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
