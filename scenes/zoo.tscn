@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://yrbt0hx220ou" path="res://Explosion VFX/Scenes/VFX_mini_explosion_2.tscn" id="12_xv6k7"]
 [ext_resource type="PackedScene" uid="uid://d2wccndn1if2p" path="res://Explosion VFX/Scenes/VFX_Explosion_A.tscn" id="13_luqbt"]
 [ext_resource type="PackedScene" uid="uid://bwlhnbmg4j1i3" path="res://Explosion VFX/Scenes/VFX_Explosion_B.tscn" id="14_v58ed"]
+[ext_resource type="PackedScene" uid="uid://cbarrel3d01" path="res://scenes/debris/Barrel.tscn" id="15_of0it"]
 [ext_resource type="PackedScene" uid="uid://dh4j5ox5dh47g" path="res://Explosion VFX/Scenes/VFX_Explosion_C.tscn" id="15_tye7v"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_mwds1"]
@@ -1718,7 +1719,8 @@ shadow_enabled = true
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -24.691221, 2.0473404, 0)
 
 [node name="Truck" parent="NPCs" unique_id=1563317716 instance=ExtResource("3_truck")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -50.320522, 2.1886654, 3.2812023)
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, -50.320522, 2.1886654, 3.2812023)
+spawn_weight = 1.0
 
 [node name="Tank" parent="NPCs" unique_id=2027640374 instance=ExtResource("4_tank")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -36.957607, 0, 0)
@@ -1882,3 +1884,6 @@ mesh = SubResource("ArrayMesh_1fme3")
 [node name="Motel" type="MeshInstance3D" parent="Map Objects/giant" unique_id=598138963]
 transform = Transform3D(1.5, 0, 0, 0, -6.556708e-08, -1.5, 0, 1.5, -6.556708e-08, -81.31236, 4.992848, 94.97514)
 mesh = SubResource("ArrayMesh_aahkv")
+
+[node name="Barrel" parent="." unique_id=94530724 instance=ExtResource("15_of0it")]
+transform = Transform3D(3.045, 0, 0, 0, 3.045, 0, 0, 0, 3.045, -52.315063, 0.8, 11.52027)

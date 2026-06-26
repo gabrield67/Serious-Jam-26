@@ -8,6 +8,9 @@ class_name Enemy
 @export var max_health: float = 30.0
 ## Only attacks when the tornado is within this many world units (0 = always).
 @export var attack_range: float = 80.0
+## Extra attack range per tornado Fujita level (F0 = 0), so a bigger storm can be engaged from
+## farther out. 0 = fixed range.
+@export var attack_range_per_level: float = 0.0
 
 @export_group("Spawning")
 ## How much of the spawn director's threat budget this enemy occupies while alive.
@@ -48,11 +51,23 @@ func in_attack_range() -> bool:
 	var t := get_tree().get_first_node_in_group("tornado")
 	if t == null or not (t is Node3D):
 		return false
-	return global_position.distance_to((t as Node3D).global_position) <= attack_range
+	var rng := attack_range
+	if attack_range_per_level != 0.0 and t.has_method("get_level"):
+		rng += float(t.call("get_level")) * attack_range_per_level
+	return global_position.distance_to((t as Node3D).global_position) <= rng
+
+## The effective attack range right now (including any Fujita-level bonus) — for beams/aim to
+## use the same reach the gate does.
+func effective_attack_range() -> float:
+	var rng := attack_range
+	if attack_range_per_level != 0.0:
+		var t := get_tree().get_first_node_in_group("tornado")
+		if t and t.has_method("get_level"):
+			rng += float(t.call("get_level")) * attack_range_per_level
+	return rng
 
 ## Horizontal repulsion (away from nearby destructibles + pickups) around `from`, for steering
-## avoidance. Each obstacle pushes harder the closer we are within its footprint + avoid_range.
-## When `flying` is true, obstacles whose top sits well below us are ignored — we clear them.
+## avoidance.
 func obstacle_push(from: Vector3, flying: bool = false) -> Vector3:
 	if not avoid_enabled:
 		return Vector3.ZERO

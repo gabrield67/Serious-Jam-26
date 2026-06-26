@@ -41,9 +41,21 @@ extends Enemy
 ## Size of the spawned dust trail.
 @export var dust_scale: float = 2.0
 
+@export_group("Caught")
+## If the tornado core gets this close (horizontally, scaled by funnel size), it's sucked in.
+@export var catch_radius: float = 14.0
+## How long the spiral-up lasts before it despawns.
+@export var caught_time: float = 0.9
+## How high up the funnel it's lifted while being pulled in.
+@export var catch_lift: float = 40.0
+## How fast it spins while caught (deg/sec).
+@export var catch_spin: float = 720.0
+## How hard it's pulled toward the funnel axis while caught.
+@export var catch_pull: float = 4.0
+
 const DUST_SCENE := preload("res://scenes/particles/DustTrail.tscn")
 
-enum State { ORBIT, LEAVE }
+enum State { ORBIT, LEAVE, CAUGHT }
 
 var _target: Node3D
 var _state: State = State.ORBIT
@@ -56,6 +68,9 @@ var _trail_age: Array[float] = []   # parallel: how long each has lingered
 var _drop_t: float = 0.0
 var _dust: Node3D                   # the visual dust trail, spawned into the scene (not a child)
 var _circling: bool = false         # true once it has reached the orbit ring (gates the dust)
+var _caught_t: float = 0.0          # countdown while being sucked into the funnel
+var _init_scale: Vector3 = Vector3.ONE
+var _spin: float = 0.0
 
 func _ready() -> void:
 	_angle = randf() * TAU
@@ -88,6 +103,17 @@ func _physics_process(delta: float) -> void:
 		if _target == null:
 			return
 	var c := _target.global_position
+	# Sucked into the tornado on contact (it accidentally flew in) — spiral up the funnel and vanish.
+	if _state != State.CAUGHT:
+		var dist := Vector2(c.x - global_position.x, c.z - global_position.z).length()
+		if dist <= catch_radius * _tornado_size():
+			_state = State.CAUGHT
+			_caught_t = caught_time
+			_init_scale = scale
+			_set_dust_emitting(false)
+	if _state == State.CAUGHT:
+		_update_caught(delta, c)
+		return
 	match _state:
 		State.ORBIT:
 			_orbit(delta, c)
@@ -97,6 +123,17 @@ func _physics_process(delta: float) -> void:
 	# Pin the detached trail to the plane's tail (behind it along the travel direction).
 	if is_instance_valid(_dust):
 		_dust.global_position = global_position - _leave_dir * dust_tail_offset
+
+## Caught in the tornado: spiral up the funnel, spinning and shrinking, then despawn.
+func _update_caught(delta: float, c: Vector3) -> void:
+	_caught_t -= delta
+	var target := c + Vector3(0.0, catch_lift, 0.0)
+	global_position = global_position.lerp(target, clampf(catch_pull * delta, 0.0, 1.0))
+	_spin += deg_to_rad(catch_spin) * delta
+	rotation = Vector3(deg_to_rad(25.0), _spin, deg_to_rad(15.0))
+	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
+	if _caught_t <= 0.0:
+		queue_free()
 
 ## Stop the detached trail and let it fade, then free it, when the plane despawns.
 func _exit_tree() -> void:

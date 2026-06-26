@@ -1,12 +1,5 @@
 extends MeshInstance3D
-## Low overcast layer with faked vertical thickness: it stacks several cloud sheets at
-## increasing heights (each showing different blobs, darker toward the underside) so the
-## bank reads as a thick volume instead of a flat sheet. The stack follows the player so
-## it's always overhead, but the texture is world-locked so you fly *under* it (parallax),
-## with a slow drift on top.
-##
-## The node's own height is the BOTTOM of the bank (sit it on the tornado's top); the
-## stack builds upward from there.
+## Low overcast layer with faked vertical thickness
 
 @export var follow: bool = true
 ## Texture scroll speed (UV units per second) for the gentle drift.
@@ -17,9 +10,9 @@ extends MeshInstance3D
 @export var sheet_count: int = 5
 ## Vertical span of the bank (world units), built upward from this node.
 @export var thickness: float = 45.0
-## UV shift between sheets so each shows different clouds (variety = volume).
+## UV shift between sheets so each shows different clouds
 @export var layer_uv_step: float = 0.11
-## How much darker the underside sheets are than the top (stormy belly).
+## How much darker the underside sheets are than the top
 @export var underside_darken: float = 0.3
 
 var _t: float = 0.0
