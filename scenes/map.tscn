@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://cxs20jbwi8s0w" path="res://scenes/destructibles/generated/House_5.tscn" id="14_c70he"]
 [ext_resource type="PackedScene" uid="uid://btb4p8sah11hc" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="15_mo32q"]
 [ext_resource type="PackedScene" uid="uid://bp7hlnb7jfn3y" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_6k6j1"]
-[ext_resource type="PackedScene" uid="uid://bco37m4e6231h" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
+[ext_resource type="PackedScene" uid="uid://b64c6mgg0wb4b" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
 [ext_resource type="PackedScene" uid="uid://dp083k15ncrbc" path="res://scenes/roads.tscn" id="18_roads"]
 [ext_resource type="Script" uid="uid://ctvrqhr4nfi18" path="res://scripts/npc_spawner.gd" id="19_spawn"]
 [ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="20_truck"]
@@ -42,6 +42,10 @@ ambient_light_source = 3
 ambient_light_energy = 0.6
 tonemap_mode = 2
 tonemap_exposure = 0.75
+glow_enabled = true
+glow_intensity = 0.9
+glow_bloom = 0.15
+glow_hdr_threshold = 0.9
 fog_enabled = true
 fog_light_color = Color(0.7, 0.71, 0.72, 1)
 fog_density = 0.0003
@@ -131,6 +135,7 @@ shape = SubResource("GroundShape")
 [node name="Tornado" parent="." unique_id=1767961767 instance=ExtResource("1_tornado")]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1980222075]
+physics_interpolation_mode = 1
 transform = Transform3D(0, -0.35112345, 0.9363291, -1.4901161e-08, 0.9363292, 0.35112345, -1, 1.4901161e-08, 0, 160, 85, 0)
 top_level = true
 near = 1.0
@@ -153,18 +158,23 @@ pan_speed = 5.0
 look_lead = 60.0
 ref_speed = 10.0
 
-[node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1596393269]
+[node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1596393269 node_paths=PackedStringArray("follow_target", "look_at_target")]
 transform = Transform3D(0, -0.3510781, 0.9362077, -1.4901161e-08, 0.93620825, 0.3510779, -1, 1.48992365e-08, 0, 160, 85, 0)
 top_level = true
 script = ExtResource("3_pcam")
 priority = 10
 follow_mode = 2
+follow_target = NodePath("../Tornado")
 look_at_mode = 2
+look_at_target = NodePath("../Tornado")
 tween_resource = SubResource("TweenRes")
 follow_offset = Vector3(160, 85, 0)
 follow_damping = true
 follow_damping_value = Vector3(0.2, 0.2, 0.2)
 look_at_offset = Vector3(0, 25, 0)
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
 
 [node name="GroundCursor" type="Sprite3D" parent="." unique_id=1689576190]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)

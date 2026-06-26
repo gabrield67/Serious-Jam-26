@@ -18,6 +18,19 @@ class_name Enemy
 ## How long the effect lives before despawning (seconds).
 @export var death_vfx_lifetime: float = 4.0
 
+@export_group("Obstacle avoidance")
+## Steer around buildings/pickups instead of moving through them.
+@export var avoid_enabled: bool = true
+## How far beyond an obstacle's own footprint it starts steering away.
+@export var avoid_range: float = 18.0
+## How hard it steers away (higher = wider berth).
+@export var avoid_strength: float = 2.5
+## Max steer rate while dodging (deg/sec) — used by enemies that turn to avoid.
+@export var avoid_turn_speed: float = 240.0
+## Flyers only: ignore obstacles whose top is more than this far below them, so they fly over
+## short buildings and only weave around ones that reach near their altitude.
+@export var avoid_clearance: float = 8.0
+
 var health: float
 
 ## True when the tornado is close enough to attack. Enemies gate their attacks on this.
@@ -28,6 +41,33 @@ func in_attack_range() -> bool:
 	if t == null or not (t is Node3D):
 		return false
 	return global_position.distance_to((t as Node3D).global_position) <= attack_range
+
+## Horizontal repulsion (away from nearby destructibles + pickups) around `from`, for steering
+## avoidance. Each obstacle pushes harder the closer we are within its footprint + avoid_range.
+## When `flying` is true, obstacles whose top sits well below us are ignored — we clear them.
+func obstacle_push(from: Vector3, flying: bool = false) -> Vector3:
+	if not avoid_enabled:
+		return Vector3.ZERO
+	var ceiling := from.y - avoid_clearance
+	var push := Vector3.ZERO
+	for grp in ["consumable", "pickup"]:
+		for n in get_tree().get_nodes_in_group(grp):
+			var o := n as Node3D
+			if o == null or not is_instance_valid(o) or o == self:
+				continue
+			if flying:
+				if not o.has_method("get_avoid_top_y"):
+					continue  # no height info (ground pickups, etc.) — flyers don't dodge these
+				if o.get_avoid_top_y() < ceiling:
+					continue  # its top is below us — we clear it
+			var away := Vector3(from.x - o.global_position.x, 0.0, from.z - o.global_position.z)
+			var d := away.length()
+			var radius: float = o.get_avoid_radius() if o.has_method("get_avoid_radius") else 2.0
+			if d < 0.001 or d > radius + avoid_range:
+				continue
+			var t := 1.0 - clampf((d - radius) / maxf(avoid_range, 0.001), 0.0, 1.0)
+			push += (away / d) * t
+	return push
 
 func _enter_tree() -> void:
 	add_to_group("enemy")

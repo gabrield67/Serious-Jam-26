@@ -213,6 +213,14 @@ func _has_left_view(dist: float) -> bool:
 
 ## Fly forward along _heading at the current eased _speed, holding bob altitude.
 func _advance(delta: float, c: Vector3) -> void:
+	# Weave around buildings tall enough to reach our altitude (only while actually moving).
+	if _speed > 1.0:
+		var push := obstacle_push(global_position, true)
+		if push.length() > 0.001:
+			var dir := Vector2(sin(_heading), cos(_heading)) + Vector2(push.x, push.z) * avoid_strength
+			if dir.length() > 0.01:
+				_heading = rotate_toward(_heading, atan2(dir.x, dir.y), deg_to_rad(avoid_turn_speed) * delta)
+				_facing = _heading
 	var fwd := Vector2(sin(_heading), cos(_heading))
 	var pos := global_position
 	pos.x += fwd.x * _speed * delta

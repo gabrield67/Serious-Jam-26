@@ -72,6 +72,10 @@ func _orbit(delta: float, c: Vector3) -> void:
 	# Circle the live tornado at a constant distance, chasing the orbit point at a capped
 	# speed so it flies in and tracks the moving storm smoothly.
 	var target := c + Vector3(cos(_angle) * radius, altitude, sin(_angle) * radius)
+	# Bulge the orbit outward around buildings tall enough to reach our altitude.
+	var push := obstacle_push(global_position, true)
+	if push.length() > 0.001:
+		target += Vector3(push.x, 0.0, push.z) * avoid_range
 	global_position = global_position.move_toward(target, flight_speed * _tornado_size() * delta)
 
 	# Face the direction of travel (tangent of the circle) and bank into the turn.

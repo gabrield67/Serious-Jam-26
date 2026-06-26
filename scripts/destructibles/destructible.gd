@@ -210,6 +210,29 @@ func get_display_name() -> String:
 func get_health() -> Vector2:
 	return Vector2(maxf(_destroy_time - _progress, 0.0), _destroy_time)
 
+## Horizontal footprint radius, for enemy obstacle-avoidance (half the larger ground dimension).
+func get_avoid_radius() -> float:
+	if _mesh and _mesh.mesh:
+		var s := _mesh.global_transform.basis.get_scale()
+		var sz := _mesh.mesh.get_aabb().size
+		return maxf(sz.x * s.x, sz.z * s.z) * 0.5
+	return 2.0
+
+## World-space Y of the top of this object, so flyers know whether to weave around it or clear it.
+func get_avoid_top_y() -> float:
+	if _mesh and _mesh.mesh:
+		var gt := _mesh.global_transform
+		var aabb := _mesh.mesh.get_aabb()
+		var top := -INF
+		for i in 8:
+			var corner := aabb.position + Vector3(
+				aabb.size.x if (i & 1) else 0.0,
+				aabb.size.y if (i & 2) else 0.0,
+				aabb.size.z if (i & 4) else 0.0)
+			top = maxf(top, (gt * corner).y)
+		return top
+	return global_position.y
+
 ## Camera-shake level (0..1) while being chewed: size strength on an exponential falloff with
 ## remaining life — strong on the first bite, dropping off fast so a half-eaten building
 ## barely rumbles. Raise SHAKE_FALLOFF for an even sharper drop.

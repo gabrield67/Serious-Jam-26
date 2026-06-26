@@ -35,6 +35,11 @@ extends Enemy
 ## How hard it's pulled toward the funnel while caught.
 @export var catch_pull: float = 4.0
 
+@export_group("Obstacle avoidance")
+## Max sideways slide off a road lane when dodging an item (world units). The rest of the
+## avoidance knobs (range, strength, turn speed) live on the Enemy base class.
+@export var avoid_max_offset: float = 7.0
+
 enum State { RUN, LEAVE, CAUGHT }
 
 var _target: Node3D
@@ -143,12 +148,20 @@ func _road_drive(delta: float, c: Vector3) -> void:
 ## Snap to the lane at the current offset, facing along the travel direction.
 func _place_on_lane() -> void:
 	var o := clampf(_offset, 0.0, _lane_len)
-	global_position = _lane.to_global(_lane.curve.sample_baked(o))
+	var lane_pos := _lane.to_global(_lane.curve.sample_baked(o))
 	var ahead := clampf(o + _dir * 2.0, 0.0, _lane_len)
-	var t := _lane.to_global(_lane.curve.sample_baked(ahead)) - global_position
+	var t := _lane.to_global(_lane.curve.sample_baked(ahead)) - lane_pos
 	t.y = 0.0
 	if t.length() > 0.01:
 		_heading = atan2(t.x, t.z)
+	# Slide sideways off the lane to dodge items, while staying roughly on the road.
+	if avoid_enabled and t.length() > 0.01:
+		var push := obstacle_push(lane_pos)
+		if push.length() > 0.001:
+			var right := Vector3(t.z, 0.0, -t.x).normalized()  # lane perpendicular on the ground
+			var slide := clampf(push.dot(right) * avoid_strength, -avoid_max_offset, avoid_max_offset)
+			lane_pos += right * slide
+	global_position = lane_pos
 	rotation = Vector3(0.0, _heading + facing_offset, 0.0)
 
 func _run(delta: float, c: Vector3) -> void:
@@ -188,6 +201,7 @@ func _leave(delta: float, c: Vector3) -> void:
 		queue_free()
 
 func _drive(delta: float) -> void:
+	_heading = _avoid_heading(_heading, delta)  # swerve around items in the way
 	var forward := Vector3(sin(_heading), 0.0, cos(_heading))
 	var pos := global_position + forward * speed * delta
 	pos.y = _ground_y
@@ -213,6 +227,16 @@ func _update_caught(delta: float, c: Vector3) -> void:
 	scale = _init_scale * clampf(_caught_t / maxf(caught_time, 0.001), 0.0, 1.0)
 	if _caught_t <= 0.0:
 		queue_free()
+
+## Bend a heading away from nearby items, capped at avoid_turn_speed (used while free-driving).
+func _avoid_heading(heading: float, delta: float) -> float:
+	var push := obstacle_push(global_position)  # ground vehicle: avoid everything (no fly-over)
+	if push.length() < 0.001:
+		return heading
+	var steer := Vector3(sin(heading), 0.0, cos(heading)) + push * avoid_strength
+	if steer.length() < 0.01:
+		return heading
+	return rotate_toward(heading, atan2(steer.x, steer.z), deg_to_rad(avoid_turn_speed) * delta)
 
 ## The tornado's current funnel-width multiplier (1.0 if it can't report one).
 func _tornado_size() -> float:
