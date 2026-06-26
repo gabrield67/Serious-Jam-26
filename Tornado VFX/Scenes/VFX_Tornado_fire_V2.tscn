@@ -18,8 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://behqroa847jr8" path="res://Tornado VFX/textures/T_Cracks333.png" id="16_dhfke"]
 
 [sub_resource type="Gradient" id="Gradient_u7xh7"]
-offsets = PackedFloat32Array(0.228228)
-colors = PackedColorArray(0, 0, 0, 0.7294118)
+offsets = PackedFloat32Array(0.09201389, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.7294118)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_hhf3m"]
 gradient = SubResource("Gradient_u7xh7")
@@ -50,7 +50,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.278
+shader_parameter/AlphaTreshold = 0.5730000272175
 
 [sub_resource type="Gradient" id="Gradient_8kx2p"]
 offsets = PackedFloat32Array(0, 0.369295, 0.78185326)
@@ -88,8 +88,8 @@ shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
 shader_parameter/AlphaTreshold = 0.268
 
 [sub_resource type="Gradient" id="Gradient_3wtuu"]
-offsets = PackedFloat32Array(0.186186, 0.396396)
-colors = PackedColorArray(0.86342126, 0.46260762, 0.15633988, 1, 0.32297528, 0.010633088, 0.061862648, 1)
+offsets = PackedFloat32Array(0.010416667, 0.186186, 0.5538194)
+colors = PackedColorArray(0.8627451, 0.4627451, 0.15686275, 0.29411766, 0.86342126, 0.46260762, 0.15633988, 1, 0.32297528, 0.010633088, 0.061862648, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_m22cq"]
 gradient = SubResource("Gradient_3wtuu")
@@ -117,10 +117,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 0.8)
 shader_parameter/Scale_XY2 = Vector2(1, 0.5)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_m22cq")
-shader_parameter/Color_Intensity2 = 3.0
+shader_parameter/Color_Intensity2 = 2.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_1k1cj")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6opjf")
-shader_parameter/AlphaTreshold = 0.283
+shader_parameter/AlphaTreshold = 0.5210000247475
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -188,7 +188,7 @@ texture_mode = 1
 curve = SubResource("Curve_u076y")
 
 [sub_resource type="Gradient" id="Gradient_k0vts"]
-offsets = PackedFloat32Array(0.00436682, 0.4979757)
+offsets = PackedFloat32Array(0.3478261, 0.7445652)
 colors = PackedColorArray(0.9850207, 0.50052476, 0.32489806, 1, 0.37656978, 0.018626433, 1.4439226e-07, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_h7m7r"]

@@ -50,7 +50,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.278
+shader_parameter/AlphaTreshold = 0.546000025935
 
 [sub_resource type="Gradient" id="Gradient_enp5q"]
 offsets = PackedFloat32Array(0, 0.106557, 0.188525, 0.303279)
@@ -85,7 +85,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_em0ie")
 shader_parameter/Color_Intensity2 = 22.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_b2fpe")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6s6ch")
-shader_parameter/AlphaTreshold = 0.268
+shader_parameter/AlphaTreshold = 0.682000032395
 
 [sub_resource type="Gradient" id="Gradient_yuhc4"]
 offsets = PackedFloat32Array(0.270492, 0.483607, 0.663934, 0.786885)
@@ -120,7 +120,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_n174o")
 shader_parameter/Color_Intensity2 = 8.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_in3p3")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_tkkhr")
-shader_parameter/AlphaTreshold = 0.283
+shader_parameter/AlphaTreshold = 0.578000027455
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -394,7 +394,7 @@ direction = Vector3(0, 1, 0)
 gravity = Vector3(0, 0, 0)
 scale_min = 3.0
 scale_max = 3.2
-color = Color(0.5, 0.62, 2.2, 1)
+color = Color(0.68281, 2.1831565, 2.0993383, 1)
 alpha_curve = SubResource("CurveTexture_msi18")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_h1xv1"]

@@ -19,8 +19,8 @@
 
 [sub_resource type="Gradient" id="Gradient_baseGray"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.4340278, 0.5677083, 0.946058)
-colors = PackedColorArray(0.419813, 0.419813, 0.419813, 0, 0.359591, 0.359591, 0.35959, 1.05093, 0.29803923, 0.29803923, 0.41960785, 0.8039216, 0.162066, 0.162066, 0.162065, 1)
+offsets = PackedFloat32Array(0, 0.5086806, 0.6006944, 0.9513889)
+colors = PackedColorArray(0.419813, 0.419813, 0.419813, 0, 0.7496025, 0.70627224, 0.7366132, 0.62352943, 0.2784314, 0.2509804, 0.24705882, 0.6, 0.16078432, 0.16078432, 0.16078432, 0.9607843)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_baseGray"]
 gradient = SubResource("Gradient_baseGray")
@@ -51,7 +51,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.278
+shader_parameter/AlphaTreshold = 0.3630000172425
 
 [sub_resource type="Gradient" id="Gradient_txrm7"]
 offsets = PackedFloat32Array(0, 0.5694444, 0.8263889)
@@ -78,7 +78,7 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
-shader_parameter/Color_Intensity2 = 2.0
+shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
 shader_parameter/AlphaTreshold = 0.268
@@ -97,7 +97,7 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_1k1cj"]
 gradient = SubResource("Gradient_qx6h3")
-fill_from = Vector2(1, 1)
+fill_from = Vector2(1, 0.77350426)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rdpqi"]
 render_priority = 0
@@ -109,7 +109,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_baseGray")
 shader_parameter/Color_Intensity2 = 3.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_1k1cj")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6opjf")
-shader_parameter/AlphaTreshold = 0.283
+shader_parameter/AlphaTreshold = 0.982000046645
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -177,8 +177,8 @@ texture_mode = 1
 curve = SubResource("Curve_u076y")
 
 [sub_resource type="Gradient" id="Gradient_k0vts"]
-offsets = PackedFloat32Array(0.00436682, 0.4979757)
-colors = PackedColorArray(0.6, 0.6, 0.6, 1, 0.13, 0.13, 0.13, 1)
+offsets = PackedFloat32Array(0.010869565, 0.39130434, 0.6557971)
+colors = PackedColorArray(1, 1, 1, 1, 0.6, 0.6, 0.6, 1, 0.12941177, 0.12941177, 0.12941177, 0.8352941)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_h7m7r"]
 gradient = SubResource("Gradient_k0vts")
@@ -821,7 +821,7 @@ process_material = SubResource("ParticleProcessMaterial_p8kuk")
 draw_pass_1 = ExtResource("7_qag4v")
 
 [node name="ring4oniuon2top" type="GPUParticles3D" parent="." unique_id=638051781]
-transform = Transform3D(0.99999994, 0, 0, 0, 1.9999999, 0, 0, 0, 0.99999994, 0, 4.050124, 0)
+transform = Transform3D(0.9999998, 0, 0, 0, 1.9999996, 0, 0, 0, 0.9999998, 0, 3.741054, 0)
 material_override = SubResource("ShaderMaterial_ca8sl")
 cast_shadow = 0
 amount = 5
