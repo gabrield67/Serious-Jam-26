@@ -2,7 +2,7 @@ extends StaticBody3D
 class_name Barrel
 ## A bomb barrel dropped by the truck.
 
-@export var weaken_amount: float = 3.0
+## Blast damage comes from the shared EnemyDamage config (barrel_blast).
 ## Seconds from being dropped to detonation.
 @export var fuse: float = 3.0
 ## The tornado takes the hit only if its centre is within this distance of the blast.
@@ -103,5 +103,5 @@ func _explode() -> void:
 		if t.has_method("get_size_factor"):
 			reach *= float(t.call("get_size_factor"))
 		if global_position.distance_to((t as Node3D).global_position) <= reach:
-			t.take_hit(weaken_amount)
+			t.take_hit(EnemyDamage.config.barrel_blast)
 	queue_free()

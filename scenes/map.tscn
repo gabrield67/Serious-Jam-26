@@ -24,15 +24,16 @@
 [ext_resource type="PackedScene" uid="uid://cxs20jbwi8s0w" path="res://scenes/destructibles/generated/House_5.tscn" id="14_c70he"]
 [ext_resource type="PackedScene" uid="uid://btb4p8sah11hc" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="15_mo32q"]
 [ext_resource type="PackedScene" uid="uid://bp7hlnb7jfn3y" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_6k6j1"]
-[ext_resource type="PackedScene" uid="uid://bco37m4e6231h" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
+[ext_resource type="PackedScene" uid="uid://b64c6mgg0wb4b" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
 [ext_resource type="PackedScene" uid="uid://mraqnsrw41fx" path="res://scenes/destructibles/generated/Barn.tscn" id="18_baix8"]
-[ext_resource type="Script" uid="uid://ctvrqhr4nfi18" path="res://scripts/npc_spawner.gd" id="19_spawn"]
+[ext_resource type="Script" uid="uid://ctvrqhr4nfi18" path="res://scripts/enemy/npc_spawner.gd" id="19_spawn"]
 [ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="20_truck"]
 [ext_resource type="PackedScene" uid="uid://d3vfahgwuc1au" path="res://scenes/NPC/helicopter.tscn" id="21_heli"]
 [ext_resource type="PackedScene" uid="uid://bhur7wlssq07x" path="res://scenes/NPC/plane.tscn" id="22_plane"]
 [ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="23_tank"]
 [ext_resource type="AudioStream" uid="uid://b8ifd7f4rhl4f" path="res://sounds/game_music_moodmode.mp3" id="24_gamemusic"]
 [ext_resource type="Script" uid="uid://b8snlop3dxfh5" path="res://scripts/vfx_prewarmer.gd" id="25_prewarm"]
+[ext_resource type="Script" uid="uid://biexwmhubiv7d" path="res://scripts/hud_stats.gd" id="26_hudstats"]
 [ext_resource type="PackedScene" uid="uid://swg8uy7c3sdd" path="res://scenes/destructibles/generated/Skyscraper_3.tscn" id="28_g8nl4"]
 [ext_resource type="PackedScene" uid="uid://bf0xsj8v8xyog" path="res://scenes/destructibles/generated/Bank.tscn" id="29_vqsqp"]
 [ext_resource type="PackedScene" uid="uid://xhijtc3ftthh" path="res://scenes/destructibles/generated/Motel.tscn" id="30_la2vj"]
@@ -46,7 +47,7 @@
 [ext_resource type="PackedScene" uid="uid://bqwd7gs2h8km4" path="res://scenes/destructibles/generated/House_6.tscn" id="41_5cjpp"]
 [ext_resource type="PackedScene" uid="uid://bmt2dljv1fn7e" path="res://scenes/destructibles/generated/House_2.tscn" id="41_vqsqp"]
 [ext_resource type="PackedScene" uid="uid://bkch0qyuc2qds" path="res://scenes/destructibles/generated/Silo.tscn" id="44_s2dh3"]
-[ext_resource type="PackedScene" uid="uid://drde6u2bt1r15" path="res://scenes/destructibles/generated/Tree_3.tscn" id="47_8kgjo"]
+[ext_resource type="PackedScene" uid="uid://d1fv05wd5q244" path="res://scenes/destructibles/generated/Tree_3.tscn" id="47_8kgjo"]
 [ext_resource type="PackedScene" uid="uid://bowd2angda6p7" path="res://scenes/destructibles/generated/Church_1.tscn" id="48_fq3dv"]
 [ext_resource type="PackedScene" uid="uid://q8gj06s2jld0" path="res://scenes/destructibles/generated/Skyscraper_2.tscn" id="49_ogd7i"]
 
@@ -135,7 +136,6 @@ shadow_enabled = true
 
 [node name="CloudLayer" type="MeshInstance3D" parent="." unique_id=760906253]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 98.75401, 0)
-visible = false
 material_override = SubResource("CloudMat")
 mesh = SubResource("CloudMesh")
 script = ExtResource("11_cloud")
@@ -210,7 +210,7 @@ use_lowpoly_preview = true
 edge_containers = Array[NodePath]([NodePath("../roundabout_2x2"), NodePath("")])
 edge_rp_targets = Array[NodePath]([NodePath("RP_EXIT_D"), NodePath("")])
 edge_rp_target_dirs = Array[int]([0, -1])
-edge_rp_locals = Array[NodePath]([NodePath("RP_001"), NodePath("")])
+edge_rp_locals = Array[NodePath]([NodePath("RP_001"), NodePath("RP_001")])
 edge_rp_local_dirs = Array[int]([0, 1])
 
 [node name="RP_001" type="Node3D" parent="RoadManager/Road_003" unique_id=2106565391]
@@ -256,11 +256,11 @@ edge_rp_target_dirs = Array[int]([-1, -1, -1, 1])
 transform = Transform3D(0.9996713, -0.0006293498, -0.025634231, 0.000696287, 0.9999965, 0.0026023975, 0.025632503, -0.0026193901, 0.9996681, 106.979004, -0.2062603, 25.336119)
 script = ExtResource("7_1qn5a")
 use_lowpoly_preview = true
-edge_containers = Array[NodePath]([NodePath(""), NodePath("../splitter_2x3"), NodePath(""), NodePath("")])
-edge_rp_targets = Array[NodePath]([NodePath(""), NodePath("cap"), NodePath(""), NodePath("")])
-edge_rp_target_dirs = Array[int]([-1, 0, -1, -1])
-edge_rp_locals = Array[NodePath]([NodePath("RP_001"), NodePath("RP_002"), NodePath("RP_003"), NodePath("RP_003")])
-edge_rp_local_dirs = Array[int]([0, 1, 0, 1])
+edge_containers = Array[NodePath]([NodePath(""), NodePath("../splitter_2x3")])
+edge_rp_targets = Array[NodePath]([NodePath(""), NodePath("cap")])
+edge_rp_target_dirs = Array[int]([-1, 0])
+edge_rp_locals = Array[NodePath]([NodePath("RP_001"), NodePath("RP_002")])
+edge_rp_local_dirs = Array[int]([0, 1])
 
 [node name="RP_001" type="Node3D" parent="RoadManager/Road_005" unique_id=1068397709]
 transform = Transform3D(-0.9993835, 9.2166076e-05, -0.03510758, 0, 0.99999654, 0.0026252382, 0.035107702, 0.0026236197, -0.99938005, 0.00015258789, 0.24999994, -1.9073486e-06)
@@ -612,6 +612,20 @@ offset_bottom = 150.0
 theme_override_font_sizes/font_size = 28
 text = "Health"
 script = ExtResource("7_fujita")
+
+[node name="StatsLabel" type="Label" parent="HUD" unique_id=492015940]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 18.0
+offset_right = -24.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 28
+text = "Score"
+horizontal_alignment = 2
+script = ExtResource("26_hudstats")
 
 [node name="TargetPanel" type="Control" parent="HUD" unique_id=1801255115]
 layout_mode = 3

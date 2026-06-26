@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="EnemyDamageConfig" format=3 uid="uid://cenemydmg0cfg"]
+
+[ext_resource type="Script" uid="uid://b3lnp1u5ra5ja" path="res://scripts/enemy_damage_config.gd" id="1_cfg"]
+
+[resource]
+script = ExtResource("1_cfg")

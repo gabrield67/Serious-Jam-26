@@ -27,8 +27,7 @@ extends Enemy
 @export var despawn_distance: float = 400.0
 
 @export_group("Dust damage")
-## Damage per second dealt to the tornado while it sits in the dust trail.
-@export var trail_damage: float = 4.0
+## Per-second trail damage comes from the shared EnemyDamage config (plane_trail_dps).
 ## How close (horizontally) the tornado must be to a dust puff to take damage; scales with
 ## the funnel width so a bigger storm catches the dust from farther out.
 @export var trail_radius: float = 8.0
@@ -211,7 +210,7 @@ func _update_trail(delta: float, c: Vector3) -> void:
 			in_dust = true
 
 	if in_dust and _target.has_method("take_hit"):
-		_target.take_hit(trail_damage * delta)
+		_target.take_hit(EnemyDamage.config.plane_trail_dps * delta)
 
 ## The tornado's current funnel-width multiplier (1.0 if it can't report one).
 func _tornado_size() -> float:
