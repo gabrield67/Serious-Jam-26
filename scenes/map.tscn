@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://cxs20jbwi8s0w" path="res://scenes/destructibles/generated/House_5.tscn" id="14_c70he"]
 [ext_resource type="PackedScene" uid="uid://btb4p8sah11hc" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="15_mo32q"]
 [ext_resource type="PackedScene" uid="uid://bp7hlnb7jfn3y" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_6k6j1"]
-[ext_resource type="PackedScene" uid="uid://b64c6mgg0wb4b" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
+[ext_resource type="PackedScene" uid="uid://bco37m4e6231h" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
 [ext_resource type="PackedScene" uid="uid://dp083k15ncrbc" path="res://scenes/roads.tscn" id="18_roads"]
 [ext_resource type="Script" uid="uid://ctvrqhr4nfi18" path="res://scripts/npc_spawner.gd" id="19_spawn"]
 [ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="20_truck"]
@@ -135,12 +135,8 @@ shape = SubResource("GroundShape")
 [node name="Tornado" parent="." unique_id=1767961767 instance=ExtResource("1_tornado")]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1980222075]
-<<<<<<< Updated upstream
 physics_interpolation_mode = 1
 transform = Transform3D(0, -0.35112345, 0.9363291, -1.4901161e-08, 0.9363292, 0.35112345, -1, 1.4901161e-08, 0, 160, 85, 0)
-=======
-transform = Transform3D(0, -0.3510781, 0.9362077, -1.4901161e-08, 0.93620825, 0.3510779, -1, 1.48992365e-08, 0, 160, 85, 0)
->>>>>>> Stashed changes
 top_level = true
 near = 1.0
 far = 8000.0

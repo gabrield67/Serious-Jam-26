@@ -50,7 +50,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.8678000101783996
+shader_parameter/AlphaTreshold = 0.7214737270481664
 
 [sub_resource type="Gradient" id="Gradient_8kx2p"]
 offsets = PackedFloat32Array(0.027777778, 0.3125, 0.45833334, 0.5538194, 0.84375)
@@ -82,10 +82,10 @@ shader_parameter/Base_noise2 = ExtResource("2_18jvk")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_7uv78")
-shader_parameter/Color_Intensity2 = 1.8695656
+shader_parameter/Color_Intensity2 = 2.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_r7rfx")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_cmyk8")
-shader_parameter/AlphaTreshold = 0.6065454391385952
+shader_parameter/AlphaTreshold = 0.8450000401375
 
 [sub_resource type="Gradient" id="Gradient_3wtuu"]
 offsets = PackedFloat32Array(0.010416667, 0.186186, 0.5538194)
@@ -120,7 +120,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_m22cq")
 shader_parameter/Color_Intensity2 = 2.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_1k1cj")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6opjf")
-shader_parameter/AlphaTreshold = 0.9601667331457138
+shader_parameter/AlphaTreshold = 0.578000027455
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ca8sl"]
 render_priority = 2
@@ -347,8 +347,8 @@ shader_parameter/Power = 0.82
 shader_parameter/Texture_Substract = SubResource("GradientTexture2D_dfiph")
 shader_parameter/Proximity_Fade = 0.3
 shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_mnqlx")
-shader_parameter/Transparency = 0.0
-shader_parameter/AlphaTreshold = 0.690713917016983
+shader_parameter/Transparency = 0.9150000434625
+shader_parameter/AlphaTreshold = 0.830000039425
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qhpw8"]
 size = Vector2(8, 8)
@@ -368,7 +368,7 @@ render_priority = 0
 shader = ExtResource("13_3hdrx")
 shader_parameter/ColorParameter = Color(0.92, 0, 0.33733347, 1)
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_hu56e")
-shader_parameter/Opacity = 0.19999975
+shader_parameter/Opacity = 0.46000002185
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xoqjk"]
 render_priority = -1
@@ -821,7 +821,6 @@ _data = {
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="SmTornadoExternalJ1" type="MeshInstance3D" parent="." unique_id=959239835]
-visible = false
 material_override = SubResource("ShaderMaterial_dlwqa")
 cast_shadow = 0
 mesh = ExtResource("3_nixsl")
@@ -836,7 +835,6 @@ skeleton = NodePath("../..")
 
 [node name="SmTornadoInnerJ2" type="MeshInstance3D" parent="." unique_id=1646457126]
 transform = Transform3D(1.25, 0, 0, 0, 1, 0, 0, 0, 1.25, 0, 0, 0)
-visible = false
 material_override = SubResource("ShaderMaterial_rdpqi")
 cast_shadow = 0
 mesh = ExtResource("4_tmvjb")
@@ -901,7 +899,7 @@ draw_pass_1 = SubResource("PlaneMesh_h1xv1")
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1464074892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85065, 0)
 light_color = Color(0.98, 0.18620001, 0.1994298, 1)
-light_energy = 0.0
+light_energy = 2.18
 omni_range = 6.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2119063184]
