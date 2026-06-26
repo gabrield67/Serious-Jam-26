@@ -50,7 +50,7 @@ shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_hhf3m")
 shader_parameter/Color_Intensity2 = 1.0
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_wytp4")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_5o63h")
-shader_parameter/AlphaTreshold = 0.578000027455
+shader_parameter/AlphaTreshold = 0.52400002489
 
 [sub_resource type="Gradient" id="Gradient_enp5q"]
 offsets = PackedFloat32Array(0, 0.106557, 0.188525, 0.303279)
@@ -82,10 +82,10 @@ shader_parameter/Base_noise2 = ExtResource("2_b8s1l")
 shader_parameter/Speed_XY2 = Vector2(-0.5, 1)
 shader_parameter/Scale_XY2 = Vector2(1, 0.7)
 shader_parameter/Gradient_Color_1D2 = SubResource("GradientTexture1D_em0ie")
-shader_parameter/Color_Intensity2 = 22.0
+shader_parameter/Color_Intensity2 = 12.819678
 shader_parameter/Texture_substract = SubResource("GradientTexture2D_b2fpe")
 shader_parameter/Texture_add = SubResource("GradientTexture2D_6s6ch")
-shader_parameter/AlphaTreshold = 0.9830000466925
+shader_parameter/AlphaTreshold = 0.75200003572
 
 [sub_resource type="Gradient" id="Gradient_yuhc4"]
 offsets = PackedFloat32Array(0.270492, 0.483607, 0.663934, 0.786885)
@@ -348,7 +348,7 @@ shader_parameter/Texture_Substract = SubResource("GradientTexture2D_tshi7")
 shader_parameter/Proximity_Fade = 0.3
 shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_1s36a")
 shader_parameter/Transparency = 1.0
-shader_parameter/AlphaTreshold = 0.134
+shader_parameter/AlphaTreshold = 0.17600000836
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_qhpw8"]
 size = Vector2(8, 8)
@@ -368,7 +368,7 @@ render_priority = 0
 shader = ExtResource("13_rgbsi")
 shader_parameter/ColorParameter = Color(5.0056e-06, 0.628939, 0.868947, 1)
 shader_parameter/Alpha_Texture = SubResource("GradientTexture2D_0hqps")
-shader_parameter/Opacity = 1.0
+shader_parameter/Opacity = 0.990000047025
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uc7l7"]
 render_priority = -1

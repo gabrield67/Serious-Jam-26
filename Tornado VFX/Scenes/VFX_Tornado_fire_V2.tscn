@@ -488,7 +488,7 @@ tracks/6/keys = {
 }
 tracks/7/type = "value"
 tracks/7/imported = false
-tracks/7/enabled = true
+tracks/7/enabled = false
 tracks/7/path = NodePath("ring4oniuon:emitting")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
@@ -524,7 +524,7 @@ tracks/9/keys = {
 }
 tracks/10/type = "value"
 tracks/10/imported = false
-tracks/10/enabled = true
+tracks/10/enabled = false
 tracks/10/path = NodePath("floorflash:material_override:shader_parameter/AlphaTreshold")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
@@ -536,7 +536,7 @@ tracks/10/keys = {
 }
 tracks/11/type = "value"
 tracks/11/imported = false
-tracks/11/enabled = true
+tracks/11/enabled = false
 tracks/11/path = NodePath("floorflash:material_override:shader_parameter/Transparency")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
@@ -548,7 +548,7 @@ tracks/11/keys = {
 }
 tracks/12/type = "value"
 tracks/12/imported = false
-tracks/12/enabled = true
+tracks/12/enabled = false
 tracks/12/path = NodePath("floorflash:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
@@ -702,7 +702,7 @@ tracks/6/keys = {
 }
 tracks/7/type = "value"
 tracks/7/imported = false
-tracks/7/enabled = true
+tracks/7/enabled = false
 tracks/7/path = NodePath("ring4oniuon:emitting")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
@@ -738,7 +738,7 @@ tracks/9/keys = {
 }
 tracks/10/type = "value"
 tracks/10/imported = false
-tracks/10/enabled = true
+tracks/10/enabled = false
 tracks/10/path = NodePath("floorflash:material_override:shader_parameter/AlphaTreshold")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
@@ -750,7 +750,7 @@ tracks/10/keys = {
 }
 tracks/11/type = "value"
 tracks/11/imported = false
-tracks/11/enabled = true
+tracks/11/enabled = false
 tracks/11/path = NodePath("floorflash:material_override:shader_parameter/Transparency")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
@@ -762,7 +762,7 @@ tracks/11/keys = {
 }
 tracks/12/type = "value"
 tracks/12/imported = false
-tracks/12/enabled = true
+tracks/12/enabled = false
 tracks/12/path = NodePath("floorflash:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true

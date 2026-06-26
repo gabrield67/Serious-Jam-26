@@ -116,6 +116,8 @@ var _carry_angle: float = 0.0
 var _carry_time: float = 0.0
 var _thrown: Array = []  # [{node, vel, life}]
 
+var _fire_ring: GPUParticles3D  # Fire style's "ring4oniuon" — emits while chewing a building
+
 func _ready() -> void:
 	add_to_group("tornado")
 	GameStats.start_run()  # reset + start the run's time and score
@@ -141,6 +143,30 @@ func _ready() -> void:
 	set_style(default_style)
 	_on_fujita_changed(_fujita.level(), _fujita.value)
 	_cur_scale = _target_scale
+	_setup_fire_ring()
+
+## Grab the Fire style's "ring4oniuon" particle ring so we can drive its emitting on building
+## contact. The looping VFX animation's "ring4oniuon:emitting" track is disabled in the scene
+## file (VFX_Tornado_fire_V2.tscn), so nothing fights this manual control.
+func _setup_fire_ring() -> void:
+	if _styles == null:
+		return
+	var fire := _styles.get_node_or_null(powerup_style)
+	if fire == null:
+		return
+	_fire_ring = fire.get_node_or_null("ring4oniuon") as GPUParticles3D
+	if _fire_ring:
+		_fire_ring.emitting = false
+	# Floorflash: its looping animation tracks (visible/transparency/threshold) are disabled
+	# in the scene file, so pin it steady-on at its "full flash" values. It still only shows
+	# while the Fire style is active, since it's a child of the (hidden-when-inactive) Fire node.
+	var floor := fire.get_node_or_null("floorflash") as MeshInstance3D
+	if floor:
+		floor.visible = true
+		if floor.material_override is ShaderMaterial:
+			var m := floor.material_override as ShaderMaterial
+			m.set_shader_parameter("Transparency", 1.0)
+			m.set_shader_parameter("AlphaTreshold", 0.134)
 
 ## Briefly powers up the tornado (Fire mode): fire VFX + faster movement & destruction.
 ## Kept for back-compat; delegates to the general transformation system.
@@ -224,6 +250,17 @@ func _physics_process(delta: float) -> void:
 			_end_transform()
 	if _slow_time > 0.0:
 		_slow_time -= delta
+
+	# Fire tornado: the ring effect emits only while we're chewing a building. (The node is
+	# hidden when fire isn't the active style, so no extra style gate is needed.)
+	if _fire_ring:
+		var want_ring := get_chew_target() != null
+		if want_ring != _fire_ring.emitting:
+			print("[ring4oniuon] emitting=", want_ring, " style=", _current_style,
+				" chew=", get_chew_target())
+			if want_ring:
+				_fire_ring.restart()
+			_fire_ring.emitting = want_ring
 
 	# Ease the tornado's visual size toward its Fujita target.
 	_cur_scale = _cur_scale.lerp(_target_scale, clampf(grow_lerp * delta, 0.0, 1.0))
