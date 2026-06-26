@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://t5bd3mv2ax74"]
+
+[ext_resource type="PackedScene" uid="uid://cxs20jbwi8s0w" path="res://scenes/destructibles/generated/House_5.tscn" id="1_b50d7"]
+[ext_resource type="PackedScene" uid="uid://bkch0qyuc2qds" path="res://scenes/destructibles/generated/Silo.tscn" id="2_axn20"]
+[ext_resource type="PackedScene" uid="uid://mraqnsrw41fx" path="res://scenes/destructibles/generated/Barn.tscn" id="3_bo0sr"]
+
+[node name="Farm" type="Node3D" unique_id=1048642260]
+transform = Transform3D(1.202004, 0.89732176, -3.9223178e-08, 0, -6.556708e-08, -1.5, -0.89732176, 1.202004, -5.254126e-08, 0, 0, 0)
+
+[node name="House_5" parent="." unique_id=52566959 instance=ExtResource("1_b50d7")]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 1.7763568e-15, -1.7763568e-15, 0, 0.99999994, 0, 0, 0)
+force_color = null
+color = null
+dust_vfx = null
+dust_density = null
+dust_oversize = null
+dust_particle_scale = null
+dust_softness = null
+dust_burst = null
+dust_lifetime_per_size = null
+dust_fade = null
+
+[node name="Silo" parent="." unique_id=655682900 instance=ExtResource("2_axn20")]
+transform = Transform3D(0.80133593, -0.5982145, 2.6148784e-08, 0.5982145, 0.80133593, 8.68388e-09, -2.6148786e-08, 8.68388e-09, 0.99999994, -10.030327, -18.34552, -4.0852876)
+force_color = null
+color = null
+dust_vfx = null
+dust_density = null
+dust_oversize = null
+dust_particle_scale = null
+dust_softness = null
+dust_burst = null
+dust_lifetime_per_size = null
+dust_fade = null
+
+[node name="Silo2" parent="." unique_id=457360119 instance=ExtResource("2_axn20")]
+transform = Transform3D(0.80133563, -0.5982143, 2.614878e-08, 0.5982143, 0.80133563, 8.683884e-09, -2.6148788e-08, 8.683877e-09, 0.99999964, -15.565155, -23.946213, -4.0852876)
+force_color = null
+color = null
+dust_vfx = null
+dust_density = null
+dust_oversize = null
+dust_particle_scale = null
+dust_softness = null
+dust_burst = null
+dust_lifetime_per_size = null
+dust_fade = null
+
+[node name="Barn" parent="." unique_id=1081449196 instance=ExtResource("3_bo0sr")]
+transform = Transform3D(-0.7511749, -0.6601029, 2.885402e-08, 0.6601029, -0.7511749, 7.654627e-08, -2.8854013e-08, 7.654627e-08, 0.9999999, -38.544807, -15.922852, 0.87499475)
+force_color = null
+color = null
+dust_vfx = null
+dust_density = null
+dust_oversize = null
+dust_particle_scale = null
+dust_softness = null
+dust_burst = null
+dust_lifetime_per_size = null
+dust_fade = null
+
+[node name="Barn2" parent="." unique_id=412573404 instance=ExtResource("3_bo0sr")]
+transform = Transform3D(-0.75517344, 0.6555243, -2.8653874e-08, -0.6555243, -0.75517344, 7.6721044e-08, 2.8653881e-08, 7.672104e-08, 0.99999946, -25.982727, 22.09784, 0.8749924)
+force_color = null
+color = null
+dust_vfx = null
+dust_density = null
+dust_oversize = null
+dust_particle_scale = null
+dust_softness = null
+dust_burst = null
+dust_lifetime_per_size = null
+dust_fade = null
