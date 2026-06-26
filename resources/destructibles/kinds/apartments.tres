@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://c8u6pk5pj0ut6"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_ghrwp"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_eqic2"]
+[ext_resource type="Resource" uid="uid://cd0bwqpgrr7u6" path="res://resources/destructibles/palettes/apartment_roof.tres" id="3_ghrwp"]
+[ext_resource type="Resource" uid="uid://cvlhoiuw2vsq8" path="res://resources/destructibles/palettes/apartment_walls.tres" id="4_eqic2"]
+[ext_resource type="Resource" uid="uid://cg7kirjg7aesh" path="res://resources/destructibles/palettes/apartment_windows.tres" id="4_uo1yw"]
+
+[resource]
+script = ExtResource("1_ghrwp")
+display_name = "Apartment"
+match_keywords = PackedStringArray("apartments")
+surface_palettes = Array[ExtResource("2_eqic2")]([ExtResource("3_ghrwp"), ExtResource("4_uo1yw"), ExtResource("4_eqic2")])

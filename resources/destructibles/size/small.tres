@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DestructibleData" format=3 uid="uid://dsmalldestr01"]
+
+[ext_resource type="Script" uid="uid://do1my2s3tt872" path="res://scripts/destructibles/destructible_data.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://b34gugsijkkk1" path="res://resources/debris/concrete.tres" id="2_debris"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Small"
+destroy_time = 0.5
+value = 2.0
+score = 25
+debris = ExtResource("2_debris")
+scale_mult = 0.7
+hit_shake = 0.15

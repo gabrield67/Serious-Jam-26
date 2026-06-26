@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://bfh0p6v36sqjv"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_tm03v"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_sb6kf"]
+[ext_resource type="Resource" uid="uid://ohv513xpg21h" path="res://resources/destructibles/palettes/gas_roof.tres" id="3_tm03v"]
+[ext_resource type="Resource" uid="uid://8wmyc5efq42s" path="res://resources/destructibles/palettes/gas_walls.tres" id="4_sb6kf"]
+
+[resource]
+script = ExtResource("1_tm03v")
+display_name = "Gas Station"
+match_keywords = PackedStringArray("gas")
+surface_palettes = Array[ExtResource("2_sb6kf")]([ExtResource("3_tm03v"), ExtResource("4_sb6kf")])

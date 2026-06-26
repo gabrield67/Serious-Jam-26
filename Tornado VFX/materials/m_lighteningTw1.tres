@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bs76fp2rj6g5n"]
+
+[ext_resource type="Shader" uid="uid://chq1wa1aadmsg" path="res://Tornado VFX/shaders/s_multi_disolver_atlas.gdshader" id="1_niart"]
+[ext_resource type="Texture2D" uid="uid://drdgbsy7pte46" path="res://Tornado VFX/textures/T_VFX_LighteningRand2.png" id="2_to00k"]
+
+[resource]
+render_priority = -1
+shader = ExtResource("1_niart")
+shader_parameter/texture_atlas = ExtResource("2_to00k")
+shader_parameter/atlas_dimensions = Vector2(2, 2)
+shader_parameter/Texture_Scale = Vector2(1, 1)
+shader_parameter/Color_parameter = Color(1, 1, 2.5, 1)

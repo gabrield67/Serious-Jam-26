@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://b304gm3jjkg3y"]
+
+[ext_resource type="Script" uid="uid://bbnxwm7xusf1g" path="res://scripts/tools/palette_test_spawner.gd" id="1_spawn"]
+[ext_resource type="Script" uid="uid://duwge4yjhqylc" path="res://scripts/tools/free_camera.gd" id="2_cam"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.55
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="GroundMat"]
+albedo_color = Color(0.31, 0.42, 0.26, 1)
+
+[sub_resource type="PlaneMesh" id="Ground"]
+size = Vector2(1200, 1200)
+
+[node name="PaletteTest" type="Node3D" unique_id=1875251460]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=108890241]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1315851903]
+transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 80, 0)
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=224009667]
+material_override = SubResource("GroundMat")
+mesh = SubResource("Ground")
+
+[node name="Spawner" type="Node3D" parent="." unique_id=1104644245]
+script = ExtResource("1_spawn")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1270479779]
+transform = Transform3D(1, 0, 0, 0, 0.96592, 0.25882, 0, -0.25882, 0.96592, 0, 30, 400)
+current = true
+far = 5000.0
+script = ExtResource("2_cam")

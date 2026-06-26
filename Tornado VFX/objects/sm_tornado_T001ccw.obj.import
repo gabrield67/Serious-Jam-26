@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://uj5606rxk36b"
+path="res://.godot/imported/sm_tornado_T001ccw.obj-28b5a93a9b8f72f79fa3f4f3569a34f8.mesh"
+
+[deps]
+
+files=["res://.godot/imported/sm_tornado_T001ccw.obj-28b5a93a9b8f72f79fa3f4f3569a34f8.mesh"]
+
+source_file="res://Tornado VFX/objects/sm_tornado_T001ccw.obj"
+dest_files=["res://.godot/imported/sm_tornado_T001ccw.obj-28b5a93a9b8f72f79fa3f4f3569a34f8.mesh", "res://.godot/imported/sm_tornado_T001ccw.obj-28b5a93a9b8f72f79fa3f4f3569a34f8.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

@@ -1,0 +1,192 @@
+[gd_scene format=3 uid="uid://cr0p5tv8126ou"]
+
+[ext_resource type="Script" uid="uid://vcjcdy2qpu5v" path="res://scripts/prototype/tornado_2d.gd" id="1_tornado"]
+[ext_resource type="Script" uid="uid://bfn1h6ehvak62" path="res://scripts/prototype/vortex_maw.gd" id="2_maw"]
+[ext_resource type="Script" uid="uid://dupr1eiwd36bg" path="res://scripts/prototype/consumable.gd" id="3_consumable"]
+[ext_resource type="Script" uid="uid://qe5rr3dbjlpf" path="res://scripts/prototype/fujita_label.gd" id="4_fujita"]
+[ext_resource type="Script" uid="uid://b5i1gnjbsfsyr" path="res://scripts/prototype/enemy_spawner.gd" id="5_spawner"]
+
+[sub_resource type="CircleShape2D" id="TornadoShape"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="MawShape"]
+radius = 55.0
+
+[sub_resource type="RectangleShape2D" id="PebbleShape"]
+size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="CrateShape"]
+size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="BlockShape"]
+size = Vector2(140, 140)
+
+[node name="Prototype" type="Node2D" unique_id=304743020]
+
+[node name="Background" type="ColorRect" parent="." unique_id=713223419]
+offset_left = -2000.0
+offset_top = -2000.0
+offset_right = 2000.0
+offset_bottom = 2000.0
+mouse_filter = 2
+color = Color(0.12, 0.13, 0.16, 1)
+
+[node name="Tornado" type="CharacterBody2D" parent="." unique_id=1244042852]
+z_index = 10
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_tornado")
+
+[node name="Visual" type="Polygon2D" parent="Tornado" unique_id=541916348]
+color = Color(0.85, 0.86, 0.9, 1)
+polygon = PackedVector2Array(26, 0, 18.4, 18.4, 0, 26, -18.4, 18.4, -26, 0, -18.4, -18.4, 0, -26, 18.4, -18.4)
+
+[node name="Collision" type="CollisionShape2D" parent="Tornado" unique_id=1763338777]
+shape = SubResource("TornadoShape")
+
+[node name="OrbitRoot" type="Node2D" parent="Tornado" unique_id=760962003]
+
+[node name="Maw" type="Area2D" parent="Tornado" unique_id=1684029333]
+collision_mask = 3
+script = ExtResource("2_maw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tornado/Maw" unique_id=1721044713]
+shape = SubResource("MawShape")
+
+[node name="Camera2D" type="Camera2D" parent="Tornado" unique_id=834404170]
+zoom = Vector2(0.65, 0.65)
+position_smoothing_enabled = true
+position_smoothing_speed = 4.0
+
+[node name="Consumables" type="Node2D" parent="." unique_id=1926732817]
+
+[node name="Pebble1" type="RigidBody2D" parent="Consumables" unique_id=463778872]
+position = Vector2(200, -150)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+consume_cost = 0.3
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Pebble1" unique_id=855510507]
+color = Color(0.7, 0.7, 0.72, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Pebble1" unique_id=2122004962]
+shape = SubResource("PebbleShape")
+
+[node name="Pebble2" type="RigidBody2D" parent="Consumables" unique_id=2113694851]
+position = Vector2(-260, 120)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+consume_cost = 0.3
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Pebble2" unique_id=94418026]
+color = Color(0.7, 0.7, 0.72, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Pebble2" unique_id=903721325]
+shape = SubResource("PebbleShape")
+
+[node name="Pebble3" type="RigidBody2D" parent="Consumables" unique_id=511044996]
+position = Vector2(340, 260)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+consume_cost = 0.3
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Pebble3" unique_id=329734238]
+color = Color(0.7, 0.7, 0.72, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Pebble3" unique_id=1956964254]
+shape = SubResource("PebbleShape")
+
+[node name="Crate1" type="RigidBody2D" parent="Consumables" unique_id=77454565]
+position = Vector2(450, -320)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+mass_value = 3.0
+consume_cost = 1.5
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Crate1" unique_id=973640872]
+color = Color(0.55, 0.36, 0.18, 1)
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Crate1" unique_id=2077612942]
+shape = SubResource("CrateShape")
+
+[node name="Crate2" type="RigidBody2D" parent="Consumables" unique_id=1441944217]
+position = Vector2(-560, 220)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+mass_value = 3.0
+consume_cost = 1.5
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Crate2" unique_id=832792271]
+color = Color(0.55, 0.36, 0.18, 1)
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Crate2" unique_id=221021507]
+shape = SubResource("CrateShape")
+
+[node name="Crate3" type="RigidBody2D" parent="Consumables" unique_id=985613579]
+position = Vector2(160, 560)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+mass_value = 3.0
+consume_cost = 1.5
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Crate3" unique_id=568263547]
+color = Color(0.55, 0.36, 0.18, 1)
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Crate3" unique_id=765581236]
+shape = SubResource("CrateShape")
+
+[node name="Block1" type="RigidBody2D" parent="Consumables" unique_id=269179236]
+position = Vector2(-420, -700)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+mass_value = 10.0
+consume_cost = 5.0
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Block1" unique_id=305407839]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(-70, -70, 70, -70, 70, 70, -70, 70)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Block1" unique_id=1258971689]
+shape = SubResource("BlockShape")
+
+[node name="Block2" type="RigidBody2D" parent="Consumables" unique_id=1156023327]
+position = Vector2(800, 420)
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource("3_consumable")
+mass_value = 10.0
+consume_cost = 5.0
+
+[node name="Visual" type="Polygon2D" parent="Consumables/Block2" unique_id=1339071946]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(-70, -70, 70, -70, 70, 70, -70, 70)
+
+[node name="Collision" type="CollisionShape2D" parent="Consumables/Block2" unique_id=1615077129]
+shape = SubResource("BlockShape")
+
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=855799830]
+script = ExtResource("5_spawner")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1766337097]
+
+[node name="FujitaLabel" type="Label" parent="HUD" unique_id=908140896]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 520.0
+offset_bottom = 130.0
+theme_override_font_sizes/font_size = 30
+text = "F0"
+script = ExtResource("4_fujita")

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://dpuw8ce660hm3"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_co2q5"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_l6a2q"]
+[ext_resource type="Resource" uid="uid://cfo5mvoyj0ip" path="res://resources/destructibles/palettes/skyscraper_roofs.tres" id="3_co2q5"]
+[ext_resource type="Resource" uid="uid://bvcb6ygll7flb" path="res://resources/destructibles/palettes/skyscraper_walls.tres" id="4_l6a2q"]
+
+[resource]
+script = ExtResource("1_co2q5")
+display_name = "Skyscraper"
+match_keywords = PackedStringArray("skyscraper")
+surface_palettes = Array[ExtResource("2_l6a2q")]([ExtResource("3_co2q5"), ExtResource("4_l6a2q")])

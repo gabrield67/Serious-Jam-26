@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://wtexamna831i"]
+
+[ext_resource type="PackedScene" uid="uid://cpowerup3d01" path="res://scenes/items/PowerUp.tscn" id="1_pcntt"]
+[ext_resource type="PackedScene" uid="uid://bfa3n8gndsl51" path="res://scenes/tornado.tscn" id="2_83nkw"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_76gn4"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="8_qjt3c"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="9_p4h1t"]
+[ext_resource type="Texture2D" uid="uid://dg205j81ea1qi" path="res://assets/UI/cursor/crosshair135.png" id="11_nat86"]
+[ext_resource type="Script" uid="uid://bjaystaecgmd0" path="res://scripts/ground_cursor.gd" id="12_70mwv"]
+[ext_resource type="PackedScene" uid="uid://dvs53f1dtcb3d" path="res://temp/test_colors.tscn" id="14_83nkw"]
+[ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="14_tvh26"]
+[ext_resource type="PackedScene" uid="uid://wli18lhlabm1" path="res://scenes/destructibles/generated/House_1.tscn" id="15_yftua"]
+[ext_resource type="PackedScene" uid="uid://e26nbphrt2ht" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_pcntt"]
+[ext_resource type="Script" uid="uid://bbcans6eh52nl" path="res://scripts/targeting/targeting_controller.gd" id="17_target"]
+[ext_resource type="Script" uid="uid://dohcgkohokg0x" path="res://scripts/targeting/target_panel.gd" id="18_panel"]
+[ext_resource type="PackedScene" uid="uid://cl7kv1uohxtnn" path="res://scenes/NPC/tank.tscn" id="19_tank"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.38, 0.45, 0.55, 1)
+sky_horizon_color = Color(0.7, 0.71, 0.72, 1)
+ground_bottom_color = Color(0.25, 0.27, 0.27, 1)
+ground_horizon_color = Color(0.7, 0.71, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.6
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.7, 0.71, 0.72, 1)
+fog_density = 0.0015
+
+[sub_resource type="BoxMesh" id="GroundMesh"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="StandardMaterial3D" id="GroundMat"]
+albedo_color = Color(0.31, 0.42, 0.26, 1)
+
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="Resource" id="Resource_p57ef"]
+script = ExtResource("9_p4h1t")
+
+[node name="Gym" type="Node3D" unique_id=553556477]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=808378729]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=310126205]
+transform = Transform3D(0.866025, -0.321394, 0.383022, 0, 0.766044, 0.642788, -0.5, -0.556671, 0.663414, 0, 50, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=398492749]
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1123203704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8514824, -7.8540154, 1.6035366)
+mesh = SubResource("GroundMesh")
+surface_material_override/0 = SubResource("GroundMat")
+
+[node name="Collision" type="CollisionShape3D" parent="Ground" unique_id=1669286392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("GroundShape")
+
+[node name="PowerUp" parent="." unique_id=1048475869 instance=ExtResource("1_pcntt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 97.28128)
+
+[node name="Tornado" parent="." unique_id=1767961767 instance=ExtResource("2_83nkw")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1400275087]
+physics_interpolation_mode = 1
+transform = Transform3D(-0.00047898293, -0.54755133, 0.836772, -5.9604645e-08, 0.8367721, 0.5475514, -0.99999994, 0.00026220083, -0.00040078163, 104.427, 71.513, 0)
+top_level = true
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=33419530]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("7_76gn4")
+
+[node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1417305512 node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(-0.00047902256, -0.54752314, 0.8367682, -5.9609576e-08, 0.83672905, 0.5475489, -1.0000826, 0.00026218736, -0.00040077983, 104.427, 71.513, 0)
+top_level = true
+script = ExtResource("8_qjt3c")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("../Tornado")
+look_at_mode = 2
+look_at_target = NodePath("../Tornado")
+tween_resource = SubResource("Resource_p57ef")
+follow_offset = Vector3(104.427, 71.513, 0)
+follow_damping = true
+follow_damping_value = Vector3(0.2, 0.2, 0.2)
+look_at_offset = Vector3(0, 3.18, 0.05)
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+align_rotation_with_view = Callable()
+
+[node name="GroundCursor" type="Sprite3D" parent="." unique_id=548446116]
+pixel_size = 0.025
+texture_filter = 5
+texture = ExtResource("11_nat86")
+script = ExtResource("12_70mwv")
+spin_speed = 20.0
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=924066934]
+
+[node name="FujitaLabel" type="Label" parent="HUD" unique_id=676770397]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 620.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+text = "Health"
+script = ExtResource("14_tvh26")
+
+[node name="TargetPanel" type="Control" parent="HUD" unique_id=1698820250]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("18_panel")
+
+[node name="TargetingController" type="Node" parent="." unique_id=178341096]
+script = ExtResource("17_target")
+tornado_path = NodePath("../Tornado")
+panel_path = NodePath("../HUD/TargetPanel")
+
+[node name="Map Objects" parent="." unique_id=1366542596 instance=ExtResource("14_83nkw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126.187256, 0, 0)
+
+[node name="House_1" parent="." unique_id=855423907 instance=ExtResource("15_yftua")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -43.257477, 2.8368037, 37.67003)
+
+[node name="Tree_1" parent="." unique_id=371938878 instance=ExtResource("16_pcntt")]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 53.684258, 1.6436553, 92.04619)
+
+[node name="Tank" parent="." unique_id=852211853 instance=ExtResource("19_tank")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 60, 0, 40)
+enemy_name = "Tank"
+max_health = 40.0

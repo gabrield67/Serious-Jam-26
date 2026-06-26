@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://claserbeam01"]
+
+[ext_resource type="Script" uid="uid://uvvw7iiug6pd" path="res://scripts/enemy/laser_beam.gd" id="1_laser"]
+
+[sub_resource type="CylinderMesh" id="LaserMesh"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 1.0
+radial_segments = 6
+rings = 0
+
+[sub_resource type="StandardMaterial3D" id="LaserMat"]
+shading_mode = 0
+albedo_color = Color(0.4, 0.95, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.85, 1, 1)
+emission_energy_multiplier = 6.0
+
+[node name="LaserBeam" type="Node3D"]
+script = ExtResource("1_laser")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("LaserMesh")
+material_override = SubResource("LaserMat")

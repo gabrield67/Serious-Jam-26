@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://c6mkv8ngg60co"]
+
+[ext_resource type="PackedScene" uid="uid://dh880n4g4pp6i" path="res://Tornado VFX/Scenes/VFX_Tornado_green.tscn" id="1_i7g77"]
+[ext_resource type="Texture2D" uid="uid://cjctsb7v3b26y" path="res://Screens/CloudShader.png" id="2_hwk8t"]
+[ext_resource type="Script" uid="uid://c6lbp2dvuyi00" path="res://Screens/homescreen_cam.gd" id="3_hwk8t"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="4_5vlck"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_t68qe"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_51wl8"]
+[ext_resource type="Script" uid="uid://ioirwmfgd4yu" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_tween_director.gd" id="6_5vlck"]
+[ext_resource type="Script" uid="uid://2au3qse3jc5t" path="res://addons/phantom_camera/scripts/resources/tween_director_resource.gd" id="7_51wl8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yf5fn"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.24345344, 0.4794368, 0.35263485, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g4v7s"]
+material = SubResource("StandardMaterial3D_yf5fn")
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_d0u6y"]
+ground_color = Color(0.09019608, 0.64705884, 0.27450982, 1)
+night_sky = ExtResource("2_hwk8t")
+
+[sub_resource type="Sky" id="Sky_yf5fn"]
+sky_material = SubResource("PhysicalSkyMaterial_d0u6y")
+
+[sub_resource type="Environment" id="Environment_g4v7s"]
+background_mode = 2
+background_energy_multiplier = 1.55
+sky = SubResource("Sky_yf5fn")
+
+[sub_resource type="Resource" id="Resource_25lcn"]
+script = ExtResource("5_51wl8")
+
+[sub_resource type="Resource" id="Resource_t68qe"]
+script = ExtResource("5_51wl8")
+
+[sub_resource type="Resource" id="Resource_5vlck"]
+script = ExtResource("5_51wl8")
+duration = 4.0
+metadata/_custom_type_script = "uid://8umksf8e80fw"
+
+[sub_resource type="Resource" id="Resource_51wl8"]
+script = ExtResource("7_51wl8")
+tween_resource = SubResource("Resource_5vlck")
+from_phantom_cameras = Array[NodePath]([NodePath("../PhantomCamera3D2")])
+to_phantom_cameras = Array[NodePath]([NodePath("../PhantomCamera3D")])
+metadata/_custom_type_script = "uid://2au3qse3jc5t"
+
+[node name="Background_Home_Menu" type="Node3D" unique_id=1961479]
+
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=60975308]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 222.4054)
+visible = false
+mesh = SubResource("BoxMesh_g4v7s")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ground" unique_id=1760472729]
+
+[node name="VFX_Tornado_Green" parent="." unique_id=1683199678 instance=ExtResource("1_i7g77")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1936379104]
+environment = SubResource("Environment_g4v7s")
+
+[node name="RTSController" type="Node3D" parent="." unique_id=1590277223]
+visible = false
+
+[node name="Elevation" type="Node3D" parent="RTSController" unique_id=2097204777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.519226, 0)
+visible = false
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1789191414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7423096, 0)
+top_level = true
+visible = false
+script = ExtResource("3_hwk8t")
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D" unique_id=1961651822]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("4_5vlck")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera3D" type="Node3D" parent="." unique_id=2035702623]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0352783, 0)
+script = ExtResource("4_t68qe")
+follow_mode = 6
+tween_resource = SubResource("Resource_25lcn")
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="PhantomCamera3D2" type="Node3D" parent="." unique_id=122293797 node_paths=PackedStringArray("follow_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7423096, 0)
+top_level = true
+script = ExtResource("4_t68qe")
+follow_mode = 3
+follow_target = NodePath("../VFX_Tornado_Green")
+tween_resource = SubResource("Resource_t68qe")
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="PhantomCameraTweenDirector" type="Node" parent="." unique_id=2141445958]
+script = ExtResource("6_5vlck")
+tween_director = Array[ExtResource("7_51wl8")]([SubResource("Resource_51wl8")])
+metadata/_custom_type_script = "uid://ioirwmfgd4yu"

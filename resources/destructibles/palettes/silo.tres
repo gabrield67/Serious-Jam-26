@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DestructiblePalette" format=3 uid="uid://c2q7l5lj4toea"]
+
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="1_jaqhv"]
+
+[resource]
+script = ExtResource("1_jaqhv")
+colors = PackedColorArray(0.74174887, 0.6790878, 0.51719826, 1, 0.6099765, 0.6153841, 0.63020426, 1, 0.27106902, 0.232907, 0.22971457, 1)

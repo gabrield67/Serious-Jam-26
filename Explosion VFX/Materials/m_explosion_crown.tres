@@ -1,0 +1,50 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b48q5amekovax"]
+
+[ext_resource type="Shader" uid="uid://boye4vnekc52b" path="res://Explosion VFX/Shaders/s_master_explosion_advanced_np.tres" id="1_iydnf"]
+[ext_resource type="Texture2D" uid="uid://nyyc5vq2e8a8" path="res://Explosion VFX/Textures/T_VFX_Noise_44xainv.png" id="2_0orgx"]
+[ext_resource type="Texture2D" uid="uid://gdgklxi1glip" path="res://Explosion VFX/Textures/T_PerlinNoise_Tiled.png" id="3_038n5"]
+[ext_resource type="Texture2D" uid="uid://cxsmx407d722t" path="res://Explosion VFX/Textures/T_Noise_02.PNG" id="4_emvbp"]
+
+[sub_resource type="Gradient" id="Gradient_7h6vq"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.0902256, 0.172932, 0.323308, 0.718045, 0.819549, 1)
+colors = PackedColorArray(3, 3, 3, 1, 5, 0.3, 0, 1, 2, 0.05, 0, 1, 2, 0, 0, 1, 0.04, 0.005, 0, 1, 3, 3, 3, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dn72f"]
+gradient = SubResource("Gradient_7h6vq")
+use_hdr = true
+
+[sub_resource type="Gradient" id="Gradient_jygp0"]
+offsets = PackedFloat32Array(0.385714, 0.622857)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5h751"]
+gradient = SubResource("Gradient_jygp0")
+
+[sub_resource type="Gradient" id="Gradient_t482x"]
+offsets = PackedFloat32Array(0.308271, 0.781955)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8x2sw"]
+gradient = SubResource("Gradient_t482x")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(1, 1)
+repeat = 2
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_iydnf")
+shader_parameter/normal_Scale = 1.0
+shader_parameter/Displacement_Speed = Vector2(0.2, 0.2)
+shader_parameter/Dissplacement_Scale = Vector2(3, 4)
+shader_parameter/Dissplacement_texture = ExtResource("3_038n5")
+shader_parameter/Gradient_offset = Vector2(0, 0.395)
+shader_parameter/Gradient_2D_Mask = SubResource("GradientTexture2D_8x2sw")
+shader_parameter/Emission_Noise_Speed = Vector2(0.1, 0.2)
+shader_parameter/Noise_color_scale = Vector2(1, 1)
+shader_parameter/Noise_Color_2 = ExtResource("4_emvbp")
+shader_parameter/Explosion_Color_1D = SubResource("GradientTexture1D_dn72f")
+shader_parameter/Dissapear_Value = 0.0
+shader_parameter/Dissapear_scale = Vector2(1, 1)
+shader_parameter/Alpha_Speed = Vector2(0, 0.2)
+shader_parameter/Disapear_Noise = ExtResource("2_0orgx")
+shader_parameter/Gradient_1D = SubResource("GradientTexture1D_5h751")
+shader_parameter/ProximityFade = 0.5

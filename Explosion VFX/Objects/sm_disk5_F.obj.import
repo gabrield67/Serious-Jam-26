@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dhqyycxvyjnn5"
+path="res://.godot/imported/sm_disk5_F.obj-4144d39d1d0cd8ee68c31db46c5f651d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/sm_disk5_F.obj-4144d39d1d0cd8ee68c31db46c5f651d.mesh"]
+
+source_file="res://Explosion VFX/Objects/sm_disk5_F.obj"
+dest_files=["res://.godot/imported/sm_disk5_F.obj-4144d39d1d0cd8ee68c31db46c5f651d.mesh", "res://.godot/imported/sm_disk5_F.obj-4144d39d1d0cd8ee68c31db46c5f651d.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

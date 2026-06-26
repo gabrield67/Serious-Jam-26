@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://d5isemekjc5j"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_61gdv"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_qgre1"]
+[ext_resource type="Resource" uid="uid://c2q7l5lj4toea" path="res://resources/destructibles/palettes/silo.tres" id="3_toomg"]
+
+[resource]
+script = ExtResource("1_61gdv")
+display_name = "Silo"
+match_keywords = PackedStringArray("silo")
+surface_palettes = Array[ExtResource("2_qgre1")]([ExtResource("3_toomg")])

@@ -1,0 +1,185 @@
+[gd_scene format=3 uid="uid://i6mnh1gtammo"]
+
+[ext_resource type="Shader" uid="uid://br2ves1s6ftgj" path="res://trialshader_tornado.tres" id="1_7hrl7"]
+[ext_resource type="Texture2D" uid="uid://dvoy51268r52n" path="res://Tornado VFX/textures/T_VFX_WindNoise1.png" id="2_42mmd"]
+[ext_resource type="ArrayMesh" uid="uid://c5fj60cv6ua0" path="res://Tornado VFX/objects/sm_tornado.obj" id="3_ma3ss"]
+[ext_resource type="Shader" uid="uid://c7fvm1yn4y8wj" path="res://s_basic_dissolver.tres" id="4_n26w8"]
+[ext_resource type="Texture2D" uid="uid://djs8yi1ojgrcm" path="res://Tornado VFX/textures/T_FirePanningCyl45.png" id="5_kjx5e"]
+[ext_resource type="ArrayMesh" uid="uid://c0fclvp0w46p1" path="res://Tornado VFX/objects/sm_waves_tornado.obj" id="6_ss4vt"]
+[ext_resource type="PackedScene" uid="uid://0huts4q323cb" path="res://Tornado VFX/Scenes/vfx_tornado_fire.tscn" id="7_ss4vt"]
+[ext_resource type="PackedScene" uid="uid://dh880n4g4pp6i" path="res://Tornado VFX/Scenes/VFX_Tornado_green.tscn" id="8_wgr3a"]
+[ext_resource type="PackedScene" uid="uid://6c7p2in03m27" path="res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn" id="9_wgr3a"]
+[ext_resource type="PackedScene" uid="uid://cgcbeeembdk2a" path="res://Tornado VFX/Scenes/VFX_Tornado_gray_cataclysm.tscn" id="10_7wl38"]
+[ext_resource type="PackedScene" uid="uid://bvwvdoox5k1j6" path="res://Tornado VFX/Scenes/VFX_Tornado_blue_storm.tscn" id="11_o7y82"]
+[ext_resource type="PackedScene" uid="uid://cjhlu0c84w86v" path="res://Tornado VFX/Scenes/VFX_Tornado_sand_storm.tscn" id="12_3hch5"]
+[ext_resource type="PackedScene" uid="uid://bajwyvxob1tcf" path="res://Tornado VFX/Scenes/VFX_Tornado_black.tscn" id="13_l11cn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gngh"]
+albedo_color = Color(0.1764706, 0.54509807, 0.37254903, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g4v7s"]
+material = SubResource("StandardMaterial3D_3gngh")
+
+[sub_resource type="Gradient" id="Gradient_n26w8"]
+offsets = PackedFloat32Array(0, 0.16377649, 0.4894027, 0.5799615, 0.7957611)
+colors = PackedColorArray(0, 0, 0, 0, 0.5162, 0.55129, 0.58, 1, 0.304, 0.6593001, 0.95, 0.8666667, 0.96, 0.81024003, 0.21120003, 0.67058825, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_57qmd"]
+gradient = SubResource("Gradient_n26w8")
+use_hdr = true
+
+[sub_resource type="Gradient" id="Gradient_kjx5e"]
+offsets = PackedFloat32Array(0, 0.094412334, 0.90751445, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yf5fn"]
+gradient = SubResource("Gradient_kjx5e")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4v7s"]
+render_priority = 0
+shader = ExtResource("1_7hrl7")
+shader_parameter/Speed_XY = Vector2(-1.2, 2)
+shader_parameter/Base_Texture = ExtResource("2_42mmd")
+shader_parameter/Substraction_Texture = SubResource("GradientTexture2D_yf5fn")
+shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_57qmd")
+shader_parameter/Opacity = 1.0
+
+[sub_resource type="Animation" id="Animation_7hrl7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmTornado:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ss4vt"]
+resource_name = "Spinning_Loop"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmTornado:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -6.2831855, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wgr3a"]
+_data = {
+&"RESET": SubResource("Animation_7hrl7"),
+&"Spinning_Loop": SubResource("Animation_ss4vt")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yf5fn"]
+render_priority = 0
+shader = ExtResource("4_n26w8")
+shader_parameter/Base_Wave_Texture = ExtResource("5_kjx5e")
+
+[sub_resource type="Curve" id="Curve_jy6uw"]
+_data = [Vector2(0, 0.264), 0.0, -0.11080742, 0, 0, Vector2(1, 0.9319999), 1.8374691, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_puwmg"]
+curve = SubResource("Curve_jy6uw")
+
+[sub_resource type="Gradient" id="Gradient_wgr3a"]
+offsets = PackedFloat32Array(0.002020202, 0.2969697, 0.5373737, 1)
+colors = PackedColorArray(0.072000004, 0.110399984, 0.12, 1, 0.25416622, 0.51210076, 0.7590464, 1, 1, 0.95, 0, 0.69411767, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2xbav"]
+gradient = SubResource("Gradient_wgr3a")
+
+[sub_resource type="Curve" id="Curve_l5vbh"]
+_data = [Vector2(0, 0.022222161), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_iiik4"]
+curve = SubResource("Curve_l5vbh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4v7s"]
+particle_flag_rotate_y = true
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(1, 1, 0)
+spread = 0.0
+initial_velocity_max = 3.0
+angular_velocity_min = 349.99997
+angular_velocity_max = 499.99997
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_iiik4")
+color = Color(1.5720325, 1.5720325, 1.5720325, 1)
+color_ramp = SubResource("GradientTexture1D_2xbav")
+alpha_curve = SubResource("CurveTexture_puwmg")
+
+[node name="Map" type="Node3D" unique_id=1973855347]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1706594464]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, -1.2878113, -0.2598505, 0.26355553)
+mesh = SubResource("BoxMesh_g4v7s")
+
+[node name="VFX_Tornado" type="Node3D" parent="." unique_id=325399328]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.367174, 2.5994034, -0.244977)
+
+[node name="SmTornado" type="MeshInstance3D" parent="VFX_Tornado" unique_id=477255704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.80225086, 0, 0)
+material_override = SubResource("ShaderMaterial_g4v7s")
+cast_shadow = 0
+mesh = ExtResource("3_ma3ss")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VFX_Tornado" unique_id=1855462092]
+libraries/ = SubResource("AnimationLibrary_wgr3a")
+autoplay = &"Spinning_Loop"
+
+[node name="Base_Waves" type="GPUParticles3D" parent="VFX_Tornado" unique_id=1413730234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35207272, -1.4812961, 0.38569164)
+material_override = SubResource("ShaderMaterial_yf5fn")
+cast_shadow = 0
+lifetime = 0.5
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_g4v7s")
+draw_pass_1 = ExtResource("6_ss4vt")
+
+[node name="Base_Waves2" type="GPUParticles3D" parent="VFX_Tornado" unique_id=1421111639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26045036, 9.12653, 0.6849623)
+material_override = SubResource("ShaderMaterial_yf5fn")
+cast_shadow = 0
+lifetime = 0.5
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_g4v7s")
+draw_pass_1 = ExtResource("6_ss4vt")
+
+[node name="VFX_Tornado_Fire" parent="." unique_id=1230675119 instance=ExtResource("7_ss4vt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26.55701)
+
+[node name="VFX_Tornado_CursedGreen" parent="." unique_id=1683199678 instance=ExtResource("8_wgr3a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3695669, 0, -0.52633876)
+
+[node name="VFX_Tornado_Fire_V2" parent="." unique_id=1185071900 instance=ExtResource("9_wgr3a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.03902, 0, -30.851368)
+
+[node name="VFX_Tornado_GrayCataclysm" parent="." unique_id=1108648792 instance=ExtResource("10_7wl38")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.160381, -0.00071525574, 12.521221)
+
+[node name="VFX_Tornado_BlueStorm" parent="." unique_id=1420247605 instance=ExtResource("11_o7y82")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.941261, -9.536743e-07, 27.633818)
+
+[node name="VFX_Tornado_SandStorm" parent="." unique_id=1270647973 instance=ExtResource("12_3hch5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.349571, 0, 29.421953)
+
+[node name="VFX_Tornado_BlackChaos" parent="." unique_id=509705677 instance=ExtResource("13_l11cn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.111477, 0, 30.838236)

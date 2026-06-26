@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DestructibleKind" format=3 uid="uid://b20272o4h72h0"]
+
+[ext_resource type="Script" uid="uid://bn6kfychbibcq" path="res://scripts/destructibles/destructible_kind.gd" id="1_c47np"]
+[ext_resource type="Script" uid="uid://cw5pjv3123cgl" path="res://scripts/destructibles/destructible_palette.gd" id="2_7aygs"]
+[ext_resource type="Resource" uid="uid://dochbugla27w0" path="res://resources/destructibles/palettes/foliage_leaves.tres" id="3_c47np"]
+[ext_resource type="Resource" uid="uid://dr1eegddgy761" path="res://resources/destructibles/palettes/foliage_trunk.tres" id="4_7aygs"]
+
+[resource]
+script = ExtResource("1_c47np")
+display_name = "Foliage"
+match_keywords = PackedStringArray("tree", "bush")
+surface_palettes = Array[ExtResource("2_7aygs")]([ExtResource("3_c47np"), ExtResource("4_7aygs")])
