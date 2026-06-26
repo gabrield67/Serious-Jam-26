@@ -64,6 +64,12 @@ class_name Destructible
 @export var mark_size_mult: float = 2.2
 ## Opacity at the mark's center (it fades to transparent at the edges).
 @export var mark_opacity: float = 0.8
+## Random per-mark color jitter added to each RGB channel (0 = uniform color).
+@export var mark_color_variation: float = 0.03
+## Random per-mark darkening — each mark is up to this fraction darker (0 = none).
+@export var mark_darkness_variation: float = 0.35
+## Random per-mark size jitter as a fraction of the size (0 = uniform).
+@export var mark_size_variation: float = 0.15
 
 signal consumed(value: float)
 
@@ -269,7 +275,7 @@ static func _mark_texture() -> Texture2D:
 func _spawn_ground_mark() -> void:
 	if not leave_ground_mark or _is_foliage():
 		return
-	var r := get_avoid_radius() * mark_size_mult
+	var r := get_avoid_radius() * mark_size_mult * (1.0 + randf_range(-mark_size_variation, mark_size_variation))
 	if r <= 0.01:
 		return
 	var mi := MeshInstance3D.new()
@@ -280,7 +286,15 @@ func _spawn_ground_mark() -> void:
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	mat.albedo_texture = _mark_texture()
-	mat.albedo_color = Color(mark_color.r, mark_color.g, mark_color.b, mark_opacity)
+	# Slight per-mark variation so a destroyed block doesn't read as identical stamps:
+	# a random darkening plus a small color jitter, and a touch of opacity wobble.
+	var bright := 1.0 - randf() * mark_darkness_variation
+	var cv := mark_color_variation
+	mat.albedo_color = Color(
+		clampf(mark_color.r * bright + randf_range(-cv, cv), 0.0, 1.0),
+		clampf(mark_color.g * bright + randf_range(-cv, cv), 0.0, 1.0),
+		clampf(mark_color.b * bright + randf_range(-cv, cv), 0.0, 1.0),
+		clampf(mark_opacity * randf_range(0.85, 1.0), 0.0, 1.0))
 	mi.material_override = mat
 	get_tree().current_scene.add_child(mi)
 	# Center on the model's footprint, just above the ground. A small random lift avoids
