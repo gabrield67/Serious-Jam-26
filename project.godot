@@ -23,6 +23,7 @@ GameStats="*res://scripts/managers/game_stats.gd"
 EnemyDamage="*res://scripts/enemy_damage.gd"
 PauseMenu="*res://Screens/PauseScreen.tscn"
 PowerUpSpawner="*res://scripts/power_up_spawner.gd"
+GameStatsHUD="*res://Screens/HUD/GameStatsHUD.tscn"
 
 [display]
 

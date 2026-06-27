@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://c7c1wnroekeko"]
+
+[ext_resource type="Script" uid="uid://1vienfhn1duv" path="res://scripts/ui/health_orb.gd" id="1_orb"]
+[ext_resource type="FontFile" uid="uid://uqctrxieyoo7" path="res://Screens/Font/28 Days Later.ttf" id="2_font"]
+
+[node name="HealthOrb" type="Control" unique_id=711938599]
+custom_minimum_size = Vector2(170, 170)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 170.0
+offset_bottom = 170.0
+script = ExtResource("1_orb")
+
+[node name="Bar" type="TextureProgressBar" parent="." unique_id=42308332]
+layout_mode = 0
+scale = Vector2(0.262, 0.262)
+value = 100.0
+fill_mode = 3
+
+[node name="Container" type="TextureRect" parent="." unique_id=584693482]
+layout_mode = 0
+scale = Vector2(0.262, 0.262)
+
+[node name="FLabel" type="Label" parent="." unique_id=555524804]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.0
+offset_top = -49.0
+offset_right = 51.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 60
+text = "F1"
+horizontal_alignment = 1
+vertical_alignment = 1

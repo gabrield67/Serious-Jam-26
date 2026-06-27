@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://bqw4vmw2bx7d4"]
+
+[ext_resource type="Script" uid="uid://1fogmn8r6k6y" path="res://scripts/ui/debris_slots.gd" id="1_slots"]
+[ext_resource type="Texture2D" uid="uid://ch8qudgk3c21j" path="res://Screens/HUD/empty slots.png" id="2_frame"]
+[ext_resource type="Texture2D" uid="uid://tnh3kcidupkd" path="res://Screens/HUD/individual slot.png" id="3_slot"]
+[ext_resource type="FontFile" uid="uid://uqctrxieyoo7" path="res://Screens/Font/28 Days Later.ttf" id="4_font"]
+
+[sub_resource type="AtlasTexture" id="SlotTex"]
+atlas = ExtResource("3_slot")
+region = Rect2(625, 252.47215, 115, 304.2514)
+
+[node name="DebrisSlots" type="Control" unique_id=519112834]
+custom_minimum_size = Vector2(655, 170)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 655.0
+offset_bottom = 170.0
+mouse_filter = 2
+script = ExtResource("1_slots")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 119.0
+offset_top = 24.0
+offset_right = 593.0
+offset_bottom = 56.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "DEBRIS SLOTS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slots" type="TextureRect" parent="." unique_id=415340211]
+layout_mode = 0
+scale = Vector2(0.262, 0.262)
+mouse_filter = 2
+texture = ExtResource("2_frame")
+
+[node name="SlotRow" type="HBoxContainer" parent="Slots" unique_id=1174024737]
+layout_mode = 0
+offset_left = 599.2367
+offset_top = 255.7252
+offset_right = 2189.6172
+offset_bottom = 555.7252
+mouse_filter = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Slot0" type="TextureRect" parent="Slots/SlotRow" unique_id=1279628495]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot1" type="TextureRect" parent="Slots/SlotRow" unique_id=840535564]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot2" type="TextureRect" parent="Slots/SlotRow" unique_id=328531338]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot3" type="TextureRect" parent="Slots/SlotRow" unique_id=1953216750]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot4" type="TextureRect" parent="Slots/SlotRow" unique_id=1165383141]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot5" type="TextureRect" parent="Slots/SlotRow" unique_id=1093521634]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot6" type="TextureRect" parent="Slots/SlotRow" unique_id=1858552681]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot7" type="TextureRect" parent="Slots/SlotRow" unique_id=1229684463]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot8" type="TextureRect" parent="Slots/SlotRow" unique_id=2143207112]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot9" type="TextureRect" parent="Slots/SlotRow" unique_id=767571663]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot10" type="TextureRect" parent="Slots/SlotRow" unique_id=1034301993]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot11" type="TextureRect" parent="Slots/SlotRow" unique_id=493223519]
+custom_minimum_size = Vector2(115, 300)
+layout_mode = 2
+texture = SubResource("SlotTex")
+expand_mode = 1
+stretch_mode = 5
