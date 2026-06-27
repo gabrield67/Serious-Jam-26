@@ -18,6 +18,7 @@ radius = 4.0
 transform = Transform3D(13, 0, 0, 0, 13, 0, 0, 0, 13, 0, 0, 0)
 script = ExtResource("1_2nlrq")
 powerup_speed_mult = 1.5
+fire_ring_y_scale = 1.2
 lightning_origin_height = 5.0
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=1547123497]

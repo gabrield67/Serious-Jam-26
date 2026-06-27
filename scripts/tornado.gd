@@ -19,6 +19,14 @@ var debug_speed_mult: float = 1.0
 ## Maw destroy-speed multiplier while powered up (Fire mode = more building damage).
 @export var powerup_chew_mult: float = 3.0
 
+@export_group("Fire ring")
+## Radius of the fire contact ring (ring4oniuon)
+@export var fire_ring_radius: float = 0.6
+## Vertical size of the fire contact ring (ring4oniuon). 1.5 = original height.
+@export var fire_ring_y_scale: float = 1.5
+## Size of the fire tornado's floorflash on the ground. 1 = original, <1 = smaller.
+@export var fire_floorflash_scale: float = 0.6
+
 @export_group("Blue / lightning")
 ## Style name (child under "Styles") for the blue/electric tornado.
 @export var blue_style: String = "Blue"
@@ -156,17 +164,29 @@ func _setup_fire_ring() -> void:
 		return
 	_fire_ring = fire.get_node_or_null("ring4oniuon") as GPUParticles3D
 	if _fire_ring:
+
+		_fire_ring.local_coords = true
+
+		_fire_ring.scale = Vector3(fire_ring_radius, fire_ring_y_scale, fire_ring_radius)
 		_fire_ring.emitting = false
-	# Floorflash: its looping animation tracks (visible/transparency/threshold) are disabled
-	# in the scene file, so pin it steady-on at its "full flash" values. It still only shows
-	# while the Fire style is active, since it's a child of the (hidden-when-inactive) Fire node.
+
 	var floor := fire.get_node_or_null("floorflash") as MeshInstance3D
 	if floor:
 		floor.visible = true
+		floor.scale = Vector3(fire_floorflash_scale, 1.0, fire_floorflash_scale)
 		if floor.material_override is ShaderMaterial:
 			var m := floor.material_override as ShaderMaterial
 			m.set_shader_parameter("Transparency", 1.0)
 			m.set_shader_parameter("AlphaTreshold", 0.134)
+
+	# floor_mark2 ground particles read as too busy — disable them on both the fire and blue
+	# styles (no animation track drives floor_mark2:visible, so this stays hidden).
+	for s in [fire, _styles.get_node_or_null(blue_style)]:
+		if s:
+			var fm := s.get_node_or_null("floor_mark2") as GPUParticles3D
+			if fm:
+				fm.emitting = false
+				fm.visible = false
 
 ## Briefly powers up the tornado (Fire mode): fire VFX + faster movement & destruction.
 ## Kept for back-compat; delegates to the general transformation system.
@@ -251,16 +271,10 @@ func _physics_process(delta: float) -> void:
 	if _slow_time > 0.0:
 		_slow_time -= delta
 
-	# Fire tornado: the ring effect emits only while we're chewing a building. (The node is
-	# hidden when fire isn't the active style, so no extra style gate is needed.)
+	# Fire tornado: the ring emits only while we're chewing a building. (The node is hidden
+	# when fire isn't the active style, so checking the chew target is enough.)
 	if _fire_ring:
-		var want_ring := get_chew_target() != null
-		if want_ring != _fire_ring.emitting:
-			print("[ring4oniuon] emitting=", want_ring, " style=", _current_style,
-				" chew=", get_chew_target())
-			if want_ring:
-				_fire_ring.restart()
-			_fire_ring.emitting = want_ring
+		_fire_ring.emitting = _current_style == powerup_style and get_chew_target() != null
 
 	# Ease the tornado's visual size toward its Fujita target.
 	_cur_scale = _cur_scale.lerp(_target_scale, clampf(grow_lerp * delta, 0.0, 1.0))

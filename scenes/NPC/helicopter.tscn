@@ -125,7 +125,7 @@ threat_cost = 1.0
 spawn_min_level = 0
 spawn_weight = 5.0
 death_vfx = ExtResource("3_mini2")
-death_vfx_scale = 16.0
+death_vfx_scale = 22.0
 
 [node name="Rotor_002" type="Node3D" parent="." unique_id=1214438470]
 transform = Transform3D(0.061370436, 0, 0, 0, 0.061370436, -2.2216037e-07, 0, 2.2216037e-07, 0.061370436, 0, 0.17457676, 0.11801607)
