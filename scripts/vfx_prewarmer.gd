@@ -12,6 +12,10 @@ const EFFECTS := [
 	preload("res://Explosion VFX/Scenes/VFX_mini_explosion_1.tscn"),
 	preload("res://Explosion VFX/Scenes/VFX_mini_explosion_2.tscn"),
 	preload("res://Explosion VFX/Scenes/VFX_Smokey_Dust.tscn"),
+	# Tornado transformation styles — compile their (heavy) shaders up front so the FIRST
+	# Fire / Blue swap doesn't hitch. (Base is already on-screen from frame 1.)
+	preload("res://Tornado VFX/Scenes/VFX_Tornado_fire_V2.tscn"),
+	preload("res://Tornado VFX/Scenes/VFX_Tornado_blue.tscn"),
 ]
 
 ## How long the warm-up spawns live before being freed (long enough to draw at least once).

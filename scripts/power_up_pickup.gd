@@ -8,7 +8,7 @@ class_name PowerUpPickup
 ## Which transformation this pickup grants ("Fire" or "Blue"). Must match a style name
 ## under the tornado's "Styles" node.
 @export var transform_mode: String = "Fire"
-@export var duration: float = 5.0
+@export var duration: float = 10.0
 @export var bob_height: float = 0.4
 @export var bob_speed: float = 2.0
 ## Gentle size pulse of the glowing symbol (fraction; 0 = no pulse).
