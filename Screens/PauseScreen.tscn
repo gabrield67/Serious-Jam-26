@@ -60,6 +60,12 @@ theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 40
 text = "CONTINUE"
 
+[node name="Tutorial" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 40
+text = "HOW TO PLAY"
+
 [node name="MainMenu" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_font")
@@ -67,4 +73,5 @@ theme_override_font_sizes/font_size = 40
 text = "MAIN MENU"
 
 [connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="VBoxContainer/Tutorial" to="." method="_on_tutorial_pressed"]
 [connection signal="pressed" from="VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]

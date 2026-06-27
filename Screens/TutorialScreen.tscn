@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://btut0scrn001"]
+
+[ext_resource type="Script" uid="uid://enqiikqulcf0" path="res://Screens/tutorial_screen.gd" id="1_tut"]
+[ext_resource type="FontFile" uid="uid://uqctrxieyoo7" path="res://Screens/Font/28 Days Later.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxEmpty" id="Empty"]
+
+[node name="TutorialScreen" type="CanvasLayer" unique_id=808758480]
+process_mode = 3
+layer = 200
+script = ExtResource("1_tut")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=366885823]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Page" type="TextureRect" parent="." unique_id=1849892476]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Prev" type="Button" parent="." unique_id=197981423]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = 215.0
+offset_right = 96.0
+offset_bottom = 315.0
+grow_vertical = 2
+size_flags_vertical = 8
+offset_transform_enabled = true
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Empty")
+theme_override_styles/pressed = SubResource("Empty")
+theme_override_styles/hover = SubResource("Empty")
+theme_override_styles/disabled = SubResource("Empty")
+theme_override_styles/focus = SubResource("Empty")
+text = "PREV"
+
+[node name="Next" type="Button" parent="." unique_id=1125039231]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -139.0
+offset_top = 215.0
+offset_right = -19.0
+offset_bottom = 315.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_vertical = 8
+offset_transform_enabled = true
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Empty")
+theme_override_styles/pressed = SubResource("Empty")
+theme_override_styles/hover = SubResource("Empty")
+theme_override_styles/disabled = SubResource("Empty")
+theme_override_styles/focus = SubResource("Empty")
+text = "NEXT"
+
+[node name="Close" type="Button" parent="." unique_id=1973019691]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -56.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Empty")
+theme_override_styles/pressed = SubResource("Empty")
+theme_override_styles/hover = SubResource("Empty")
+theme_override_styles/disabled = SubResource("Empty")
+theme_override_styles/focus = SubResource("Empty")
+text = "X"
+
+[node name="Counter" type="Label" parent="." unique_id=760633197]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -54.0
+offset_right = 80.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+text = "1 / 4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Prev" to="." method="_on_prev_pressed"]
+[connection signal="pressed" from="Next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Close" to="." method="_on_close_pressed"]

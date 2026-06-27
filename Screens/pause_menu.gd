@@ -49,6 +49,13 @@ func resume() -> void:
 func _on_continue_pressed() -> void:
 	resume()
 
+func _on_tutorial_pressed() -> void:
+	if get_tree().get_first_node_in_group("tutorial_overlay") != null:
+		return
+	var tut: Node = (load("res://Screens/TutorialScreen.tscn") as PackedScene).instantiate()
+	add_child(tut)
+
+
 func _on_main_menu_pressed() -> void:
 	if _video:
 		_video.stop()

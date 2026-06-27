@@ -11,5 +11,12 @@ func _on_play_pressed() -> void:
 	get_tree().change_scene_to_file(LOADING_SCREEN)
 
 
+func _on_tutorial_pressed() -> void:
+	if get_tree().get_first_node_in_group("tutorial_overlay") != null:
+		return
+	var tut: Node = (load("res://Screens/TutorialScreen.tscn") as PackedScene).instantiate()
+	get_tree().current_scene.add_child(tut)
+
+
 func _on_button_2_pressed() -> void:
 	get_tree().quit()
