@@ -49,9 +49,12 @@ extends Node
 @export var pan_speed: float = 60.0
 ## Minimum travel speed before the camera updates which side to swing behind.
 @export var move_threshold: float = 0
-## How sideways the tornado's motion must be (0..1, relative to the camera's facing) before
-## the camera re-aims behind it.
+## How sideways the steering must be (0..1, relative to the camera's facing) before the camera
+## re-aims behind it. 0.707 = "more left/right than forward/back".
 @export var side_threshold: float = 0.707
+## How far to the SIDE the click target must be from the tornado before the camera swings.
+## Prevents small/forward steers from swinging it; raise to require a bigger sideways move.
+@export var swing_distance: float = 40.0
 ## How far the aim leads in the travel direction — slides the tornado off-centre (ground units).
 @export var look_lead: float = 60
 ## Speed at which the look-ahead reaches full strength.
@@ -121,17 +124,23 @@ func _process(delta: float) -> void:
 		vel2 = Vector2(tv.x, tv.z)
 	var spd := vel2.length()
 
-	# Decide the target side. Only re-aim behind the tornado when it's moving MOSTLY sideways
-	# (more left/right than forward/backward, measured against the camera's current facing).
-	# Forward/backward steering leaves _desired_dir untouched, so the camera just follows.
-	# Once we commit, _desired_dir stays put even as the camera rotates, so it swings all the
+	# Decide the target side from where the player is STEERING (the committed click point),
+	# not raw velocity. Only re-aim behind the tornado when the target is BOTH clearly to the
+	# side (more left/right than forward/back, vs the camera's facing) AND far enough sideways.
+	# Forward/back or small steers leave _desired_dir untouched, so the camera just follows.
+	# Once committed, _desired_dir stays put even as the camera rotates, so it swings all the
 	# way to the opposite side instead of stalling partway.
-	if move_lead and spd > move_threshold:
-		var m := vel2 / spd
-		var forward := -_dir                          # ground direction the camera faces
-		var right := Vector2(-forward.y, forward.x)
-		if absf(m.dot(right)) >= side_threshold:
-			_desired_dir = -m                         # opposite the tornado's heading
+	if move_lead and _tornado.has_method("get_destination"):
+		var dest = _tornado.get_destination()
+		var off := Vector2(dest.x - _tornado.global_position.x, dest.z - _tornado.global_position.z)
+		var dist := off.length()
+		if dist > 0.001:
+			var dir := off / dist
+			var forward := -_dir                      # ground direction the camera faces
+			var right := Vector2(-forward.y, forward.x)
+			var lateral := off.dot(right)             # signed sideways distance to the target
+			if absf(dir.dot(right)) >= side_threshold and absf(lateral) >= swing_distance:
+				_desired_dir = -dir                   # opposite the steering direction
 
 	# Edge facing: near a map edge, override toward the outward side so it looks back inward.
 	var p := Vector2(_tornado.global_position.x, _tornado.global_position.z) - map_center

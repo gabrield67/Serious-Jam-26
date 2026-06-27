@@ -31,6 +31,38 @@ class_name Enemy
 ## How long the effect lives before despawning (seconds).
 @export var death_vfx_lifetime: float = 4.0
 
+@export_group("Hit sounds")
+## Distance at which the lightning sound is at reference loudness (bigger = carries farther).
+@export var lightning_hit_unit_size: float = 25.0
+## Beyond this distance the lightning sound is inaudible (0 = no limit).
+@export var lightning_hit_max_distance: float = 400.0
+## Loudness of the lightning sound played when this enemy is struck by lightning.
+@export var lightning_hit_volume_db: float = 10.0
+
+## Pool of lightning clips, picked at random per strike. (Drop more clips in here to vary it.)
+static var _lightning: Array[AudioStream] = [
+	preload("res://sounds/lightning.wav"),
+]
+
+## Play a random lightning clip (3D, from this enemy) when struck by lightning, cut off after
+## `duration` so it only lasts as long as the strike. Parented to the scene so it outlives the
+## enemy's death.
+func play_lightning_sound(duration: float) -> void:
+	if _lightning.is_empty():
+		return
+	var p := AudioStreamPlayer3D.new()
+	p.stream = _lightning[randi() % _lightning.size()]
+	p.volume_db = lightning_hit_volume_db
+	p.unit_size = lightning_hit_unit_size
+	p.max_distance = lightning_hit_max_distance
+	get_tree().current_scene.add_child(p)
+	p.global_position = global_position
+	p.play()
+	if duration > 0.0:
+		get_tree().create_timer(duration).timeout.connect(p.queue_free)  # cut to the strike
+	else:
+		p.finished.connect(p.queue_free)
+
 @export_group("Obstacle avoidance")
 ## Steer around buildings/pickups instead of moving through them.
 @export var avoid_enabled: bool = true

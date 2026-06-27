@@ -55,6 +55,7 @@ func _input(event: InputEvent) -> void:
 		_tornado.fire_lightning(e)
 		get_viewport().set_input_as_handled()
 	elif e.has_method("kill"):
+		Sfx.play_explosion()  # debug instakill plays the explosion too
 		e.kill()
 		get_viewport().set_input_as_handled()
 

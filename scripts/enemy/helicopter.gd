@@ -73,7 +73,7 @@ extends Enemy
 ## heli is destroyed/caught (the player is a child, freed with it).
 @export var rotor_sound: AudioStream = preload("res://sounds/helicopter.mp3")
 ## Loudness of the rotor sound.
-@export var rotor_volume_db: float = 4.0
+@export var rotor_volume_db: float = -6.0
 ## Distance at which the rotor is at reference loudness (bigger = carries farther).
 @export var rotor_unit_size: float = 25.0
 ## Beyond this distance the rotor is inaudible (0 = no limit).
@@ -97,6 +97,7 @@ var _caught_t: float = 0.0
 var _init_scale: Vector3 = Vector3.ONE
 var _cooldown: float = 0.0
 var _shots_left: int = 0
+var _rotor: AudioStreamPlayer3D  # the looping rotor sound, silenced on death
 
 func _ready() -> void:
 	_heading = rotation.y
@@ -109,15 +110,38 @@ func _ready() -> void:
 func _start_rotor_sound() -> void:
 	if rotor_sound == null:
 		return
+	# A lightweight per-heli stream sharing the same bytes (copy-on-write, NO data copy) but
+	# with its own loop flag, so turning loop off on death doesn't touch other helis or bloat
+	# memory the way duplicate() did.
+	var stream: AudioStream = rotor_sound
 	if rotor_sound is AudioStreamMP3:
-		(rotor_sound as AudioStreamMP3).loop = true
+		var mp3 := AudioStreamMP3.new()
+		mp3.data = (rotor_sound as AudioStreamMP3).data
+		mp3.loop = true
+		stream = mp3
 	var p := AudioStreamPlayer3D.new()
-	p.stream = rotor_sound
+	p.stream = stream
 	p.volume_db = rotor_volume_db
 	p.unit_size = rotor_unit_size
 	p.max_distance = rotor_max_distance
 	add_child(p)
 	p.play()
+	_rotor = p
+
+## Silence the rotor loop when the heli dies, so it doesn't keep whirring while it's sucked
+## into the funnel or after it's destroyed.
+func _stop_rotor() -> void:
+	if _rotor and is_instance_valid(_rotor):
+		if _rotor.stream is AudioStreamMP3:
+			(_rotor.stream as AudioStreamMP3).loop = false  # don't loop again
+		_rotor.stop()
+		_rotor.queue_free()  # and free the node so the stream can't keep going
+	_rotor = null
+
+## Destroyed (debris/lightning) — stop the rotor, then keep the base death effect.
+func _on_death() -> void:
+	_stop_rotor()
+	super()
 
 func _physics_process(delta: float) -> void:
 	if _main:
@@ -143,6 +167,7 @@ func _physics_process(delta: float) -> void:
 		_state = State.CAUGHT
 		_caught_t = caught_time
 		_init_scale = scale
+		_stop_rotor()  # silence the rotor the moment it's sucked in
 		_update_caught(delta, c)
 		return
 

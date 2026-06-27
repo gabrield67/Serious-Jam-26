@@ -5,25 +5,34 @@
 [ext_resource type="Script" uid="uid://cdvverpqxhcm8" path="res://scripts/fujita_hud.gd" id="3_047uy"]
 [ext_resource type="Script" uid="uid://dohcgkohokg0x" path="res://scripts/targeting/target_panel.gd" id="4_5pdws"]
 [ext_resource type="PackedScene" uid="uid://c7c1wnroekeko" path="res://Screens/HUD/HealthOrb.tscn" id="5_orb"]
-[ext_resource type="PackedScene" path="res://Screens/HUD/DebrisSlots.tscn" id="6_slots"]
+[ext_resource type="PackedScene" uid="uid://bqw4vmw2bx7d4" path="res://Screens/HUD/DebrisSlots.tscn" id="6_slots"]
 
 [node name="HUD" type="CanvasLayer" unique_id=324518760]
 
 [node name="DebrisSlots" parent="." unique_id=1100356695 instance=ExtResource("6_slots")]
-layout_mode = 3
-anchors_preset = 2
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -327.5
 offset_top = -170.0
+offset_right = 327.5
 offset_bottom = 0.0
+grow_horizontal = 2
 grow_vertical = 0
 
 [node name="HealthOrb" parent="." unique_id=2103416320 instance=ExtResource("5_orb")]
-anchors_preset = 2
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -327.5
 offset_top = -170.0
+offset_right = -157.5
 offset_bottom = 0.0
+grow_horizontal = 2
 grow_vertical = 0
 
 [node name="PauseButton" type="Button" parent="." unique_id=1758987044]

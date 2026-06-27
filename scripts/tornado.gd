@@ -404,6 +404,7 @@ func _update_thrown(delta: float) -> void:
 			# Homing: steer toward the target; a thrown debris kills it on contact.
 			var to: Vector3 = target.global_position - node.global_position
 			if to.length() <= throw_hit_radius:
+				Sfx.play_explosion()  # random explosion, played from the scene tree
 				if target.has_method("kill"):
 					target.kill()
 				elif target.has_method("take_damage"):
@@ -502,15 +503,21 @@ func is_blue() -> bool:
 func fire_lightning(target: Node3D) -> bool:
 	if not is_blue() or not is_instance_valid(target):
 		return false
+	var strike_dur := 0.18
 	if lightning_bolt_scene != null:
 		var bolt := lightning_bolt_scene.instantiate()
 		get_tree().current_scene.add_child(bolt)
+		var bl = bolt.get("life")  # the bolt's lifetime == how long the strike lasts
+		if bl != null:
+			strike_dur = float(bl)
 		if bolt.has_method("setup"):
 			# Fire from the middle of the funnel. global_transform applies the tornado's
 			# (large) node scale to this local-space height.
 			var from := global_transform * Vector3(0.0, lightning_origin_height, 0.0)
 			var to := target.global_position + Vector3.UP
 			bolt.setup(from, to)
+	if target.has_method("play_lightning_sound"):
+		target.play_lightning_sound(strike_dur)  # random clip, cut to the strike's length
 	if target.has_method("kill"):
 		target.kill()
 	elif target.has_method("take_damage"):
