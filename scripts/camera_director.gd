@@ -28,11 +28,11 @@ extends Node
 ## Lean the camera toward the mouse so the player can scout ahead of the funnel.
 @export var mouse_look: bool = true
 ## How far the aim leans toward the cursor at full deflection (ground units).
-@export var look_ahead: float = 45.0
+@export var look_ahead: float = 30.0
 ## Fraction of the screen around the centre where the mouse doesn't pan (0..1).
-@export var look_dead_zone: float = 0.12
+@export var look_dead_zone: float = 1
 ## How quickly the look-ahead eases in and out.
-@export var look_smooth: float = 4.0
+@export var look_smooth: float = 2
 
 @export_group("Shake")
 ## Max aim jitter (world units) at full shake.
@@ -45,14 +45,17 @@ extends Node
 @export_group("Lead with movement")
 ## Orbit the camera to the side opposite the tornado's heading, and slide it off-centre.
 @export var move_lead: bool = true
-## How slowly the camera orbits around to the new side (deg/sec).
-@export var pan_speed: float = 40.0
+## How slowly the camera orbits around to the new side (deg/sec). Lower = smoother/calmer.
+@export var pan_speed: float = 60.0
 ## Minimum travel speed before the camera updates which side to swing behind.
-@export var move_threshold: float = 2.0
+@export var move_threshold: float = 0
+## How sideways the tornado's motion must be (0..1, relative to the camera's facing) before
+## the camera re-aims behind it.
+@export var side_threshold: float = 0.707
 ## How far the aim leads in the travel direction — slides the tornado off-centre (ground units).
-@export var look_lead: float = 30.0
+@export var look_lead: float = 60
 ## Speed at which the look-ahead reaches full strength.
-@export var ref_speed: float = 25.0
+@export var ref_speed: float = 100
 ## How quickly the look-ahead eases in and out.
 @export var lead_smooth: float = 3.0
 
@@ -118,8 +121,17 @@ func _process(delta: float) -> void:
 		vel2 = Vector2(tv.x, tv.z)
 	var spd := vel2.length()
 
+	# Decide the target side. Only re-aim behind the tornado when it's moving MOSTLY sideways
+	# (more left/right than forward/backward, measured against the camera's current facing).
+	# Forward/backward steering leaves _desired_dir untouched, so the camera just follows.
+	# Once we commit, _desired_dir stays put even as the camera rotates, so it swings all the
+	# way to the opposite side instead of stalling partway.
 	if move_lead and spd > move_threshold:
-		_desired_dir = -vel2 / spd
+		var m := vel2 / spd
+		var forward := -_dir                          # ground direction the camera faces
+		var right := Vector2(-forward.y, forward.x)
+		if absf(m.dot(right)) >= side_threshold:
+			_desired_dir = -m                         # opposite the tornado's heading
 
 	# Edge facing: near a map edge, override toward the outward side so it looks back inward.
 	var p := Vector2(_tornado.global_position.x, _tornado.global_position.z) - map_center
@@ -130,7 +142,7 @@ func _process(delta: float) -> void:
 	if ef > 0.0 and p.length() > 1.0:
 		goal = _desired_dir.rotated(_desired_dir.angle_to(p.normalized()) * ef)
 
-	# Slowly pan the current direction toward the goal side (capped degrees per second).
+	# Smoothly orbit the current direction toward the goal side (capped degrees per second).
 	var step := deg_to_rad(pan_speed) * delta
 	_dir = _dir.rotated(clampf(_dir.angle_to(goal), -step, step))
 	if _dir.length() > 0.001:

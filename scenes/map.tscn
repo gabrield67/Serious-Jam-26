@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://dl2ggbjespgv8" path="res://addons/road-generator/custom_containers/3way_1x1.tscn" id="14_fq3dv"]
 [ext_resource type="PackedScene" uid="uid://btb4p8sah11hc" path="res://scenes/destructibles/generated/Skyscraper_1.tscn" id="15_mo32q"]
 [ext_resource type="PackedScene" uid="uid://bp7hlnb7jfn3y" path="res://scenes/destructibles/generated/Tree_1.tscn" id="16_6k6j1"]
-[ext_resource type="PackedScene" uid="uid://bco37m4e6231h" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
+[ext_resource type="PackedScene" uid="uid://b64c6mgg0wb4b" path="res://scenes/destructibles/generated/Tree_2.tscn" id="17_m335s"]
 [ext_resource type="PackedScene" uid="uid://mraqnsrw41fx" path="res://scenes/destructibles/generated/Barn.tscn" id="18_baix8"]
 [ext_resource type="Script" uid="uid://ctvrqhr4nfi18" path="res://scripts/enemy/npc_spawner.gd" id="19_spawn"]
 [ext_resource type="PackedScene" uid="uid://ctruckscene01" path="res://scenes/NPC/truck.tscn" id="20_truck"]
@@ -47,7 +47,7 @@
 [ext_resource type="PackedScene" uid="uid://bqwd7gs2h8km4" path="res://scenes/destructibles/generated/House_6.tscn" id="41_5cjpp"]
 [ext_resource type="PackedScene" uid="uid://bmt2dljv1fn7e" path="res://scenes/destructibles/generated/House_2.tscn" id="41_vqsqp"]
 [ext_resource type="PackedScene" uid="uid://bkch0qyuc2qds" path="res://scenes/destructibles/generated/Silo.tscn" id="44_s2dh3"]
-[ext_resource type="PackedScene" uid="uid://drde6u2bt1r15" path="res://scenes/destructibles/generated/Tree_3.tscn" id="47_8kgjo"]
+[ext_resource type="PackedScene" uid="uid://d1fv05wd5q244" path="res://scenes/destructibles/generated/Tree_3.tscn" id="47_8kgjo"]
 [ext_resource type="PackedScene" uid="uid://bowd2angda6p7" path="res://scenes/destructibles/generated/Church_1.tscn" id="48_fq3dv"]
 [ext_resource type="PackedScene" uid="uid://q8gj06s2jld0" path="res://scenes/destructibles/generated/Skyscraper_2.tscn" id="49_ogd7i"]
 
@@ -696,14 +696,8 @@ script = ExtResource("2_host")
 [node name="CameraDirector" type="Node" parent="Camera3D" unique_id=1785447964]
 script = ExtResource("12_camdir")
 lower_per_size = 12.0
-look_ahead = 30.0
-look_dead_zone = 1.0
-look_smooth = 2.0
 shake_strength = 5.0
 shake_attack = 5.0
-pan_speed = 5.0
-look_lead = 60.0
-ref_speed = 10.0
 
 [node name="TornadoPhantomCamera3D" type="Node3D" parent="." unique_id=1596393269 node_paths=PackedStringArray("follow_target", "look_at_target")]
 transform = Transform3D(0, -0.3510781, 0.9362077, -1.4901161e-08, 0.93620825, 0.3510779, -1, 1.48992365e-08, 0, 160, 85, -161.5463)
